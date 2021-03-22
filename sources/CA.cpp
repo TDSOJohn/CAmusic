@@ -24,18 +24,17 @@ CA::CA(std::vector<int>& rule_in, int rad_in, int stat_in):
     radius(rad_in),
     states(stat_in)
 {
-    //  calculate rules vector dimensions using radius and status count
-    double rule_size = pow(states, (2 * radius + 1));
-    std::cout << rule_size;
-
     //  store neighborhood size for efficiency
     neighbrs = (2 * radius) + 1;
+    //  calculate rules vector dimensions using radius and status count
+    double rule_size = pow(states, neighbrs);
+
     //  check rule size and correct accordingly
     while(rule.size() < rule_size)
     {
         rule.push_back(0);
     }
-    std::cout << "\n\nadded missing values to rule vector:\t" << rule.size() << std::endl;
+
     //  if rule vector is too big (add throw error)
     if(rule.size() > rule_size)
         std::cout << "\n\terror, rule array is bigger than expected!\n";
@@ -82,7 +81,7 @@ void CA::print()
 {
     std::cout << std::endl;
 
-    std::vector<char> char_map = { ' ', '.', 'o', 'O', '0'};
+    std::vector<char> char_map = { ' ', '.', '*', 'o', 'O', '0'};
     for(int i = 0; i < dim; i++)
         std::cout << char_map[data[i]];
 }

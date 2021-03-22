@@ -9,7 +9,7 @@
 #include <mutex>
 
 
-#include <RtMidi.h>
+#include "rtmidi/RtMidi.h"
 
 
 
@@ -24,6 +24,7 @@ public:
     };
 
                                 MIDIout(int bpm_in = 120);
+                                ~MIDIout();
 
     void                        setPattern( std::vector<int>& notes_in);
     void                        setPattern( std::vector<int>& notes_in,
@@ -32,8 +33,10 @@ public:
     void                        setState(State s_in);
 
 private:
+    //  Is this a good way of doing things? tons of mutexes?
     std::vector<std::thread>    mThreads;
     std::mutex                  scoreMutex;
+    std::mutex                  stateMutex;
 
     RtMidiOut                   *mMidiOut;
     std::vector<unsigned char>  mMessage;

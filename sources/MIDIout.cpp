@@ -22,7 +22,7 @@ MIDIout::MIDIout(int bpm_in):   mBpm(bpm_in),
     } else
     {
         // Open first available port
-        mMidiOut->openPort(0);
+        mMidiOut->openPort(1);
 
         // Program change: 192, 1 (classic piano)
         mMessage.push_back(192);
@@ -32,6 +32,13 @@ MIDIout::MIDIout(int bpm_in):   mBpm(bpm_in),
         // Control Change: 176, 7, 100 (volume up to 100)
         messageOut(176, 7, 100);
     }
+}
+
+
+MIDIout::~MIDIout()
+{
+    for(int i = 0; i < 127; i++)
+        messageOut(128, i, 40);
 }
 
 
@@ -57,7 +64,7 @@ void MIDIout::setState(State s_in)
     if(s_in == State::Play)
     {
         mThreads.push_back(std::thread(&MIDIout::play, this));
-        mThreads.back().detach();
+        mThreads.back().join();
     }
 }
 
@@ -79,7 +86,8 @@ void MIDIout::play()
                 temp_vel = 90;
         scoreMutex.unlock();
 
-        messageOut(144, temp_note, temp_vel);
+        if(temp_note != 0)
+            messageOut(144, temp_note, temp_vel);
         std::this_thread::sleep_for(std::chrono::milliseconds(mPeriod));
         messageOut(128, temp_note, 40);
     }
