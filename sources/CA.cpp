@@ -6,16 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-//  Simple modulo operator function that only returns positive values
-unsigned modulo(int value, int m)
-{
-    int mod = value % m;
-    if(mod < 0)
-        mod += m;
-    return mod;
-}
+#include "../utilities.hpp"
 
 
 
@@ -31,9 +22,7 @@ CA::CA(std::vector<int>& rule_in, int rad_in, int stat_in):
 
     //  check rule size and correct accordingly
     while(rule.size() < rule_size)
-    {
         rule.push_back(0);
-    }
 
     //  if rule vector is too big (add throw error)
     if(rule.size() > rule_size)

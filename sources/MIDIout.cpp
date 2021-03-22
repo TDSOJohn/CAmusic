@@ -22,7 +22,7 @@ MIDIout::MIDIout(int bpm_in):   mBpm(bpm_in),
     } else
     {
         // Open first available port
-        mMidiOut->openPort(1);
+        mMidiOut->openPort(0);
 
         // Program change: 192, 1 (classic piano)
         mMessage.push_back(192);

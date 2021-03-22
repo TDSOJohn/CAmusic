@@ -30,7 +30,7 @@ public:
 
     void                generate();
 
-private:
+protected:
     std::vector<int>    data;
     int                 dim;
 

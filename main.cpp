@@ -7,28 +7,8 @@
 
 #include "headers/MIDIout.hpp"
 #include "headers/CA.hpp"
-
-
-std::vector<int> ca_to_midi_note(std::vector<int> ca_in)
-{
-    std::vector<int> result;
-    std::vector<int> map = {0, 48, 50, 52, 53, 55, 57, 59};
-
-    for(int i = 0; i < ca_in.size(); i++)
-        result.push_back(map[ca_in[i]]);
-
-    return result;
-}
-
-std::vector<int> ca_to_velocity(std::vector<int> ca_in)
-{
-    std::vector<int> result;
-
-    for(int i = 0; i < ca_in.size(); i++)
-        result.push_back(ca_in[i] * 25);
-
-    return result;
-}
+#include "headers/TotalisticCA.hpp"
+#include "utilities.hpp"
 
 
 int main()
@@ -36,7 +16,7 @@ int main()
     srand(time(NULL));
 
     int states = 6;
-    int radius = 2;
+    int radius = 1;
     int rule_size = pow(states, (radius * 2 + 1));
     int size = 50;
     int generations = 30;
@@ -47,12 +27,14 @@ int main()
     for(int i = 0; i < rule_size; i++)
     {
         rule1.push_back(rand()%states);
+        std::cout << "\t" << rule1[i];
         rule2.push_back(rand()%states);
     }
 
+    rule1[0] = 0;
 
     CA ca1(rule1, radius, states);
-    CA ca2(rule2, radius, states);
+    TotalisticCA ca2(rule2, radius, states);
     MIDIout midi1(480);
 
     std::vector<int> t0;
