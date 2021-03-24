@@ -46,12 +46,16 @@ private:
     int                         mBpm;
     int                         mPeriod;
 
+    bool                        mMetronome;
+
 private:
     void                        play();
     void                        pause();
     void                        stop();
 
-    void                        portProbing();
+    void                        metronome();
+
+    int                         portProbing();
     void                        messageOut( unsigned short status,
                                             unsigned short data1,
                                             unsigned short data2);

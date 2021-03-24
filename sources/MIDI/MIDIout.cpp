@@ -1,4 +1,4 @@
-#include "../headers/MIDIout.hpp"
+#include "../../headers/MIDI/MIDIout.hpp"
 
 
 #include <chrono>
@@ -9,29 +9,28 @@
 
 
 MIDIout::MIDIout(int bpm_in):   mBpm(bpm_in),
-                                mPeriod(60000.0 / mBpm)
+                                mPeriod(60000.0 / mBpm),
+                                mMetronome(false)
 {
-    mMidiOut = new RtMidiOut();
-    unsigned int nPorts = mMidiOut->getPortCount();
-
-    if(nPorts == 0)
+    try
     {
-        std::cout << "No ports available!\n\n";
-        delete mMidiOut;
-        // Inserire funzione di cleanup
-    } else
+        mMidiOut = new RtMidiOut();
+    } catch(RtMidiError &error)
     {
-        // Open first available port
-        mMidiOut->openPort(0);
-
-        // Program change: 192, 1 (classic piano)
-        mMessage.push_back(192);
-        mMessage.push_back(1);
-        mMidiOut->sendMessage(&mMessage);
-
-        // Control Change: 176, 7, 100 (volume up to 100)
-        messageOut(176, 7, 100);
+        error.printMessage();
+        // goto cleanup function
     }
+
+    // Check all ports and open user-selected one
+    mMidiOut->openPort(portProbing());
+
+    // Program change: 192, 1 (classic piano)
+    mMessage.push_back(192);
+    mMessage.push_back(1);
+    mMidiOut->sendMessage(&mMessage);
+
+    // Control Change: 176, 7, 100 (volume up to 100)
+    messageOut(176, 7, 100);
 }
 
 
@@ -39,6 +38,8 @@ MIDIout::~MIDIout()
 {
     for(int i = 0; i < 127; i++)
         messageOut(128, i, 40);
+
+
 }
 
 
@@ -63,6 +64,14 @@ void MIDIout::setState(State s_in)
 {
     if(s_in == State::Play)
     {
+        if(!mMetronome)
+        {
+            mMetronome = true;
+            //  Start metronome and detach
+            mThreads.push_back(std::thread(&MIDIout::metronome, this));
+            mThreads.back().detach();
+        }
+        //  Start midiout output and wait for completion
         mThreads.push_back(std::thread(&MIDIout::play, this));
         mThreads.back().join();
     }
@@ -106,9 +115,42 @@ void MIDIout::stop()
 }
 
 
-void MIDIout::portProbing()
+void MIDIout::metronome()
 {
+    while(true)
+    {
+        std::cout << "\a" << std::flush;
+        std::this_thread::sleep_for(std::chrono::milliseconds(mPeriod*4));
+    }
+}
 
+
+int MIDIout::portProbing()
+{
+    int nPorts = mMidiOut->getPortCount();
+    int port_in = 0;
+    std::string portName;
+
+    do
+    {
+        std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
+        for (unsigned int i = 0; i<nPorts; i++)
+        {
+            try
+            {
+                portName = mMidiOut->getPortName(i);
+            }
+            catch (RtMidiError &error)
+            {
+                error.printMessage();
+            }
+            std::cout << "  Output Port #" << i << ": " << portName << '\n';
+        }
+        std::cout << "Select the port number:\t";
+        std::cin >> port_in;
+    } while(port_in >= nPorts);
+
+    return port_in;
 }
 
 

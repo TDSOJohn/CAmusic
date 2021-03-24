@@ -5,9 +5,11 @@
 #include <chrono>
 
 
-#include "headers/MIDIout.hpp"
-#include "headers/CA.hpp"
-#include "headers/TotalisticCA.hpp"
+#include "headers/MIDI/MIDIout.hpp"
+
+#include "headers/CA/CA1d.hpp"
+#include "headers/CA/TotalisticCA.hpp"
+
 #include "utilities.hpp"
 
 
@@ -33,7 +35,7 @@ int main()
 
     rule1[0] = 0;
 
-    CA ca1(rule1, radius, states);
+    CA1d ca1(rule1, radius, states);
     TotalisticCA ca2(rule2, radius, states);
     MIDIout midi1(480);
 
@@ -46,16 +48,14 @@ int main()
         t1.push_back(rand()%5);
     }
 
-    ca1.initialize(size, CA::Start::Middle);
+    ca1.initialize(size, CA1d::Start::Random);
     //ca2.initialize(t1);
-
-    ca1.print();
-    //ca2.print();
 
     t0 = ca_to_midi_note(ca1.getData());
     //t1 = ca_to_velocity(ca2.getData());
 
     midi1.setPattern(t0);
+    ca1.print();
     midi1.setState(MIDIout::State::Play);
 
     for(int i = 0; i < generations; i++)
@@ -65,7 +65,6 @@ int main()
         t0 = ca_to_midi_note(ca1.getData());
         midi1.setPattern(t0);
         midi1.setState(MIDIout::State::Play);
-//        std::this_thread::sleep_for(std::chrono::seconds(5));
     }
 
     std::cout << std::endl;

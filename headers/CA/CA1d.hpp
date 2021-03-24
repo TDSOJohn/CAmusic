@@ -1,13 +1,15 @@
-#ifndef ca_hpp
-#define ca_hpp
+#ifndef ca1d_hpp
+#define ca1d_hpp
 
 
-#include <iostream>
 #include <vector>
 
 
+#include "CA.hpp"
 
-class CA
+
+
+class CA1d: public CA
 {
 public:
     enum Start
@@ -20,7 +22,7 @@ public:
 
 
 public:
-                        CA(std::vector<int>& rule_in, int rad_in, int stat_in);
+                        CA1d(std::vector<int>& rule_in, int rad_in, int stat_in);
 
     void                initialize(int size_in, Start t0);
     void                initialize(std::vector<int>& t0);
@@ -31,15 +33,9 @@ public:
     void                generate();
 
 protected:
-    std::vector<int>    data;
-    int                 dim;
-
-    std::vector<int>    rule;
-    int                 states;
-    int                 radius;
-    int                 neighbrs;
+    std::vector<int>    mData;
 };
 
 
 
-#endif //ca_hpp
+#endif //ca1d_hpp
