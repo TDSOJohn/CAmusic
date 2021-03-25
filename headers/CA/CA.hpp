@@ -10,6 +10,8 @@ class CA
 {
 public:
                         CA(std::vector<int>& rule_in, int rad_in, int stat_in);
+CA(std::vector<int>&& rule_in, int rad_in, in stat_in);
+
 
     virtual void        print()     = 0;
 

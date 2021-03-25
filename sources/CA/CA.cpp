@@ -7,3 +7,9 @@ CA::CA(std::vector<int>& rule_in, int rad_in, int stat_in):
     mRadius(rad_in),
     mStates(stat_in)
 {}
+
+CA::CA(std::vector<int>&& rule_in, int rad_in, int stat_in):
+    mRule(std::move(rule_in)),
+    mRadius(rad_in),
+    mStates(stat_in)
+{}
