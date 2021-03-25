@@ -24,6 +24,9 @@ public:
     };
 
                                 MIDIout(int bpm_in = 120);
+/// MIDIout is non-copyable
+MIDIout(MIDIout const&) = delete;
+MIDIout& operator=(MIDIout const&) = delete;
                                 ~MIDIout();
 
     void                        setPattern( std::vector<int>& notes_in);
@@ -31,6 +34,7 @@ public:
                                             std::vector<int>& vel_in);
 
     void                        setState(State s_in);
+    
 
 private:
     //  Is this a good way of doing things? tons of mutexes?
