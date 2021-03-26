@@ -9,8 +9,10 @@
 class CA
 {
 public:
-                        CA(std::vector<int>& rule_in, int rad_in, int stat_in);
-CA(std::vector<int>&& rule_in, int rad_in, in stat_in);
+                        /// Constructor that copies rule_in lvalue or rvalue
+                        CA(std::vector<int> const& rule_in, int rad_in, int stat_in);
+                        /// Constructor that moves rule_in rvalue
+                        CA(std::vector<int>&& rule_in, int rad_in, int stat_in);
 
 
     virtual void        print()     = 0;

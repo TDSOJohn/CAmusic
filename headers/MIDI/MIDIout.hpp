@@ -8,9 +8,10 @@
 #include <thread>
 #include <mutex>
 
-
-#include "rtmidi/RtMidi.h"
-
+//  Linux version
+//  #include "rtmidi/RtMidi.h"
+//  macOS version
+#include <RtMidi.h>
 
 
 class MIDIout
@@ -22,11 +23,12 @@ public:
         Pause,
         Stop
     };
-
+                                /// Constructor
                                 MIDIout(int bpm_in = 120);
-/// MIDIout is non-copyable
-MIDIout(MIDIout const&) = delete;
-MIDIout& operator=(MIDIout const&) = delete;
+                                /// MIDIout is non-copyable
+                                MIDIout(MIDIout const&) = delete;
+                                MIDIout& operator=(MIDIout const&) = delete;
+
                                 ~MIDIout();
 
     void                        setPattern( std::vector<int>& notes_in);
@@ -34,7 +36,7 @@ MIDIout& operator=(MIDIout const&) = delete;
                                             std::vector<int>& vel_in);
 
     void                        setState(State s_in);
-    
+
 
 private:
     //  Is this a good way of doing things? tons of mutexes?
