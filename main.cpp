@@ -48,7 +48,7 @@ int main()
         t1.push_back(rand()%5);
     }
 
-    ca1.initialize(size, CA1d::Start::Random);
+    ca1.initialize(size, CA1d::Start::Middle);
     //ca2.initialize(t1);
 
     t0 = ca_to_midi_note(ca1.getData());
