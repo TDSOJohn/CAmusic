@@ -22,7 +22,8 @@ public:
 
 
 public:
-                        CA1d(std::vector<int>& rule_in, int rad_in, int stat_in);
+                        CA1d(std::vector<int> const& rule_in, int rad_in, int stat_in);
+                        CA1d(std::vector<int>&& rule_in, int rad_in, int stat_in);
 
     void                initialize(int size_in, Start t0);
     void                initialize(std::vector<int>& t0);

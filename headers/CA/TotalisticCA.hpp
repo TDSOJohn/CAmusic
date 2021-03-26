@@ -12,7 +12,8 @@
 class TotalisticCA: public CA
 {
 public:
-                        TotalisticCA(std::vector<int>& rule_in, int rad_in, int stat_in);
+                        TotalisticCA(std::vector<int> const& rule_in, int rad_in, int stat_in);
+                        TotalisticCA(std::vector<int>&& rule_in, int rad_in, int stat_in);
 
     void                print();
 

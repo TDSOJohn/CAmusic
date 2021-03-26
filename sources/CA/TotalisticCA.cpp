@@ -8,13 +8,19 @@
 
 
 
-TotalisticCA::TotalisticCA(std::vector<int>& rule_in, int rad_in, int stat_in):
+TotalisticCA::TotalisticCA(std::vector<int> const& rule_in, int rad_in, int stat_in):
     CA(rule_in, rad_in, stat_in)
 {
     //  calculate rule size
     mRuleSize = mStates * (mNeighbrs);
+}
 
-    std::cout << std::endl << mRadius << "\t\t" << mStates << "\t\t" << mRuleSize << std::endl;
+
+TotalisticCA::TotalisticCA(std::vector<int>&& rule_in, int rad_in, int stat_in):
+    CA(rule_in, rad_in, stat_in)
+{
+    //  calculate rule size
+    mRuleSize = mStates * (mNeighbrs);
 }
 
 

@@ -9,7 +9,25 @@
 
 
 
-CA1d::CA1d(std::vector<int>& rule_in, int rad_in, int stat_in):
+CA1d::CA1d(std::vector<int> const& rule_in, int rad_in, int stat_in):
+    CA(rule_in, rad_in, stat_in)
+{
+    //  store neighborhood size for efficiency
+    mNeighbrs = (2 * mRadius) + 1;
+    //  calculate rules vector dimensions using radius and status count
+    mRuleSize = pow(mStates, mNeighbrs);
+
+    //  check rule size and correct accordingly
+    while(mRule.size() < mRuleSize)
+        mRule.push_back(0);
+
+    //  if rule vector is too big (add throw error)
+    if(mRule.size() > mRuleSize)
+        std::cout << "\n\terror, rule array is bigger than expected!\n";
+}
+
+
+CA1d::CA1d(std::vector<int>&& rule_in, int rad_in, int stat_in):
     CA(rule_in, rad_in, stat_in)
 {
     //  store neighborhood size for efficiency
