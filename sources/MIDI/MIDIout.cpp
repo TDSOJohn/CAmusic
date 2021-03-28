@@ -97,7 +97,11 @@ void MIDIout::play()
 
         if(temp_note != 0)
             messageOut(144, temp_note, temp_vel);
-        std::this_thread::sleep_for(std::chrono::milliseconds(mPeriod));
+
+        std::unique_lock<std::mutex> lk(stateMutex);
+        metroCond.wait(lk);
+        lk.unlock();
+
         messageOut(128, temp_note, 40);
     }
 }
@@ -117,10 +121,19 @@ void MIDIout::stop()
 
 void MIDIout::metronome()
 {
+    auto x = std::chrono::steady_clock::now();
+    int counter = 0;
+    int sixteen = mPeriod/4;
     while(true)
     {
-        std::cout << "\a" << std::flush;
-        std::this_thread::sleep_for(std::chrono::milliseconds(mPeriod*4));
+        x += std::chrono::milliseconds(mPeriod);
+        std::this_thread::sleep_until(x);
+
+        std::lock_guard<std::mutex> lg(stateMutex);
+        metroCond.notify_all();
+        //if(!(counter%4))
+            std::cout << "\a" << std::flush;
+        counter++;
     }
 }
 

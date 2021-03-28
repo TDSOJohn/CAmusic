@@ -7,6 +7,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <condition_variable>
 
 //  Linux version
 //  #include "rtmidi/RtMidi.h"
@@ -43,6 +44,7 @@ private:
     std::vector<std::thread>    mThreads;
     std::mutex                  scoreMutex;
     std::mutex                  stateMutex;
+    std::condition_variable     metroCond;
 
     RtMidiOut                   *mMidiOut;
     std::vector<unsigned char>  mMessage;
@@ -50,7 +52,7 @@ private:
     std::vector<int>            mVelocity;
 
     int                         mBpm;
-    int                         mPeriod;
+    const int                   mPeriod;
 
     bool                        mMetronome;
 

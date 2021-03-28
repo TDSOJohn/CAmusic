@@ -17,11 +17,11 @@ int main()
 {
     srand(time(NULL));
 
-    int states = 6;
+    int states = 4;
     int radius = 1;
     int rule_size = pow(states, (radius * 2 + 1));
-    int size = 50;
-    int generations = 30;
+    int size = 200;
+    int generations = 100;
 
     std::vector<int> rule1;
     std::vector<int> rule2;
@@ -37,34 +37,23 @@ int main()
 
     CA1d ca1(rule1, radius, states);
     TotalisticCA ca2(rule2, radius, states);
-    MIDIout midi1(480);
 
-    std::vector<int> t0;
-    std::vector<int> t1;
+    ca1.initialize(size, CA1d::Start::Random);
+    ca2.initialize(size, TotalisticCA::Start::Middle);
 
-    for(int i = 0; i < size; i++)
-    {
-        t0.push_back(i/26);
-        t1.push_back(rand()%5);
-    }
 
-    ca1.initialize(size, CA1d::Start::Middle);
-    //ca2.initialize(t1);
-
-    t0 = ca_to_midi_note(ca1.getData());
-    //t1 = ca_to_velocity(ca2.getData());
-
-    midi1.setPattern(t0);
     ca1.print();
-    midi1.setState(MIDIout::State::Play);
-
     for(int i = 0; i < generations; i++)
     {
         ca1.generate();
         ca1.print();
-        t0 = ca_to_midi_note(ca1.getData());
-        midi1.setPattern(t0);
-        midi1.setState(MIDIout::State::Play);
+    }
+
+    ca2.print();
+    for(int i = 0; i < generations; i++)
+    {
+        ca2.generate();
+        ca2.print();
     }
 
     std::cout << std::endl;
