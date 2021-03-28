@@ -24,6 +24,36 @@ TotalisticCA::TotalisticCA(std::vector<int>&& rule_in, int rad_in, int stat_in):
 }
 
 
+void TotalisticCA::initialize(int size_in, Start t0)
+{
+    mDim    = size_in;
+
+    if(t0 == Start::Random)
+    {
+        for(int i = 0; i < mDim; i++)
+            mData.push_back(rand()%mStates);
+    } else
+    {
+        for(int i = 0; i < mDim; i++)
+            mData.push_back(0);
+
+        if(t0 == Start::Middle)
+            mData[mDim/2] = 1;
+        if(t0 == Start::Left)
+            mData[0] = 1;
+        if(t0 == Start::Right)
+            mData[mDim-1] = 1;
+    }
+}
+
+
+void TotalisticCA::initialize(std::vector<int>& t0)
+{
+    mData   = t0;
+    mDim    = mData.size();
+}
+
+
 void TotalisticCA::print()
 {
     std::cout << std::endl;
