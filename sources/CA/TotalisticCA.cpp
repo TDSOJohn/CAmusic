@@ -54,6 +54,12 @@ void TotalisticCA::initialize(std::vector<int>& t0)
 }
 
 
+std::vector<int> TotalisticCA::getData()
+{
+    return mData;
+}
+
+
 void TotalisticCA::print()
 {
     std::cout << std::endl;

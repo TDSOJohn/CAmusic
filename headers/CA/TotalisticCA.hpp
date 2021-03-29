@@ -28,6 +28,7 @@ public:
     void                initialize(int size_in, Start t0);
     void                initialize(std::vector<int>& t0);
 
+    std::vector<int>    getData();
     void                print();
 
     void                generate();
