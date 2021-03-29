@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <string>
 
 
 
@@ -18,6 +19,8 @@ public:
     virtual void        print()     = 0;
 
     virtual void        generate()  = 0;
+
+    std::string         str();
 
 protected:
     int                 mDim;
