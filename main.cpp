@@ -22,9 +22,9 @@ int main()
     int radius              = 1;
     int rule1_size          = pow(states, (radius * 2 + 1));
     int rule2_size          = states * (radius * 2 + 1);
+
     int size                = 200;
     int generations         = 150;
-
     unsigned int scaling    = 15;
 
     std::vector<int> rule1;
@@ -37,41 +37,38 @@ int main()
     for(int i = 0; i < rule2_size; i++)
         rule2.push_back(rand()%states);
 
-
     rule1[0] = 0;
     rule2[0] = 1;
 
     CA1d            ca1(rule1, radius, states);
     TotalisticCA    ca2(rule2, radius, states);
 
-    ca1.initialize(size, CA1d::Start::Middle);
-    ca2.initialize(size, TotalisticCA::Start::Middle);
-
-    BMPgenerator bmp(   size * scaling,
+    BMPgenerator bmp1(  size * scaling,
+                        generations * scaling,
+                        scaling);
+    BMPgenerator bmp2(  size * scaling,
                         generations * scaling,
                         scaling);
 
-//    ca1.print();
-//    bmp.drawData(ca1.getData(), 0);
+    ca2.initialize(size, CA::Start::Random);
 
-/*    for(int i = 1; i < generations; i++)
-    {
-        ca1.generate();
-//        ca1.print();
-        bmp.drawData(ca1.getData(), i);
-    }
-*/
-//    ca2.print();
-    bmp.drawData(ca1.getData(), 0);
+    bmp1.drawData(ca2.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca2.generate();
-//        ca2.print();
-        bmp.drawData(ca2.getData(), i);
+        bmp1.drawData(ca2.getData(), i);
     }
+    bmp1.saveImage(ca2.str());
 
-    bmp.saveImage(ca2.str());
+    ca2.initialize(size, CA::Start::Middle);
 
-    std::cout << std::endl;
+    bmp2.drawData(ca2.getData(), 0);
+    for(int i = 1; i < generations; i++)
+    {
+        ca2.generate();
+        bmp2.drawData(ca2.getData(), i);
+    }
+    bmp2.saveImage(ca2.str());
+
     return 0;
 }
