@@ -18,7 +18,6 @@ BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, unsigned int sc
     size_x(x_in), size_y(y_in), mScaling(scale_in)
 {
     mBMP = new bitmap_image(size_x, size_y);
-    
     srand(time(NULL));
     generatePalettes();
     choosen = rand()%3;
@@ -84,7 +83,8 @@ void BMPgenerator::generatePalettes()
                         {137, 172, 189},
                         {43, 99, 137}}; // Baby Blue
 
-    mPalettes[2]        ={{34, 5, 4},
+    mPalettes[2]        ={{0, 0, 0},
+                        {34, 5, 4},
                         {160, 132, 51},
                         {133, 97, 34},
                         {82, 26, 18},

@@ -21,7 +21,7 @@ class BMPgenerator
 public:
     typedef std::vector<Pixel> palette;
 
-                            //  Default: 100x100 image, scaling = 1
+                            /// Default: 100x100 image, scaling = 1
                             BMPgenerator();
                             BMPgenerator(unsigned int x_in, unsigned int y_in, unsigned int scale_in);
 

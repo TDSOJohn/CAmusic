@@ -4,7 +4,7 @@ flags = --std=c++11 -c
 libs = -pthread -lrtmidi
 
 camusic	: $(objects)
-	g++ -o camusic $(objects)
+	g++ -o camusic $(objects) $(libs)
 
 main.o : main.cpp headers/CA/CA1d.hpp headers/CA/TotalisticCA.hpp headers/MIDI/MIDIout.hpp headers/BMP/BMPgenerator.hpp utilities.hpp
 	g++ $(flags) main.cpp
@@ -16,8 +16,8 @@ ca1d.o : sources/CA/CA1d.cpp headers/CA/CA1d.hpp headers/CA/CA.hpp utilities.hpp
 	g++ $(flags) sources/CA/CA1d.cpp
 totalisticca.o : sources/CA/TotalisticCA.cpp headers/CA/TotalisticCA.hpp headers/CA/CA.hpp utilities.hpp
 	g++ $(flags) sources/CA/TotalisticCA.cpp
-#midiout.o : sources/MIDI/MIDIout.cpp headers/MIDI/MIDIout.hpp
-#	g++ $(flags) sources/MIDI/MIDIout.cpp $(libs)
+midiout.o : sources/MIDI/MIDIout.cpp headers/MIDI/MIDIout.hpp
+	g++ $(flags) sources/MIDI/MIDIout.cpp
 bmpgenerator.o : sources/BMP/BMPgenerator.cpp headers/BMP/BMPgenerator.hpp
 	g++ $(flags) sources/BMP/BMPgenerator.cpp
 
