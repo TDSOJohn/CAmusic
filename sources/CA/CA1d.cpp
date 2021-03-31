@@ -1,19 +1,15 @@
 #include "../../headers/CA/CA1d.hpp"
+#include "../../utilities.hpp"
 
 
 #include <iostream>
 #include <cmath>
 
 
-#include "../../utilities.hpp"
-
-
 
 CA1d::CA1d(std::vector<int> const& rule_in, int rad_in, int stat_in):
     CA(rule_in, rad_in, stat_in)
 {
-    //  store neighborhood size for efficiency
-    mNeighbrs = (2 * mRadius) + 1;
     //  calculate rules vector dimensions using radius and status count
     mRuleSize = pow(mStates, mNeighbrs);
 
@@ -30,8 +26,6 @@ CA1d::CA1d(std::vector<int> const& rule_in, int rad_in, int stat_in):
 CA1d::CA1d(std::vector<int>&& rule_in, int rad_in, int stat_in):
     CA(rule_in, rad_in, stat_in)
 {
-    //  store neighborhood size for efficiency
-    mNeighbrs = (2 * mRadius) + 1;
     //  calculate rules vector dimensions using radius and status count
     mRuleSize = pow(mStates, mNeighbrs);
 
@@ -42,52 +36,6 @@ CA1d::CA1d(std::vector<int>&& rule_in, int rad_in, int stat_in):
     //  if rule vector is too big (add throw error)
     if(mRule.size() > mRuleSize)
         std::cout << "\n\terror, rule array is bigger than expected!\n";
-}
-
-
-void CA1d::initialize(int size_in, Start t0)
-{
-    mDim     = size_in;
-
-    if(t0 == Start::Random)
-    {
-        for(int i = 0; i < mDim; i++)
-            mData.push_back(rand()%mStates);
-    } else
-    {
-        for(int i = 0; i < mDim; i++)
-            mData.push_back(0);
-
-        if(t0 == Start::Middle)
-            mData[mDim/2] = 1;
-        if(t0 == Start::Left)
-            mData[0] = 1;
-        if(t0 == Start::Right)
-            mData[mDim-1] = 1;
-    }
-}
-
-
-void CA1d::initialize(std::vector<int>& t0)
-{
-    mData    = t0;
-    mDim     = mData.size();
-}
-
-
-std::vector<int> CA1d::getData()
-{
-    return mData;
-}
-
-
-void CA1d::print()
-{
-    std::cout << std::endl;
-
-    std::vector<char> char_map = { ' ', '.', '*', 'o', 'O', '0'};
-    for(int i = 0; i < mDim; i++)
-        std::cout << char_map[mData[i]];
 }
 
 
