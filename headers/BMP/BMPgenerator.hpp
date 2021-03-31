@@ -4,7 +4,6 @@
 
 #include <vector>
 
-
 #include "bitmap_image.hpp"
 
 
@@ -31,10 +30,13 @@ public:
 
     void                    saveImage(std::string const& filename);
 
+    void                    newImage();
+    void                    newImage(unsigned int x_in, unsigned int y_in);
+
 private:
-    const unsigned int      size_x, size_y;
-    const unsigned int      mScaling;
-    bitmap_image            mBMP;
+    unsigned int            size_x, size_y;
+    unsigned int            mScaling;
+    bitmap_image*           mBMP;
 
     std::vector<std::vector<Pixel> >
                             mPalettes;

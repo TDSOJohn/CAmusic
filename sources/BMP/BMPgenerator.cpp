@@ -3,9 +3,11 @@
 #include <iostream>
 
 
+
 BMPgenerator::BMPgenerator():
-    size_x(100), size_y(100), mScaling(1), mBMP(size_x, size_y)
+    size_x(100), size_y(100), mScaling(1)
 {
+    mBMP = new bitmap_image(size_x, size_y);
     srand(time(NULL));
     generatePalettes();
     choosen = rand()%3;
@@ -13,8 +15,10 @@ BMPgenerator::BMPgenerator():
 
 
 BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, unsigned int scale_in):
-    size_x(x_in), size_y(y_in), mScaling(scale_in), mBMP(size_x, size_y)
+    size_x(x_in), size_y(y_in), mScaling(scale_in)
 {
+    mBMP = new bitmap_image(size_x, size_y);
+    
     srand(time(NULL));
     generatePalettes();
     choosen = rand()%3;
@@ -40,7 +44,23 @@ void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in)
 
 void BMPgenerator::saveImage(std::string const& filename)
 {
-    mBMP.save_image(filename);
+    mBMP->save_image(filename);
+}
+
+
+void BMPgenerator::newImage()
+{
+    if(mBMP != nullptr)
+        delete mBMP;
+    mBMP = new bitmap_image(size_x, size_y);
+}
+
+
+void BMPgenerator::newImage(unsigned int x_in, unsigned int y_in)
+{
+    size_x = x_in;
+    size_y = y_in;
+    newImage();
 }
 
 
@@ -82,7 +102,7 @@ void BMPgenerator::drawLine(std::vector<Pixel> const& data_in, unsigned int heig
             for(int x = 0; x < mScaling; x++)
             {
                 for(int y = 0; y < mScaling; y++)
-                    mBMP.set_pixel( (i * mScaling + x),
+                    mBMP->set_pixel((i * mScaling + x),
                                     (height * mScaling + y),
                                     data_in[i].r,
                                     data_in[i].g,
