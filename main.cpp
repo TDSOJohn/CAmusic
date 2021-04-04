@@ -48,16 +48,20 @@ int main()
 
     //  Random start
     ca.initialize(size, CA::Start::Random);
+    mtf1.drawData(ca.getData());
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
+        mtf1.drawData(ca.getData());
         bmp.drawData(ca.getData(), i);
     }
+    mtf1.saveFile(ca.str());
     bmp.saveImage(ca.str());
 
     //  Middle start
     bmp.newImage();
+    mtf1.newSheet();
     ca.initialize(size, CA::Start::Middle);
     mtf1.drawData(ca.getData());
     bmp.drawData(ca.getData(), 0);
@@ -67,18 +71,22 @@ int main()
         mtf1.drawData(ca.getData());
         bmp.drawData(ca.getData(), i);
     }
-    mtf1.saveFile("results/midi1");
+    mtf1.saveFile(ca.str());
     bmp.saveImage(ca.str());
 
     //  Ordered start
     bmp.newImage();
+    mtf1.newSheet();
     ca.initialize(t0);
+    mtf1.drawData(ca.getData());
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
+        mtf1.drawData(ca.getData());
         bmp.drawData(ca.getData(), i);
     }
+    mtf1.saveFile(ca.str());
     bmp.saveImage(ca.str());
     return 0;
 }

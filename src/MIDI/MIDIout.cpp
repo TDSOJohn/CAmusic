@@ -180,14 +180,3 @@ void MIDIout::messageOut(   unsigned short status,
 
     mMidiOut->sendMessage(&mMessage);
 }
-
-/*
-for(int i = 0; i < 20; i++)
-{
-    note = rand()%20 + 45;
-    messageOut(144, note, 90);
-    std::cout << "\t\t" << note << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
-    messageOut(128, note, 40);
-}
-*/
