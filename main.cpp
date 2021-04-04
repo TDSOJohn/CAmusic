@@ -5,11 +5,12 @@
 #include <chrono>
 
 
-#include "headers/CA/CA1d.hpp"
-#include "headers/CA/TotalisticCA.hpp"
+#include "include/CA/CA1d.hpp"
+#include "include/CA/TotalisticCA.hpp"
 
-#include "headers/MIDI/MIDIout.hpp"
-#include "headers/BMP/BMPgenerator.hpp"
+#include "include/MIDI/MIDIout.hpp"
+#include "include/MIDI/midiToFile.hpp"
+#include "include/BMP/BMPgenerator.hpp"
 
 #include "utilities.hpp"
 
@@ -22,8 +23,8 @@ int main()
     int radius              = 1;
     int rule_size           = states * (radius * 2 + 1);
 
-    int size                = 200;
-    int generations         = 300;
+    int size                = 240;
+    int generations         = 120;
     unsigned int scaling    = 15;
 
     std::vector<int> rule;
@@ -34,17 +35,23 @@ int main()
         rule.push_back(rand()%states);
     rule[0] = 0;
 
-    for(int i = 0; i < size; i++)
-        t0.push_back(i / ((size + 1) / states));
-
     TotalisticCA ca(rule, radius, states);
 
     BMPgenerator bmp(   size * scaling,
                         generations * scaling,
                         scaling);
 
+    MidiToFile   mtf1;
+
+    for(int i = 0; i < size; i++)
+        t0.push_back(i / ((size + 1) / states));
+
     //  Random start
     ca.initialize(size, CA::Start::Random);
+
+    mtf1.drawData(ca.getData());
+    mtf1.saveFile("midi1");
+
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {

@@ -1,27 +1,43 @@
-objects = main.o utilities.o ca.o ca1d.o totalisticca.o bmpgenerator.o
+# object files
+objects = main.o utilities.o ca.o ca1d.o totalisticca.o bmpgenerator.o midiout.o miditofile.o
 
-flags = --std=c++11 -c
-libs = -pthread -lrtmidi
+# g++ compiler flags (no linker, use c++11)
+flags 	= --std=c++11 -c
+# libs to use during linking (thread library, rtmidi library)
+libs 	= -pthread -lrtmidi -lmidifile -Lmidifile/lib
 
+# search for files in these paths
+vpath %.hpp include/CA:include/BMP:include/MIDI
+vpath %.cpp src/CA:src/BMP:src/MIDI
+
+# main target to make
 camusic	: $(objects)
 	g++ -o camusic $(objects) $(libs)
 
-main.o : main.cpp headers/CA/CA1d.hpp headers/CA/TotalisticCA.hpp headers/MIDI/MIDIout.hpp headers/BMP/BMPgenerator.hpp utilities.hpp
+# single object files to make
+main.o : main.cpp CA1d.hpp TotalisticCA.hpp MIDIout.hpp BMPgenerator.hpp utilities.hpp
 	g++ $(flags) main.cpp
 utilities.o : utilities.cpp utilities.hpp
 	g++ $(flags) utilities.cpp
-ca.o : sources/CA/CA.cpp headers/CA/CA.hpp
-	g++ $(flags) sources/CA/CA.cpp
-ca1d.o : sources/CA/CA1d.cpp headers/CA/CA1d.hpp headers/CA/CA.hpp utilities.hpp
-	g++ $(flags) sources/CA/CA1d.cpp
-totalisticca.o : sources/CA/TotalisticCA.cpp headers/CA/TotalisticCA.hpp headers/CA/CA.hpp utilities.hpp
-	g++ $(flags) sources/CA/TotalisticCA.cpp
-midiout.o : sources/MIDI/MIDIout.cpp headers/MIDI/MIDIout.hpp
-	g++ $(flags) sources/MIDI/MIDIout.cpp
-bmpgenerator.o : sources/BMP/BMPgenerator.cpp headers/BMP/BMPgenerator.hpp
-	g++ $(flags) sources/BMP/BMPgenerator.cpp
+ca.o : CA.cpp CA.hpp
+	g++ $(flags) src/CA/CA.cpp
+ca1d.o : CA1d.cpp CA1d.hpp CA.hpp utilities.hpp
+	g++ $(flags) src/CA/CA1d.cpp
+totalisticca.o : TotalisticCA.cpp TotalisticCA.hpp CA.hpp utilities.hpp
+	g++ $(flags) src/CA/TotalisticCA.cpp
+midiout.o : MIDIout.cpp MIDIout.hpp
+	g++ $(flags) src/MIDI/MIDIout.cpp
+miditofile.o : midiToFile.cpp midiToFile.hpp
+	g++ $(flags) src/MIDI/midiToFile.cpp
+bmpgenerator.o : BMPgenerator.cpp BMPgenerator.hpp
+	g++ $(flags) src/BMP/BMPgenerator.cpp
 
-
+# phony in order to have a clean rm even when some files are missing
 .PHONY : clean
 clean :
 	rm camusic $(objects)
+
+
+
+
+#	g++ try.cpp --std=c++11 -lmidifile -Lmidifile/lib
