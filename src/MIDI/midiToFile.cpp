@@ -35,3 +35,16 @@ void MidiToFile::saveFile(std::string fn_in)
 //    mMidifile->sortTracks();
     mMidifile->write(filename);
 }
+
+
+void MidiToFile::newSheet()
+{
+    if(mMidifile != NULL)
+        delete mMidifile;
+
+    mMidifile       = new smf::MidiFile;
+    mMidifile->addTimbre(mTrack, 0, mChannel, mInstr);
+    //  Ticks per quarter note (DOES IT CHANGE?)
+    mTPQ            = mMidifile->getTPQ();
+    mPosition       = 0;
+}

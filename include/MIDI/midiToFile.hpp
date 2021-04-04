@@ -13,6 +13,8 @@ public:
     void                drawData(std::vector<int> data_in);
     void                saveFile(std::string fn_in);
 
+    void                newSheet();
+
 private:
     smf::MidiFile       *mMidifile;
     int                 mTrack;
