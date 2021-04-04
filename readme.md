@@ -1,14 +1,24 @@
+caMusic - C++ Cellular Automata to media library
+================================================
+
 compile with:
 
-´´´bash
+```bash
 make
-´´´
------------------------
+```
+
+clean with:
+
+```bash
+make clean
+```
+
 Dependencies:
+-------------
 
-RtMidi - https://github.com/thestk/rtmidi
-MidiFile - https://github.com/craigsapp/midifile
+<a href="https://github.com/thestk/rtmidi"> RtMidi </a>
+<a href="https://github.com/craigsapp/midifile"> MidiFile </a>
 
 
-------------------------
 usage:
+------
