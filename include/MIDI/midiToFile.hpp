@@ -18,4 +18,7 @@ private:
     int                 mTrack;
     int                 mChannel;
     int                 mInstr;
+    int                 mTPQ;
+
+    int                 mPosition;
 };

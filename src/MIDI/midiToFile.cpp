@@ -3,10 +3,12 @@
 
 
 MidiToFile::MidiToFile():
-    mTrack(0), mChannel(0), mInstr(1)
+    mTrack(0), mChannel(0), mInstr(1), mPosition(0)
 {
     mMidifile       = new smf::MidiFile;
     mMidifile->addTimbre(mTrack, 0, mChannel, mInstr);
+    //  Ticks per quarter note
+    mTPQ            = mMidifile->getTPQ();
 }
 
 
@@ -14,15 +16,15 @@ void MidiToFile::drawData(std::vector<int> data_in)
 {
     std::vector<int> keys(ca_to_midi_note(data_in));
     std::vector<int> vel(ca_to_velocity(data_in));
+    int end;
 
-    int tpq         = mMidifile->getTPQ();
     for(int i = 0; i < data_in.size(); i++)
     {
-        int start   = i * tpq;
-        int end     = (i + 1) * tpq;
+        end         = mPosition + mTPQ/4;
 
-        mMidifile->addNoteOn(mTrack, start, mChannel, keys[i], vel[i]);
+        mMidifile->addNoteOn(mTrack, mPosition, mChannel, keys[i], vel[i]);
         mMidifile->addNoteOff(mTrack, end, mChannel, keys[i]);
+        mPosition   = end;
     }
 }
 

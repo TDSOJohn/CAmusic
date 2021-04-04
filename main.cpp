@@ -23,8 +23,8 @@ int main()
     int radius              = 1;
     int rule_size           = states * (radius * 2 + 1);
 
-    int size                = 240;
-    int generations         = 120;
+    int size                = 30;
+    int generations         = 40;
     unsigned int scaling    = 15;
 
     std::vector<int> rule;
@@ -48,10 +48,6 @@ int main()
 
     //  Random start
     ca.initialize(size, CA::Start::Random);
-
-    mtf1.drawData(ca.getData());
-    mtf1.saveFile("midi1");
-
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
@@ -63,12 +59,15 @@ int main()
     //  Middle start
     bmp.newImage();
     ca.initialize(size, CA::Start::Middle);
+    mtf1.drawData(ca.getData());
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
+        mtf1.drawData(ca.getData());
         bmp.drawData(ca.getData(), i);
     }
+    mtf1.saveFile("results/midi1");
     bmp.saveImage(ca.str());
 
     //  Ordered start
