@@ -8,8 +8,9 @@
 //  Simple modulo operator function that only returns positive values
 unsigned modulo(int value, int m);
 
-std::vector<int> ca_to_midi_note(std::vector<int> ca_in);
+//  MIDI note 0 is not a good choice, better just turn it off somehow
+std::vector<int> ca_to_midi_note(std::vector<int> data_in, int octave);
 
-std::vector<int> ca_to_velocity(std::vector<int> ca_in);
+std::vector<int> ca_to_velocity(std::vector<int> data_in);
 
 #endif //utilities_hpp

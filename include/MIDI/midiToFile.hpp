@@ -10,9 +10,9 @@ class MidiToFile
 public:
                         MidiToFile();
 
-    void                drawData(std::vector<int> data_in);
-    void                saveFile(std::string fn_in);
+    void                drawData(std::vector<int> data_in, int octave);
 
+    void                saveFile(std::string fn_in);
     void                newSheet();
 
 private:
@@ -23,4 +23,9 @@ private:
     int                 mTPQ;
 
     int                 mPosition;
+
+private:
+    void                noteOut(int note, int velocity, int start, int end);
+    void                drawLine(std::vector<int> note_in);
+    void                drawLine(std::vector<int> note_in, std::vector<int> vel_in);
 };

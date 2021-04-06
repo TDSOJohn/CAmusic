@@ -19,12 +19,12 @@ int main()
 {
     srand(time(NULL));
 
-    int states              = 5;
+    int states              = 7;
     int radius              = 1;
     int rule_size           = states * (radius * 2 + 1);
 
-    int size                = 30;
-    int generations         = 40;
+    int size                = 32;
+    int generations         = 32;
     unsigned int scaling    = 15;
 
     std::vector<int> rule;
@@ -33,7 +33,7 @@ int main()
 
     for(int i = 0; i < rule_size; i++)
         rule.push_back(rand()%states);
-    rule[0] = 0;
+//    rule[0] = 0;
 
     TotalisticCA ca(rule, radius, states);
 
@@ -44,16 +44,16 @@ int main()
     MidiToFile   mtf1;
 
     for(int i = 0; i < size; i++)
-        t0.push_back(i / ((size + 1) / states));
+        t0.push_back(i / (size / (states - 1)));
 
     //  Random start
     ca.initialize(size, CA::Start::Random);
-    mtf1.drawData(ca.getData());
+    mtf1.drawData(ca.getData(), 1);
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
-        mtf1.drawData(ca.getData());
+        mtf1.drawData(ca.getData(), 1);
         bmp.drawData(ca.getData(), i);
     }
     mtf1.saveFile(ca.str());
@@ -63,12 +63,12 @@ int main()
     bmp.newImage();
     mtf1.newSheet();
     ca.initialize(size, CA::Start::Middle);
-    mtf1.drawData(ca.getData());
+    mtf1.drawData(ca.getData(), 3);
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
-        mtf1.drawData(ca.getData());
+        mtf1.drawData(ca.getData(), 3);
         bmp.drawData(ca.getData(), i);
     }
     mtf1.saveFile(ca.str());
@@ -78,12 +78,12 @@ int main()
     bmp.newImage();
     mtf1.newSheet();
     ca.initialize(t0);
-    mtf1.drawData(ca.getData());
+    mtf1.drawData(ca.getData(), 2);
     bmp.drawData(ca.getData(), 0);
     for(int i = 1; i < generations; i++)
     {
         ca.generate();
-        mtf1.drawData(ca.getData());
+        mtf1.drawData(ca.getData(), 2);
         bmp.drawData(ca.getData(), i);
     }
     mtf1.saveFile(ca.str());
