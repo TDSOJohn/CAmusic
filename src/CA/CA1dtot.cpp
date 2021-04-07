@@ -1,4 +1,4 @@
-#include "../../include/CA/TotalisticCA.hpp"
+#include "../../include/CA/CA1dtot.hpp"
 #include "../../utilities.hpp"
 
 
@@ -6,8 +6,8 @@
 
 
 
-TotalisticCA::TotalisticCA(std::vector<int> const& rule_in, int rad_in, int stat_in):
-    CA(rule_in, rad_in, stat_in)
+CA1dtot::CA1dtot(std::vector<int> const& rule_in, unsigned int rad_in, unsigned int stat_in):
+    CA1d(rule_in, rad_in, stat_in)
 {
     //  calculate rule size
     mRuleSize = mStates * (mNeighbrs);
@@ -21,8 +21,8 @@ TotalisticCA::TotalisticCA(std::vector<int> const& rule_in, int rad_in, int stat
 }
 
 
-TotalisticCA::TotalisticCA(std::vector<int>&& rule_in, int rad_in, int stat_in):
-    CA(rule_in, rad_in, stat_in)
+CA1dtot::CA1dtot(std::vector<int>&& rule_in, unsigned int rad_in, unsigned int stat_in):
+    CA1d(rule_in, rad_in, stat_in)
 {
     //  calculate rule size
     mRuleSize = mStates * (mNeighbrs);
@@ -35,7 +35,7 @@ TotalisticCA::TotalisticCA(std::vector<int>&& rule_in, int rad_in, int stat_in):
 }
 
 
-void TotalisticCA::generate()
+void CA1dtot::generate()
 {
     int temp = 0;
 
