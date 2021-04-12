@@ -12,10 +12,18 @@
 class CA2d : public CA
 {
 public:
-    CA2d(std::vector<int> const& rule, unsigned int states, unsigned int radius);
-    CA2d(std::vector<int>&& rule, unsigned int states, unsigned int radius);
-    CA2d(std::vector<int> const& rule, unsigned int rad_in, unsigned int stat_in);
-    CA2d(std::vector<int>&& rule, unsigned int rad_in, unsigned int stat_in);
+    enum Start
+    {
+        Random,
+        Middle,
+        Corner
+    };
+
+
+public:
+                        CA2d(unsigned int rad_in,
+                             unsigned int stat_in,
+                             std::vector<int> const& rule);
 
     void                initialize(unsigned int size_in, Start t0);
     void                initialize(std::vector<std::vector<int> > const& t0);

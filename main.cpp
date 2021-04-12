@@ -1,8 +1,8 @@
-#include <iostream>
-#include <cmath>
+#include <string>
+#include <sstream>
 #include <vector>
-#include <thread>
-#include <chrono>
+
+#include <curses.h>
 
 
 #include "include/CA/CA1dgen.hpp"
@@ -15,35 +15,58 @@
 #include "utilities.hpp"
 
 
+void draw_line(std::vector<int> data_in, int y);
 
-int states              = 2;
-int radius              = 2;
-int rule_size_tot       = (states - 1) * (radius * 2 + 1);
-int rule_size_gen       = pow(states, (radius * 2 + 1));
 
-int size                = 700;
-int generations         = 2000;
-unsigned int scaling    = 1;
+//  Useful Cellular Automaton constants
+const int states        = 6;
+const int radius        = 1;
+const int rule_size_tot = (states - 1) * (radius * 2 + 1) + 1;
+const int rule_size_gen = pow(states, (radius * 2 + 1));
+
+int size                = 140;
+int generations         = 70;
+const int scaling       = 1;
+
+std::bitset<rule_size_tot> ruleBits{0};
+unsigned int dec_rule   = rand()%((int)pow(2, rule_size_tot));
+//  End of useful constants
+
+
 
 CA1dgen* newCAgen(CA1dgen* ca_p)
 {
-    std::vector<int> rule = {0,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
+    std::vector<int> rule;
     std::vector<int> t0;
+
+    ruleBits = dec_rule;
+
+    for(int i = 0; i < rule_size_gen; i++)
+        rule.push_back(ruleBits[i]);
 
     if(ca_p != NULL)
     {
         delete ca_p;
         ca_p = NULL;
     }
-    ca_p = new CA1dgen(radius, states);
+    ca_p = new CA1dgen(radius, states, rule);
     ca_p->initialize(size, CA1d::Start::Random);
+
+    dec_rule++;
+
     return ca_p;
 }
 
 CA1dtot* newCAtot(CA1dtot* ca_p)
 {
-    std::vector<int> rule = {0,0,1,0,1};
+    std::vector<int> rule;
     std::vector<int> t0;
+
+    ruleBits = dec_rule;
+
+    for(int i = 0; i < rule_size_tot; i++)
+        rule.push_back(ruleBits[i]);
+
 
     if(ca_p != NULL)
     {
@@ -51,56 +74,94 @@ CA1dtot* newCAtot(CA1dtot* ca_p)
         ca_p = NULL;
     }
     ca_p = new CA1dtot(radius, states, rule);
-    ca_p->initialize(size, CA1d::Start::Random);
+    ca_p->initialize(size, CA1d::Start::Middle);
+
+    dec_rule++;
+
     return ca_p;
 }
 
 
 int main()
 {
-    char command = 'n';
+    dec_rule = 219433;
+
+    unsigned int size_x, size_y;
+
+    if(initscr() == NULL)
+    {
+        fprintf(stderr, "Error initialising ncurses\n");
+        exit(EXIT_FAILURE);
+    }
+
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    curs_set(0);
+
+    getmaxyx(stdscr, size_y, size_x);
+    size        = size_x - 1;
+    generations = size_y - 1;
+
+    printw("This screen is: %d x %d\n", size_x, size_y);
+    refresh();
+
+    if(has_colors() == FALSE)
+        printw("your terminal does now support colors!\n");
+    else
+    {
+        start_color();
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if((i != 0) || (j != 0))
+                    init_pair(((i * 8) + j), j, i);
+            }
+        }
+    }
 
     srand(time(NULL));
 
-    CA1dgen*         ca = NULL;
+    CA1dtot*         ca = NULL;
 
-    BMPgenerator    bmp(    size * scaling,
-                            generations * scaling,
-                            scaling);
+    ca = newCAtot(ca);
 
-    MidiToFile      mtf1;
+    int i = 1;
+    uint8_t color = 0;
 
-    while(command != 'q')
+    draw_line(ca->getData(), 0);
+    refresh();
+
+    for(i = 1; i < generations; i++)
     {
-        switch(command)
-        {
-            case 'n':
-                bmp.newImage();
-        //        mtf1.newSheet();
-                ca = newCAgen(ca);
-        //        mtf1.drawData(ca->getData(), 1);
-//                std::cout << *ca << std::endl;
-                bmp.drawData(ca->getData(), 0);
-                for(int i = 1; i < generations; i++)
-                {
-                    ca->generate();
-//                    std::cout << *ca << std::endl;
-        //            mtf1.drawData(ca->getData(), 1);
-                    bmp.drawData(ca->getData(), i);
-                }
-            break;
-
-            case 's':
-//                mtf1.saveFile(ca->str());
-                bmp.saveImage(ca->str());
-                break;
-
-            default:
-                break;
-        }
-        std::cout << "q to quit, s to save, n to generate new: \t";
-        std::cin >> command;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        ca->generate();
+        draw_line(ca->getData(), i);
+        refresh();
     }
 
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    endwin();
     return 0;
+}
+
+
+void draw_line(std::vector<int> data_in, int y)
+{
+    uint8_t color = (data_in[0] * 8);
+    attron(color);
+
+    for(int i = 0; i < data_in.size(); i++)
+    {
+        if(data_in[i] != color)
+        {
+            attroff(COLOR_PAIR(color));
+            color = (data_in[i] * 8);
+            attron(COLOR_PAIR(color));
+        }
+        mvaddch(y, i, (char)(data_in[i] + 48));
+    }
+    attroff(color);
 }

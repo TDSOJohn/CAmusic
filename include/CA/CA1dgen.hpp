@@ -12,8 +12,8 @@
 class CA1dgen: public CA1d
 {
 public:
-                        CA1dgen(unsigned int rad_in,
-                                unsigned int stat_in,
+                        CA1dgen(unsigned int rad_in             = 1,
+                                unsigned int stat_in            = 2,
                                 std::vector<int> const& rule_in = {});
 
     void                generate();

@@ -3,8 +3,8 @@ objects = main.o utilities.o ca.o ca1d.o ca1dgen.o ca1dtot.o bmpgenerator.o midi
 
 # g++ compiler flags (no linker, use c++11)
 flags 	= --std=c++11 -c
-# libs to use during linking (thread library, rtmidi library, midifile library)
-libs 	= -pthread -lrtmidi -lmidifile -Lmidifile/lib
+# libs to use during linking (thread, rtmidi, midifile, ncurses)
+libs 	= -pthread -lrtmidi -lmidifile -lncurses -Lmidifile/lib
 
 # search for files in these paths
 vpath %.hpp include/CA:include/BMP:include/MIDI

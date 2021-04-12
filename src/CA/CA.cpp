@@ -2,7 +2,6 @@
 
 
 #include <sstream>
-#include <iostream>
 
 
 
@@ -19,10 +18,8 @@ CA::CA( unsigned int stat_in,
 {
     //CHECK IF RULE IS BIGGER THAN RULE SIZE
 
-    std::cout << "\n";
     if(mRule.size() == 0)
     {
-        std::cout << "RANDOM RULE\n\n";
         for(int i = 0; i < mRuleSize; i++)
             mRule.push_back(rand()%mStates);
     } else
@@ -31,13 +28,4 @@ CA::CA( unsigned int stat_in,
         while(mRule.size() < mRuleSize)
             mRule.push_back(0);
     }
-
-    for(auto i : mRule)
-        std::cout << i << "\t";
-
-    std::cout << "\nRule size: " << mRuleSize
-            << "\tStates: " << mStates
-            << "\tRadius: " << mRadius
-            << "\tNeigh: " << mNeighbrs
-            << std::endl;
 }

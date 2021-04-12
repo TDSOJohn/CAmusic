@@ -23,9 +23,9 @@ public:
 
 public:
                         /// Constructor that copies rule_in lvalue or rvalue
-                        CA1d(unsigned int rad_in = 1,
-                             unsigned int stat_in = 2,
-                             double rule_size_in = 8,
+                        CA1d(unsigned int rad_in             = 1,
+                             unsigned int stat_in            = 2,
+                             double rule_size_in             = 8,
                              std::vector<int> const& rule_in = {});
 
 
