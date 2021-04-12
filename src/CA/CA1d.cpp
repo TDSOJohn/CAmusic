@@ -1,25 +1,17 @@
 #include "../../include/CA/CA1d.hpp"
 
 
-#include <iostream>
 #include <sstream>
+#include <iterator>
 
 
 
-CA1d::CA1d(std::vector<int> const& rule_in, unsigned int rad_in, unsigned int stat_in):
-    CA(rule_in, stat_in),
-    mRadius(rad_in)
-{
-    mNeighbrs = (mRadius * 2 + 1);
-}
-
-
-CA1d::CA1d(std::vector<int>&& rule_in, unsigned int rad_in, unsigned int stat_in):
-    CA(rule_in, stat_in),
-    mRadius(rad_in)
-{
-    mNeighbrs = (mRadius * 2 + 1);
-}
+CA1d::CA1d( unsigned int rad_in,
+            unsigned int stat_in,
+            double rule_size_in,
+            std::vector<int> const& rule_in):
+    CA(stat_in, rad_in, (rad_in * 2 + 1), rule_size_in, rule_in)
+{}
 
 
 void CA1d::initialize(unsigned int size_in, Start t0)
@@ -28,6 +20,7 @@ void CA1d::initialize(unsigned int size_in, Start t0)
     srand(time(NULL));
 
     mDim = size_in;
+
     while(mData.size() < mDim)
         mData.push_back(0);
 
@@ -69,28 +62,15 @@ std::vector<int> CA1d::getData()
 }
 
 
-void CA1d::print()
-{
-    std::vector<char> char_map = { ' ', '.', '*', 'o', 'O', '0'};
-
-    for(int i = 0; i < mDim; i++)
-        std::cout << char_map[mData[i]];
-    std::cout << std::endl;
-}
-
-
 std::string CA1d::str()
 {
     std::stringstream ss;
     ss << "results/";
     ss << "r";
 
-    if(mRule.size() < 248)
-    {
-        for(auto i: mRule)
-            ss << i;
-    }
-//    std::copy(mRule.begin(), mRule.end(), std::ostream_iterator<std::string>(ss));
+    // This string has lsb on the left, should invert all numbers instead!
+    std::copy(mRule.begin(), mRule.end(), std::ostream_iterator<int>(ss));
+
     ss << "k" << mRadius;
     ss << "s" << mStates;
 
@@ -98,4 +78,11 @@ std::string CA1d::str()
         ss << "_" << mStart;
 
     return ss.str();
+}
+
+
+std::ostream& operator<<(std::ostream& os, const CA1d& ca_out)
+{
+    std::copy(ca_out.mData.begin(), ca_out.mData.end(), std::ostream_iterator<int>(os));
+    return os;
 }

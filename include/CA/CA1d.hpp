@@ -23,13 +23,11 @@ public:
 
 public:
                         /// Constructor that copies rule_in lvalue or rvalue
-                        CA1d(std::vector<int> const& rule_in,
-                             unsigned int rad_in,
-                             unsigned int stat_in);
-                        /// Constructor that moves rule_in rvalue
-                        CA1d(std::vector<int>&& rule_in,
-                             unsigned int rad_in,
-                             unsigned int stat_in);
+                        CA1d(unsigned int rad_in = 1,
+                             unsigned int stat_in = 2,
+                             double rule_size_in = 8,
+                             std::vector<int> const& rule_in = {});
+
 
     void                initialize(unsigned int size_in, Start t0);
     void                initialize(std::vector<int> const& t0);
@@ -38,14 +36,13 @@ public:
     virtual void        generate()  = 0;
 
     std::vector<int>    getData();
-    void                print();
     std::string         str();
+
+    friend std::ostream& operator<<(std::ostream& os, const CA1d& ca_out);
 
 protected:
     int                 mDim;
     std::vector<int>    mData;
-
-    int                 mRadius;
 
     Start               mStart;
 };

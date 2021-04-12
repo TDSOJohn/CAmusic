@@ -12,12 +12,9 @@
 class CA1dtot: public CA1d
 {
 public:
-                        CA1dtot(std::vector<int> const& rule_in,
-                                unsigned int rad_in,
-                                unsigned int stat_in);
-                        CA1dtot(std::vector<int>&& rule_in,
-                                unsigned int rad_in,
-                                unsigned int stat_in);
+                        CA1dtot(unsigned int rad_in,
+                                unsigned int stat_in,
+                                std::vector<int> const& rule_in = {});
 
     void                generate();
 };

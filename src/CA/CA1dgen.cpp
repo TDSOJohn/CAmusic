@@ -2,41 +2,15 @@
 #include "../../utilities.hpp"
 
 
-#include <iostream>
 #include <cmath>
 
 
 
-CA1dgen::CA1dgen(std::vector<int> const& rule_in, unsigned int rad_in, unsigned int stat_in):
-    CA1d(rule_in, rad_in, stat_in)
-{
-    //  calculate rules vector dimensions using radius and status count
-    mRuleSize = pow(mStates, mNeighbrs);
-
-    //  check rule size and correct accordingly
-    while(mRule.size() < mRuleSize)
-        mRule.push_back(0);
-
-    //  if rule vector is too big (add throw error)
-    if(mRule.size() > mRuleSize)
-        std::cout << "\n\terror, rule array is bigger than expected!\n";
-}
-
-
-CA1dgen::CA1dgen(std::vector<int>&& rule_in, unsigned int rad_in, unsigned int stat_in):
-    CA1d(rule_in, rad_in, stat_in)
-{
-    //  calculate rules vector dimensions using radius and status count
-    mRuleSize = pow(mStates, mNeighbrs);
-
-    //  check rule size and correct accordingly
-    while(mRule.size() < mRuleSize)
-        mRule.push_back(0);
-
-    //  if rule vector is too big (add throw error)
-    if(mRule.size() > mRuleSize)
-        std::cout << "\n\terror, rule array is bigger than expected!\n";
-}
+CA1dgen::CA1dgen(   unsigned int rad_in,
+                    unsigned int stat_in,
+                    std::vector<int> const& rule_in):
+    CA1d(rad_in, stat_in, pow(stat_in, (rad_in * 2 + 1)), rule_in)
+{}
 
 
 void CA1dgen::generate()
