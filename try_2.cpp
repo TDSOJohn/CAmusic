@@ -112,7 +112,7 @@ int main()
         //            mtf1.drawData(ca->getData(), 1);
                     bmp.drawData(ca->getData(), i);
                 }
-            break;
+                break;
 
             case 's':
 //                mtf1.saveFile(ca->str());

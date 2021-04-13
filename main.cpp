@@ -19,17 +19,14 @@ void draw_line(std::vector<int> data_in, int y);
 
 
 //  Useful Cellular Automaton constants
-const int states        = 6;
-const int radius        = 1;
+const int states        = 3;
+const int radius        = 2;
 const int rule_size_tot = (states - 1) * (radius * 2 + 1) + 1;
 const int rule_size_gen = pow(states, (radius * 2 + 1));
 
 int size                = 140;
 int generations         = 70;
 const int scaling       = 1;
-
-std::bitset<rule_size_tot> ruleBits{0};
-unsigned int dec_rule   = rand()%((int)pow(2, rule_size_tot));
 //  End of useful constants
 
 
@@ -39,20 +36,13 @@ CA1dgen* newCAgen(CA1dgen* ca_p)
     std::vector<int> rule;
     std::vector<int> t0;
 
-    ruleBits = dec_rule;
-
-    for(int i = 0; i < rule_size_gen; i++)
-        rule.push_back(ruleBits[i]);
-
     if(ca_p != NULL)
     {
         delete ca_p;
         ca_p = NULL;
     }
-    ca_p = new CA1dgen(radius, states, rule);
+    ca_p = new CA1dgen(radius, states);
     ca_p->initialize(size, CA1d::Start::Random);
-
-    dec_rule++;
 
     return ca_p;
 }
@@ -62,31 +52,38 @@ CA1dtot* newCAtot(CA1dtot* ca_p)
     std::vector<int> rule;
     std::vector<int> t0;
 
-    ruleBits = dec_rule;
-
-    for(int i = 0; i < rule_size_tot; i++)
-        rule.push_back(ruleBits[i]);
-
-
     if(ca_p != NULL)
     {
         delete ca_p;
         ca_p = NULL;
     }
-    ca_p = new CA1dtot(radius, states, rule);
+    ca_p = new CA1dtot(radius, states);
     ca_p->initialize(size, CA1d::Start::Middle);
 
-    dec_rule++;
-
     return ca_p;
+}
+
+void generate(CA1d* ca_p)
+{
+    draw_line(ca_p->getData(), 0);
+    refresh();
+    for(int i = 1; i < generations; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        ca_p->generate();
+        draw_line(ca_p->getData(), i);
+        refresh();
+    }
+
 }
 
 
 int main()
 {
-    dec_rule = 219433;
+    srand(time(NULL));
 
     unsigned int size_x, size_y;
+    char command = 'n';
 
     if(initscr() == NULL)
     {
@@ -103,13 +100,15 @@ int main()
     size        = size_x - 1;
     generations = size_y - 1;
 
-    printw("This screen is: %d x %d\n", size_x, size_y);
-    refresh();
-
+    //  Check if terminal has color support
     if(has_colors() == FALSE)
+    {
         printw("your terminal does now support colors!\n");
+        exit(EXIT_FAILURE);
+    }
     else
     {
+        //  Initialize color pairs (0, ..., 49)
         start_color();
         for(int i = 0; i < 8; i++)
         {
@@ -121,27 +120,41 @@ int main()
         }
     }
 
-    srand(time(NULL));
-
     CA1dtot*         ca = NULL;
 
-    ca = newCAtot(ca);
-
-    int i = 1;
-    uint8_t color = 0;
-
-    draw_line(ca->getData(), 0);
-    refresh();
-
-    for(i = 1; i < generations; i++)
+    while(command != 'q')
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        ca->generate();
-        draw_line(ca->getData(), i);
-        refresh();
-    }
+        switch(command)
+        {
+            case 'n':
+                erase();
+                ca = newCAtot(ca);
+                generate(ca);
+                break;
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+            case 'r':
+                erase();
+                ca->initialize(size, CA1d::Start::Random);
+                generate(ca);
+                break;
+
+            case 'm':
+                erase();
+                ca->initialize(size, CA1d::Start::Middle);
+                generate(ca);
+                break;
+
+            case 'l':
+                erase();
+                ca->initialize(size, CA1d::Start::Left);
+                generate(ca);
+                break;
+
+            default:
+                break;
+        }
+        command = getch();
+    }
 
     endwin();
     return 0;
@@ -152,6 +165,7 @@ void draw_line(std::vector<int> data_in, int y)
 {
     uint8_t color = (data_in[0] * 8);
     attron(color);
+//    mvaddch(0,0,(char)(color + 48));
 
     for(int i = 0; i < data_in.size(); i++)
     {
@@ -161,7 +175,7 @@ void draw_line(std::vector<int> data_in, int y)
             color = (data_in[i] * 8);
             attron(COLOR_PAIR(color));
         }
-        mvaddch(y, i, (char)(data_in[i] + 48));
+        mvaddch(y, i, ' ');
     }
-    attroff(color);
+    attroff(COLOR_PAIR(color));
 }
