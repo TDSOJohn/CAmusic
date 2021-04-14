@@ -21,8 +21,7 @@ void CA1d::initialize(unsigned int size_in, Start t0)
 
     mDim = size_in;
 
-    while(mData.size() < mDim)
-        mData.push_back(0);
+    mData.resize(mDim);
 
     if(mStart == Start::Random)
     {

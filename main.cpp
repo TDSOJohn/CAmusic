@@ -17,9 +17,17 @@
 
 void draw_line(std::vector<int> data_in, int y);
 
+auto printstr(const std::string &str) -> void
+{
+        for (char ch : str)
+        {
+                addch (ch);
+        }
+}
+
 
 //  Useful Cellular Automaton constants
-const int states        = 3;
+const int states        = 10;
 const int radius        = 2;
 const int rule_size_tot = (states - 1) * (radius * 2 + 1) + 1;
 const int rule_size_gen = pow(states, (radius * 2 + 1));
@@ -69,10 +77,37 @@ void generate(CA1d* ca_p)
     refresh();
     for(int i = 1; i < generations; i++)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
         ca_p->generate();
         draw_line(ca_p->getData(), i);
         refresh();
+    }
+
+}
+
+void initialize_colors()
+{
+    //  Check if terminal has color support
+    if(has_colors() == FALSE)
+    {
+        printw("your terminal does now support colors!\n");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        //  Initialize color pairs (0, ..., 49)
+        start_color();
+        //  Initialize colors to be gray scale
+        for(int i = 0; i < std::min(states, COLORS); i++)
+            init_color(i, ((1000/(states - 1)) * i), ((1000/(states - 1)) * i), ((1000/(states - 1)) * i));
+
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if((i != 0) || (j != 0))
+                    init_pair(((i * 8) + j), j, i);
+            }
+        }
     }
 
 }
@@ -96,29 +131,11 @@ int main()
     keypad(stdscr, TRUE);
     curs_set(0);
 
+    initialize_colors();
+
     getmaxyx(stdscr, size_y, size_x);
     size        = size_x - 1;
     generations = size_y - 1;
-
-    //  Check if terminal has color support
-    if(has_colors() == FALSE)
-    {
-        printw("your terminal does now support colors!\n");
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        //  Initialize color pairs (0, ..., 49)
-        start_color();
-        for(int i = 0; i < 8; i++)
-        {
-            for(int j = 0; j < 8; j++)
-            {
-                if((i != 0) || (j != 0))
-                    init_pair(((i * 8) + j), j, i);
-            }
-        }
-    }
 
     CA1dtot*         ca = NULL;
 
@@ -129,24 +146,28 @@ int main()
             case 'n':
                 erase();
                 ca = newCAtot(ca);
+                printstr(ca->str());
                 generate(ca);
                 break;
 
             case 'r':
                 erase();
                 ca->initialize(size, CA1d::Start::Random);
+                printstr(ca->str());
                 generate(ca);
                 break;
 
             case 'm':
                 erase();
                 ca->initialize(size, CA1d::Start::Middle);
+                printstr(ca->str());
                 generate(ca);
                 break;
 
             case 'l':
                 erase();
                 ca->initialize(size, CA1d::Start::Left);
+                printstr(ca->str());
                 generate(ca);
                 break;
 
@@ -165,7 +186,6 @@ void draw_line(std::vector<int> data_in, int y)
 {
     uint8_t color = (data_in[0] * 8);
     attron(color);
-//    mvaddch(0,0,(char)(color + 48));
 
     for(int i = 0; i < data_in.size(); i++)
     {
@@ -175,7 +195,7 @@ void draw_line(std::vector<int> data_in, int y)
             color = (data_in[i] * 8);
             attron(COLOR_PAIR(color));
         }
-        mvaddch(y, i, ' ');
+        mvaddch(y + 1, i, ' ');
     }
     attroff(COLOR_PAIR(color));
 }

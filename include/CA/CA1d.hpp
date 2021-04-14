@@ -44,6 +44,7 @@ protected:
     int                 mDim;
     std::vector<int>    mData;
 
+    // Might be useless, let's keep it for now and see
     Start               mStart;
 };
 
