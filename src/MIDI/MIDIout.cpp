@@ -43,7 +43,7 @@ MIDIout::~MIDIout()
 }
 
 
-void MIDIout::setPattern(std::vector<int>& notes_in)
+void MIDIout::setPattern(std::vector<int> const& notes_in)
 {
     scoreMutex.lock();
         mScore      = notes_in;
@@ -51,7 +51,7 @@ void MIDIout::setPattern(std::vector<int>& notes_in)
 }
 
 
-void MIDIout::setPattern(std::vector<int>& notes_in, std::vector<int>& vel_in)
+void MIDIout::setPattern(std::vector<int> const& notes_in, std::vector<int> const& vel_in)
 {
     scoreMutex.lock();
         mScore      = notes_in;
@@ -132,7 +132,7 @@ void MIDIout::metronome()
         std::lock_guard<std::mutex> lg(stateMutex);
         metroCond.notify_all();
         //if(!(counter%4))
-            std::cout << "\a" << std::flush;
+//            std::cout << "\a" << std::flush;
         counter++;
     }
 }
@@ -144,7 +144,7 @@ int MIDIout::portProbing()
     int port_in = 0;
     std::string portName;
 
-    do
+/*    do
     {
         std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
         for (unsigned int i = 0; i<nPorts; i++)
@@ -162,7 +162,7 @@ int MIDIout::portProbing()
         std::cout << "Select the port number:\t";
         std::cin >> port_in;
     } while(port_in >= nPorts);
-
+*/
     return port_in;
 }
 

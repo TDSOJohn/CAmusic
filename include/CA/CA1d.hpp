@@ -12,6 +12,12 @@
 class CA1d : public CA
 {
 public:
+    enum Type
+    {
+        Standard,
+        Totalistic
+    };
+
     enum Start
     {
         Random,
@@ -23,9 +29,9 @@ public:
 
 public:
                         /// Constructor that copies rule_in lvalue or rvalue
-                        CA1d(unsigned int rad_in             = 1,
+                        CA1d(Type ca_type                    = Type::Standard,
+                             unsigned int rad_in             = 1,
                              unsigned int stat_in            = 2,
-                             double rule_size_in             = 8,
                              std::vector<int> const& rule_in = {});
 
 
@@ -33,16 +39,17 @@ public:
     void                initialize(std::vector<int> const& t0);
     void                initialize(std::vector<int>&& t0);
 
-    virtual void        generate()  = 0;
+    void                generate();
 
-    std::vector<int>    getData();
-    std::string         str();
+    std::vector<int>    getData() const;
+    std::string         str() const;
 
     friend std::ostream& operator<<(std::ostream& os, const CA1d& ca_out);
 
 protected:
     int                 mDim;
     std::vector<int>    mData;
+    Type                mType;
 
     // Might be useless, let's keep it for now and see
     Start               mStart;

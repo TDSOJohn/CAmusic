@@ -25,16 +25,16 @@ public:
         Stop
     };
                                 /// Constructor
-                                MIDIout(int bpm_in = 120);
+                                MIDIout(int bpm_in = 480);
                                 /// MIDIout is non-copyable
                                 MIDIout(MIDIout const&) = delete;
                                 MIDIout& operator=(MIDIout const&) = delete;
 
                                 ~MIDIout();
 
-    void                        setPattern( std::vector<int>& notes_in);
-    void                        setPattern( std::vector<int>& notes_in,
-                                            std::vector<int>& vel_in);
+    void                        setPattern( std::vector<int> const& notes_in);
+    void                        setPattern( std::vector<int> const& notes_in,
+                                            std::vector<int> const& vel_in);
 
     void                        setState(State s_in);
 

@@ -1,44 +1,17 @@
-#include <string>
-#include <sstream>
-#include <vector>
 
-#include <curses.h>
+#include "include/Visualizer.hpp"
 
 
-#include "include/CA/CA1dgen.hpp"
-#include "include/CA/CA1dtot.hpp"
 
-#include "include/MIDI/MIDIout.hpp"
-#include "include/MIDI/midiToFile.hpp"
-#include "include/BMP/BMPgenerator.hpp"
-
-#include "utilities.hpp"
-
-
-void draw_line(std::vector<int> data_in, int y);
-
-auto printstr(const std::string &str) -> void
+int main()
 {
-        for (char ch : str)
-        {
-                addch (ch);
-        }
+    Visualizer v1;
+    v1.Run();
+
+    return 0;
 }
 
-
-//  Useful Cellular Automaton constants
-const int states        = 10;
-const int radius        = 2;
-const int rule_size_tot = (states - 1) * (radius * 2 + 1) + 1;
-const int rule_size_gen = pow(states, (radius * 2 + 1));
-
-int size                = 140;
-int generations         = 70;
-const int scaling       = 1;
-//  End of useful constants
-
-
-
+/*
 CA1dgen* newCAgen(CA1dgen* ca_p)
 {
     std::vector<int> rule;
@@ -49,6 +22,7 @@ CA1dgen* newCAgen(CA1dgen* ca_p)
         delete ca_p;
         ca_p = NULL;
     }
+
     ca_p = new CA1dgen(radius, states);
     ca_p->initialize(size, CA1d::Start::Random);
 
@@ -71,17 +45,24 @@ CA1dtot* newCAtot(CA1dtot* ca_p)
     return ca_p;
 }
 
-void generate(CA1d* ca_p)
+void generate(CA1d* ca_p, BMPgenerator& bmp_p, MidiToFile& mtf_p)
 {
+    bmp_p.newImage(0);
+    mtf_p.newSheet();
+
     draw_line(ca_p->getData(), 0);
+    bmp_p.drawData(ca_p->getData(), 0, states);
+    mtf_p.drawData(ca_p->getData(), 1);
     refresh();
+
     for(int i = 1; i < generations; i++)
     {
         ca_p->generate();
         draw_line(ca_p->getData(), i);
+        bmp_p.drawData(ca_p->getData(), i, states);
+        mtf_p.drawData(ca_p->getData(), 2);
         refresh();
     }
-
 }
 
 void initialize_colors()
@@ -137,7 +118,12 @@ int main()
     size        = size_x - 1;
     generations = size_y - 1;
 
-    CA1dtot*         ca = NULL;
+    CA1dtot*        ca = NULL;
+    BMPgenerator    bmp(    size * scaling,
+                            generations * scaling,
+                            scaling);
+
+    MidiToFile      mtf1;
 
     while(command != 'q')
     {
@@ -147,28 +133,35 @@ int main()
                 erase();
                 ca = newCAtot(ca);
                 printstr(ca->str());
-                generate(ca);
+                generate(ca, bmp, mtf1);
                 break;
 
             case 'r':
                 erase();
                 ca->initialize(size, CA1d::Start::Random);
                 printstr(ca->str());
-                generate(ca);
+                generate(ca, bmp, mtf1);
                 break;
 
             case 'm':
                 erase();
                 ca->initialize(size, CA1d::Start::Middle);
                 printstr(ca->str());
-                generate(ca);
+                generate(ca, bmp, mtf1);
                 break;
 
             case 'l':
                 erase();
                 ca->initialize(size, CA1d::Start::Left);
                 printstr(ca->str());
-                generate(ca);
+                generate(ca, bmp, mtf1);
+                break;
+
+            case 's':
+                mtf1.saveFile(ca->str());
+                bmp.saveImage(ca->str());
+                mvprintw(1, 1, "Image and MIDI saved!");
+                refresh();
                 break;
 
             default:
@@ -180,22 +173,4 @@ int main()
     endwin();
     return 0;
 }
-
-
-void draw_line(std::vector<int> data_in, int y)
-{
-    uint8_t color = (data_in[0] * 8);
-    attron(color);
-
-    for(int i = 0; i < data_in.size(); i++)
-    {
-        if(data_in[i] != color)
-        {
-            attroff(COLOR_PAIR(color));
-            color = (data_in[i] * 8);
-            attron(COLOR_PAIR(color));
-        }
-        mvaddch(y + 1, i, ' ');
-    }
-    attroff(COLOR_PAIR(color));
-}
+*/

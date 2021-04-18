@@ -19,7 +19,7 @@ public:
 
     virtual void        generate()  = 0;
 
-    virtual std::string str()       = 0;
+    virtual std::string str() const = 0;
 
 protected:
     std::vector<int>    mRule;
