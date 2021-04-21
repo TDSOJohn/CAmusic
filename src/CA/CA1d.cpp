@@ -54,14 +54,15 @@ void CA1d::initialize(std::vector<int> const& t0)
 {
     mStart = Start::Other;
     mData = t0;
+    mDim = mData.size();
 }
 
-
+/*
 void CA1d::initialize(std::vector<int>&& t0)
 {
     mData = std::move(t0);
 }
-
+*/
 
 void CA1d::generate()
 {

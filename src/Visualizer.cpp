@@ -132,13 +132,22 @@ void Visualizer::initializeGrey()
 
 void Visualizer::newCA()
 {
+    //  Correct size_x to have complete loop in modulo start
+    size_x -= modulo(size_x, states);
+
     if(ca1d != NULL)
     {
         delete ca1d;
         ca1d = NULL;
     }
+
+    t0 = {};
+    for(int i = 0; i < size_x; i++)
+        t0.push_back(modulo(i, states));
+
     ca1d = new CA1d(mType, radius, states, rule);
-    ca1d->initialize(size_x, start);
+    ca1d->initialize(t0);
+//    ca1d->initialize(size_x, start);
 }
 
 

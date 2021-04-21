@@ -37,7 +37,7 @@ public:
 
     void                initialize(unsigned int size_in, Start t0);
     void                initialize(std::vector<int> const& t0);
-    void                initialize(std::vector<int>&& t0);
+//    void                initialize(std::vector<int>&& t0);
 
     void                generate();
 
