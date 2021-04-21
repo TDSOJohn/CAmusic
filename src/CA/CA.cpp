@@ -2,6 +2,7 @@
 
 
 #include <sstream>
+#include <random>
 
 
 
@@ -20,8 +21,12 @@ CA::CA( unsigned int stat_in,
 
     if(mRule.size() == 0)
     {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(0, (mStates - 1));
+
         for(int i = 0; i < mRuleSize; i++)
-            mRule.push_back(rand()%mStates);
+            mRule.push_back(distrib(gen));
     } else
     {
         //  check rule size and correct accordingly

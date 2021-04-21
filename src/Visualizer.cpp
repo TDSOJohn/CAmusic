@@ -220,7 +220,7 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
     if(mtf)
     {
         mtf_p->newSheet();
-        mtf_p->drawData(ca1d->getData(), 1);
+        mtf_p->drawData(ca1d->getData(), 2);
     }
 
     if(print)

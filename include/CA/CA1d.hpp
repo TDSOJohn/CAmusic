@@ -41,6 +41,9 @@ public:
 
     void                generate();
 
+    //  STILL WIP
+    void                setRule(std::vector<int> const& rule_in);
+
     std::vector<int>    getData() const;
     std::string         str() const;
 

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
-
-#include "include/Data/DataAnalyzer.hpp"
+#include <algorithm>
 
 
 
@@ -43,42 +42,68 @@ std::vector<std::vector<int> > jumps(std::vector<int> data_in)
 std::vector<int> harmony(std::vector<int> data_in)
 {
     std::vector<int> result     = {};
+    std::vector<int> group      = {};
     unsigned int curr_group     = 0;
     unsigned int curr_size      = 0;
     unsigned int g1[4]          = {1, 3, 5, 6};
     unsigned int g2[3]          = {2, 4, 6};
     unsigned int g3[3]          = {2, 5, 7};
+    unsigned int pause_count    = 0;
+    unsigned int g1_count       = 0;
+    unsigned int g2_count       = 0;
+    unsigned int g3_count       = 0;
 
     for(auto& i : data_in)
     {
         switch(i)
         {
             case 1:
-                result.push_back(1);
+                group.push_back(1);
                 break;
             case 2:
-                result.push_back(6);
+                group.push_back(3);
                 break;
             case 3:
-                result.push_back(1);
+                group.push_back(1);
                 break;
             case 4:
-                result.push_back(2);
+                group.push_back(2);
                 break;
             case 5:
-                result.push_back(5);
+                group.push_back(2);
                 break;
             case 6:
-                result.push_back(4);
+                group.push_back(1);
                 break;
             case 7:
-                result.push_back(3);
+                group.push_back(3);
                 break;
             default:
-                result.push_back(0);
+                group.push_back(0);
                 break;
         }
     }
+    for(auto& i : group)
+    {
+        if(curr_size < 4)
+        {
+            std::cout << i << "\t";
+            if(i != 0)
+                curr_size++;
+            if(i == 1)
+                g1_count++;
+            else if(i == 2)
+                g2_count++;
+            else if(i == 3)
+                g3_count++;
+        }
+        if(curr_size >= 4)
+        {
+            result.push_back(4 - (std::max(g1_count, std::max(g2_count, g3_count))));
+            curr_size = g1_count = g2_count = g3_count = 0;
+        }
+    }
+    std::cout << "\n\n";
     return result;
 }
 

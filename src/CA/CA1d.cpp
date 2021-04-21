@@ -116,6 +116,12 @@ void CA1d::generate()
 }
 
 
+void CA1d::setRule(std::vector<int> const& rule_in)
+{
+
+}
+
+
 std::vector<int> CA1d::getData() const
 {
     return mData;
@@ -125,7 +131,7 @@ std::vector<int> CA1d::getData() const
 std::string CA1d::str() const
 {
     std::stringstream ss;
-    ss << "results/";
+//    ss << "results/";
     ss << "r";
 
     // This string has lsb on the left, should invert all numbers instead!

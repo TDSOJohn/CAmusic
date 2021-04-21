@@ -1,5 +1,7 @@
 # object files
-objects = main.o visualizer.o utilities.o ca.o ca1d.o bmpgenerator.o midiout.o miditofile.o
+lobjects = utilities.o ca.o ca1d.o bmpgenerator.o midiout.o miditofile.o dataanalyzer.o visualizer.o
+oobjects = main.o
+
 
 # g++ compiler flags (no linker, use c++11)
 flags 	= --std=c++11 -c
@@ -7,12 +9,12 @@ flags 	= --std=c++11 -c
 libs 	= -pthread -lrtmidi -lmidifile -lncurses -Lmidifile/lib
 
 # search for files in these paths
-vpath %.hpp include/CA:include/BMP:include/MIDI:include
-vpath %.cpp src/CA:src/BMP:src/MIDI:src
+vpath %.hpp include/CA:include/BMP:include/MIDI:include:include/Data
+vpath %.cpp src:src/CA:src/BMP:src/MIDI:src/Data
 
 # main target to make
-camusic	: $(objects)
-	g++ -o camusic $(objects) $(libs)
+camusic	: $(lobjects) $(oobjects)
+	g++ -o camusic $(lobjects) $(oobjects) $(libs)
 
 # single object files to make
 main.o : main.cpp
@@ -36,12 +38,16 @@ miditofile.o : midiToFile.cpp midiToFile.hpp
 bmpgenerator.o : BMPgenerator.cpp BMPgenerator.hpp
 	g++ $(flags) src/BMP/BMPgenerator.cpp
 
+dataanalyzer.o : DataAnalyzer.cpp DataAnalyzer.hpp
+	g++ $(flags) src/Data/DataAnalyzer.cpp
+
+
+lib : $(lobjects)
+	ar rcs libca.a $(lobjects)
+
+
 # phony in order to have a clean rm even when some files are missing
 .PHONY : clean
+
 clean :
-	rm camusic $(objects)
-
-
-
-
-#	g++ try.cpp --std=c++11 -lmidifile -Lmidifile/lib
+	rm $(lobjects) $(oobjects)
