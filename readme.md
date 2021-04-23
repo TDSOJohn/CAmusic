@@ -26,3 +26,7 @@ Dependencies:
 
 usage:
 ------
+```bash
+make lib
+g++ -L. -lca --std=c++11 automatic/crawler.cpp  -pthread -lrtmidi -lmidifile -lncurses -Lmidifile/lib
+```

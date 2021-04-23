@@ -24,14 +24,16 @@ public:
 
         for(int i = 0; i < 1000; i++)
         {
+//            std::this_thread::sleep_for(std::chrono::milliseconds(rand()%5000));
             newCA();
             newBMP();
             newMTF();
             r = generate(1, 1);
-            if(r < 160)
+            if(r < 102)
             {
                 std::cout << "Found!" << std::endl;
                 save(r);
+                std::cout << "\a" << std::flush;
             }
         }
     }
@@ -71,9 +73,10 @@ private:
     }
 
 
-    int generate(bool bmp, bool mtf)
+    float generate(bool bmp, bool mtf)
     {
-        int result = 0;
+        float result    = 0;
+        float e         = 0;
         if(bmp)
         {
             bmp_p->newImage(0);
@@ -82,7 +85,7 @@ private:
         if(mtf)
         {
             mtf_p->newSheet();
-            mtf_p->drawData(ca1d->getData(), 2);
+            mtf_p->drawData(ca1d->getData(), 3);
         }
 
         for(int i = 1; i < size_y; i++)
@@ -91,20 +94,27 @@ private:
             if(bmp)
                 bmp_p->drawData(ca1d->getData(), i, states);
             if(mtf)
-                mtf_p->drawData(ca1d->getData(), 2);
+                mtf_p->drawData(ca1d->getData(), 3);
             if(i >= 64)
             {
-                result += harmony(ca1d->getData());
-/*                if((i % 8) == 0)
-                    std::cout << "    ";
-                std::cout << result  << " ";
-*/            }
+                float h = harmony(ca1d->getData());
+                e       += entropy(ca1d->getData());
+                result  += h;
+//                std::cout << h << "\t" << e << "\t" << result << "--||--";
+            }
         }
-//        std::cout << std::endl;
+        e /= (size_y - 64);
+//        std::cout << e << std::endl;
+
+        if(e < 0.3)
+        {
+            std::cout << "\nENTROPY TOO LOW\n\n";
+            return 999;
+        }
         return result;
     }
 
-    // 16 * (80 - 64) = 16^2 = 256
+    // 64 * (80 - 64) = 16^2 * 4 = 1024
 
     void save(int r_in)
     {
@@ -112,7 +122,7 @@ private:
         name += ca1d->str();
 //        std::cout <<  "\n" << name << "\n";
         mtf_p->saveFile(name);
-        //  CHANGE TO SAVEIMAGE()
+        //  CHANGE TO SAVEFILE()
         bmp_p->saveImage(name);
     }
 
@@ -142,6 +152,7 @@ int main()
     std::vector<Analyzer> mAnal;
     const unsigned int conc(std::thread::hardware_concurrency());
 
+
     for(int i = 0; i < conc; i++)
     {
         mAnal.push_back(Analyzer());
@@ -149,7 +160,7 @@ int main()
         mThreads[i].detach();
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(60));
 
     return 0;
 }
