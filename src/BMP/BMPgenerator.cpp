@@ -51,14 +51,14 @@ void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in)
 }
 
 
-void BMPgenerator::saveImage(std::string const& filename)
+void BMPgenerator::saveFile(std::string const& filename)
 {
-    std::string temp = filename + ".bmp";
+    std::string temp = "results/" + filename + ".bmp";
     mBMP->save_image(temp);
 }
 
 
-void BMPgenerator::newImage()
+void BMPgenerator::newFile()
 {
     if(mBMP != nullptr)
         delete mBMP;
@@ -66,17 +66,17 @@ void BMPgenerator::newImage()
 }
 
 
-void BMPgenerator::newImage(unsigned int palette_in)
+void BMPgenerator::newFile(unsigned int palette_in)
 {
     choosen = palette_in;
 }
 
 
-void BMPgenerator::newImage(unsigned int x_in, unsigned int y_in)
+void BMPgenerator::newFile(unsigned int x_in, unsigned int y_in)
 {
     size_x = x_in;
     size_y = y_in;
-    newImage();
+    newFile();
 }
 
 

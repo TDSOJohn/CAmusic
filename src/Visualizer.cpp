@@ -214,12 +214,12 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
 {
     if(bmp)
     {
-        bmp_p->newImage(0);
+        bmp_p->newFile(0);
         bmp_p->drawData(ca1d->getData(), 0, states);
     }
     if(mtf)
     {
-        mtf_p->newSheet();
+        mtf_p->newFile();
         mtf_p->drawData(ca1d->getData(), 2);
     }
 
@@ -318,7 +318,7 @@ void Visualizer::save()
     newBMP();
     ca1d->initialize(size_x, start);
     generate(false, true, false);
-    bmp_p->saveImage(ca1d->str());
+    bmp_p->saveFile(ca1d->str());
 
     //  Set size, generate and save mtf
     size_x = 32;
@@ -328,7 +328,7 @@ void Visualizer::save()
     ca1d->initialize(size_x, start);
     generate(false, true, true);
     mtf_p->saveFile(ca1d->str());
-    bmp_p->saveImage(ca1d->str());
+    bmp_p->saveFile(ca1d->str());
 
     size_x = size_x_bak;
     size_y = size_y_bak;

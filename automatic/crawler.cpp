@@ -79,12 +79,12 @@ private:
         float e         = 0;
         if(bmp)
         {
-            bmp_p->newImage(0);
+            bmp_p->newFile(0);
             bmp_p->drawData(ca1d->getData(), 0, states);
         }
         if(mtf)
         {
-            mtf_p->newSheet();
+            mtf_p->newFile();
             mtf_p->drawData(ca1d->getData(), 3);
         }
 
@@ -123,7 +123,7 @@ private:
 //        std::cout <<  "\n" << name << "\n";
         mtf_p->saveFile(name);
         //  CHANGE TO SAVEFILE()
-        bmp_p->saveImage(name);
+        bmp_p->saveFile(name);
     }
 
 private:

@@ -13,7 +13,7 @@ public:
     void                drawData(std::vector<int> data_in, int octave);
 
     void                saveFile(std::string fn_in);
-    void                newSheet();
+    void                newFile();
 
 private:
     smf::MidiFile       *mMidifile;

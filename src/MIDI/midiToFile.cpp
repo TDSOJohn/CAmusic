@@ -22,13 +22,13 @@ void MidiToFile::drawData(std::vector<int> data_in, int octave)
 
 void MidiToFile::saveFile(std::string fn_in)
 {
-    std::string filename = fn_in + ".mid";
+    std::string filename = "results/" + fn_in + ".mid";
 //    mMidifile->sortTracks();
     mMidifile->write(filename);
 }
 
 
-void MidiToFile::newSheet()
+void MidiToFile::newFile()
 {
     if(mMidifile != NULL)
         delete mMidifile;

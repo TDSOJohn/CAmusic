@@ -31,14 +31,14 @@ public:
     void                    drawData(std::vector<int> const& data_in, unsigned int height, unsigned int states_in);
     void                    drawMatrix(std::vector<std::vector<int> > const& data_in);
 
-    void                    saveImage(std::string const& filename);
+    void                    saveFile(std::string const& filename);
 
     /// Create new bitmap image using size_x and size_y stored values
-    void                    newImage();
+    void                    newFile();
     /// Create new bitmap image, pass palette number as parameter (0 for grey scale, 1,2,3 for colors)
-    void                    newImage(unsigned int palette_in);
+    void                    newFile(unsigned int palette_in);
     /// Create new bitmap image, pass x and y sizes as parameters
-    void                    newImage(unsigned int x_in, unsigned int y_in);
+    void                    newFile(unsigned int x_in, unsigned int y_in);
 
 private:
     unsigned int            size_x, size_y;
