@@ -6,10 +6,16 @@ Download with:
 git clone https://github.com/TDSOJohn/caMusic
 ```
 
-compile with:
+compile executable visualizer with:
 ```bash
 make
 ```
+
+compile library with:
+```bash
+make lib
+```
+
 
 clean with:
 ```bash
@@ -30,3 +36,6 @@ usage:
 make lib
 g++ -L. -lca --std=c++11 automatic/crawler.cpp  -pthread -lrtmidi -lmidifile -lncurses -Lmidifile/lib
 ```
+
+
+g++ --std=c++11 try_2.cpp src/Data/DataAnalyzer.cpp -pthread

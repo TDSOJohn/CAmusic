@@ -10,9 +10,11 @@
 #include <condition_variable>
 
 //  Linux version
-//  #include "rtmidi/RtMidi.h"
+#if defined(__LINUX__) || defined(__LINUX) || defined(LINUX)
+    #include "rtmidi/RtMidi.h"
+#elif __APPLE__
 //  macOS version
-#include <RtMidi.h>
+    #include <RtMidi.h>
 
 
 class MIDIout

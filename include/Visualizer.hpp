@@ -8,7 +8,7 @@
 
 #include "CA/CA1d.hpp"
 
-#include "MIDI/MIDIout.hpp"
+//  #include "MIDI/MIDIout.hpp"
 #include "MIDI/midiToFile.hpp"
 #include "BMP/BMPgenerator.hpp"
 
@@ -29,8 +29,8 @@ private:
     int                                 radius;
 
     //  Used for screen output
-    unsigned int                        size_x;
-    unsigned int                        size_y;
+    int                                 size_x;
+    int                                 size_y;
 
     CA1d::Start                         start;
     CA1d::Type                          mType;

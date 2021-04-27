@@ -175,7 +175,7 @@ void Visualizer::newMTF()
 void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
     uint8_t color = (data_in[0] * 8);
-    attron(color);
+    attron(COLOR_PAIR(color));
 
     for(int i = 0; i < data_in.size(); i++)
     {
