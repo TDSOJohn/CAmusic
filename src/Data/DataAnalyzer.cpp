@@ -1,6 +1,6 @@
 #include "../../include/Data/DataAnalyzer.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <cmath>
 
 
@@ -69,7 +69,7 @@ int harmony(std::vector<int> const& data_in)
 
     for(int i = 0; i < group.size(); i++)
     {
-        std::cout << "S";
+//        std::cout << "S";
         //  Save starting point
         if(curr_size == 0)
             prev_start = i;
@@ -87,10 +87,10 @@ int harmony(std::vector<int> const& data_in)
         if((group[i] != 0) && (curr_group.count < groups[group[i] - 1].count))
             curr_group = groups[group[i] - 1];
 
-        std::cout << group[i] << curr_group.id << "\t";
+//        std::cout << group[i] << curr_group.id << "\t";
         if(curr_size >= 4)
         {
-            std::cout << "c>4";
+//            std::cout << "c>4";
             //  Save previous end when reaching the 4-elements group or
             //  when current element is equal to curr_group.id
             //  If current group changes, shit happens fast
@@ -100,7 +100,7 @@ int harmony(std::vector<int> const& data_in)
                 //  If never updated prev_group or if id of current group hasn't changed and ratio is improved
                 if(((prev_group.id == 0) || (curr_group.id == prev_group.id)) && (new_prev_ratio >= prev_ratio))
                 {
-                    std::cout << "\n";
+//                    std::cout << "\n";
                     prev_size = curr_size;
                     prev_group = curr_group;
                     prev_end = i;
@@ -109,7 +109,7 @@ int harmony(std::vector<int> const& data_in)
                 {
                     i = prev_end;
                     result.push_back(prev_size - prev_group.count);
-                    std::cout << "\nChoosing " << prev_group.id << " with " << result.back() << "____" << prev_size << "\n";
+//                    std::cout << "\nChoosing " << prev_group.id << " with " << result.back() << "____" << prev_size << "\n";
                     curr_group.id = curr_group.count = 0;
                     prev_group = curr_group;
                     for(int j = 0; j < 3; j++)
@@ -119,15 +119,15 @@ int harmony(std::vector<int> const& data_in)
                 }
             }
         }
-        std::cout << "E";
+//        std::cout << "E";
     }
     if(curr_size != 0)
     {
         //  Sure?
         result.push_back(curr_size - curr_group.count);
-        std::cout << "\nChoosing " << curr_group.id << " with " << result.back() << "____" << curr_size << "\n";
-    } else { std::cout << std::endl; }
-
+//        std::cout << "\nChoosing " << curr_group.id << " with " << result.back() << "____" << curr_size << "\n";
+//    } else { std::cout << std::endl; }
+}
     for(auto& i : result)
     {
         result_true += i;
@@ -150,7 +150,7 @@ float entropy(std::vector<int> const& data_in)
         {
             result += (-1.f) * ((float)i / (float)data_in.size()) * log((float)i / (float)data_in.size());
         }
-        std::cout <<  i << "\t" << data_in.size() << "\t" << log((float)i / (float)data_in.size()) << "\n";
+//        std::cout <<  i << "\t" << data_in.size() << "\t" << log((float)i / (float)data_in.size()) << "\n";
     }
     result *= 2.71828;
     result /= (float)temp.size();
@@ -211,9 +211,9 @@ std::vector<int> groupMatch(std::vector<int> const& data_in)
                 break;
         }
     }
-    std::cout << "\nGrouped array:\n";
+/*    std::cout << "\nGrouped array:\n";
     for(auto& i : group)
         std::cout << i << "\t";
     std::cout << "\n\n";
-    return group;
+*/    return group;
 }

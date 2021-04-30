@@ -22,10 +22,12 @@ int harmony(std::vector<int> const& data_in);
 /// float rappresenting diversity, with 0 being static and 1 being chaos
 float entropy(std::vector<int> const& data_in);
 
-
+/// Result type:
+/// vector without adjacent same-value cells
 std::vector<int> compressor(std::vector<int> const& data_in);
 
-
+/// Result type:
+/// vector with every value changed to the group it belongs to
 std::vector<int> groupMatch(std::vector<int> const& data_in);
 
 /*

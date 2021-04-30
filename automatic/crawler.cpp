@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <thread>
 #include <chrono>
@@ -24,16 +25,16 @@ public:
 
         for(int i = 0; i < 1000; i++)
         {
-//            std::this_thread::sleep_for(std::chrono::milliseconds(rand()%5000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             newCA();
             newBMP();
             newMTF();
             r = generate(1, 1);
-            if(r < 102)
+//            if(r < 102)
             {
-                std::cout << "Found!" << std::endl;
+//                std::cout << "Found!" << std::endl;
                 save(r);
-                std::cout << "\a" << std::flush;
+//                std::cout << "\a" << std::flush;
             }
         }
     }
@@ -75,6 +76,13 @@ private:
 
     float generate(bool bmp, bool mtf)
     {
+        std::ofstream myFile;
+        myFile.open("results/" + ca1d->str() + ".txt");
+        std::vector<int> count = counter(ca1d->getData());
+        for(auto& i : count)
+            myFile << i << "\t";
+        myFile << "\n";
+
         float result    = 0;
         float e         = 0;
         if(bmp)
@@ -95,6 +103,12 @@ private:
                 bmp_p->drawData(ca1d->getData(), i, states);
             if(mtf)
                 mtf_p->drawData(ca1d->getData(), 3);
+
+            count = counter(ca1d->getData());
+            for(auto& i : count)
+                myFile << i << "\t";
+            myFile << "\n";
+
             if(i >= 64)
             {
                 float h = harmony(ca1d->getData());
@@ -103,6 +117,7 @@ private:
 //                std::cout << h << "\t" << e << "\t" << result << "--||--";
             }
         }
+        myFile.close();
         e /= (size_y - 64);
 //        std::cout << e << std::endl;
 
@@ -118,11 +133,10 @@ private:
 
     void save(int r_in)
     {
-        std::string name = "results/h_" + std::to_string(r_in);
-        name += ca1d->str();
+//        std::string name = "h_" + std::to_string(r_in);
+        std::string name = ca1d->str();
 //        std::cout <<  "\n" << name << "\n";
         mtf_p->saveFile(name);
-        //  CHANGE TO SAVEFILE()
         bmp_p->saveFile(name);
     }
 
@@ -160,7 +174,7 @@ int main()
         mThreads[i].detach();
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(60));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     return 0;
 }

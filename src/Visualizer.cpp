@@ -51,37 +51,47 @@ void Visualizer::Run()
         mvprintw(size_y + 1, 2, "n for new rule, r for random, m for middle, l for left, s to save");
         switch(command)
         {
+            /// Analyzer
             case 'a':
                 analyze();
-
+            /// Left start
             case 'l':
                 start = CA1d::Start::Left;
                 ca1d->initialize(size_x, start);
                 generate();
                 break;
-
+            /// Middle start
             case 'm':
                 start = CA1d::Start::Middle;
                 ca1d->initialize(size_x, start);
                 generate();
                 break;
-
+            /// New rule (random-generated)
             case 'n':
                 newCA();
                 generate();
                 break;
-
+            /// Ordered start
+            case 'o':
+                start = CA1d::Other;
+                t0 = {};
+                for(int i = 0; i < size_x; i++)
+                    t0.push_back(modulo(i, states));
+                ca1d->initialize(t0);
+                generate();
+                break;
+            /// Open preferences panel
             case 'p':
                 preferences();
                 command = 'n';
                 break;
-
+            /// Random start
             case 'r':
                 start = CA1d::Start::Random;
                 ca1d->initialize(size_x, start);
                 generate();
                 break;
-
+            /// Save rule to file (bitmap and midi)
             case 's':
                 save();
                 break;
@@ -141,13 +151,11 @@ void Visualizer::newCA()
         ca1d = NULL;
     }
 
-    t0 = {};
-    for(int i = 0; i < size_x; i++)
-        t0.push_back(modulo(i, states));
-
     ca1d = new CA1d(mType, radius, states, rule);
-    ca1d->initialize(t0);
-//    ca1d->initialize(size_x, start);
+    if(start != CA1d::Other)
+        ca1d->initialize(size_x, start);
+    else
+        ca1d->initialize(t0);
 }
 
 
