@@ -34,3 +34,15 @@ CA::CA( unsigned int stat_in,
             mRule.push_back(0);
     }
 }
+
+
+void CA::setRule(std::vector<int> const& rule_in)
+{
+    mRule = rule_in;
+}
+
+
+void CA::setRule(const int rule_in)
+{
+
+}

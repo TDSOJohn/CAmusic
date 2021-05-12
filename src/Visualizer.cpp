@@ -2,11 +2,11 @@
 
 
 Visualizer::Visualizer():
-    states(2),
+    states(5),
     radius(2),
     start(CA1d::Start::Middle),
     mType(CA1d::Type::Totalistic),
-    scaling(1),
+    scaling(2),
     ca1d(NULL),
     bmp_p(NULL),
     mtf_p(NULL),
@@ -222,13 +222,14 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
 {
     if(bmp)
     {
-        bmp_p->newFile(0);
+        bmp_p->newFile(size_x * scaling, size_y * scaling);
         bmp_p->drawData(ca1d->getData(), 0, states);
     }
     if(mtf)
     {
         mtf_p->newFile();
-        mtf_p->drawData(ca1d->getData(), 2);
+//        mtf_p->drawData(ca1d->getData(), 2);
+        mtf_p->drawChord(ca1d->getData(), states);
     }
 
     if(print)
@@ -248,7 +249,8 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
         if(bmp)
             bmp_p->drawData(ca1d->getData(), i, states);
         if(mtf)
-            mtf_p->drawData(ca1d->getData(), 2);
+            mtf_p->drawChord(ca1d->getData(), states);
+//            mtf_p->drawData(ca1d->getData(), 2);
     }
 }
 
@@ -263,8 +265,8 @@ void Visualizer::preferences()
 {
     char command = ' ';
 
-    mvprintw(size_y + 1, 2, "q quit r radius s states");
-    while(command != 'q')
+    mvprintw(size_y + 1, 2, "q quit r radius s states t type");
+    while(command != 'q' && command != 'n')
     {
         erase();
         attron(COLOR_PAIR(8));
@@ -316,18 +318,38 @@ void Visualizer::preferences()
 void Visualizer::save()
 {
     erase();
-    //  Backup of size_x and size_y;
-    const unsigned int size_x_bak(size_x);
-    const unsigned int size_y_bak(size_y);
-
-    //  Set size, generate and save bmp
-    size_x = 2000;
-    size_y = 1000;
     newBMP();
-    ca1d->initialize(size_x, start);
-    generate(false, true, false);
-    bmp_p->saveFile(ca1d->str());
+    //  Backup of start, size_x and size_y;
+    const unsigned int  size_x_bak(size_x);
+    const unsigned int  size_y_bak(size_y);
+    CA1d::Start         start_bak(start);
 
+    //  Set size, generate and save bmps
+    int image_size_x[4] = {64, 256, 512, 1024};
+    int image_size_y[4] = {32, 128, 256, 512};
+    rule = ca1d->getRule();
+    //  Loop through every possible Start and every possible color palette
+//    for(int startInt = CA1d::Start::Random; startInt != CA1d::Start::Right; startInt++)
+    for(int j = 0; j < 4; j++)
+    {
+        bmp_p->setPalette(j);
+        for(int i = 0; i < 4; i++)
+        {
+            size_x = image_size_x[i];
+            size_y = image_size_y[i];
+            scaling = 1024 / image_size_x[i];
+    //        start = static_cast<CA1d::Start>(startInt);
+            newCA();
+            bmp_p->setScaling(scaling);
+            ca1d->initialize(size_x, start);
+            generate(false, true, false);
+            bmp_p->saveFile(ca1d->str());
+        }
+    }
+    rule = {};
+    start = start_bak;
+
+/*
     //  Set size, generate and save mtf
     size_x = 32;
     size_y = 20;
@@ -337,7 +359,7 @@ void Visualizer::save()
     generate(false, true, true);
     mtf_p->saveFile(ca1d->str());
     bmp_p->saveFile(ca1d->str());
-
+*/
     size_x = size_x_bak;
     size_y = size_y_bak;
 

@@ -11,6 +11,7 @@ public:
                         MidiToFile();
 
     void                drawData(std::vector<int> data_in, int octave);
+    void                drawChord(std::vector<int> data_in, int states);
 
     void                saveFile(std::string fn_in);
     void                newFile();

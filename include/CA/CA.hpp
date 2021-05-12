@@ -19,6 +19,11 @@ public:
 
     virtual void        generate()  = 0;
 
+
+    void                setRule(std::vector<int> const& rule_in);
+    void                setRule(const int rule_in);
+    std::vector<int>    getRule() const { return mRule; }
+
     virtual std::string str() const = 0;
 
 protected:

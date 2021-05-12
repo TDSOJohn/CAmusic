@@ -116,12 +116,6 @@ void CA1d::generate()
 }
 
 
-void CA1d::setRule(std::vector<int> const& rule_in)
-{
-
-}
-
-
 std::vector<int> CA1d::getData() const
 {
     return mData;
@@ -131,11 +125,30 @@ std::vector<int> CA1d::getData() const
 std::string CA1d::str() const
 {
     std::stringstream ss;
-//    ss << "results/";
+
+    if(mType == Type::Standard)
+        ss << "std_";
+    else
+        ss << "tot_";
+
     ss << "r";
 
-    // This string has lsb on the left, should invert all numbers instead!
-    std::copy(mRule.rbegin(), mRule.rend(), std::ostream_iterator<int>(ss));
+    //  std::copy(mRule.rbegin(), mRule.rend(), std::ostream_iterator<int>(ss));
+
+    //  Convert rule vector to base 10 int
+    //  only works for standard r+s <= 4 or
+    //  totalistic:
+    //  r 1 s 8
+    //  r 2 s 5
+    //  r 3 s 4
+    //  r 4 s 4
+    //  r 5 s 3
+    //  r 6 s 
+    unsigned long long int rule_dec = 0;
+    for(int i = 0; i < mRule.size(); i++)
+        rule_dec += pow(mStates, i) * mRule[i];
+
+    ss << rule_dec;
 
     ss << "k" << mRadius;
     ss << "s" << mStates;

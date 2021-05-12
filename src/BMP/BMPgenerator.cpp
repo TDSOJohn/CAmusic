@@ -4,30 +4,18 @@
 
 
 
-BMPgenerator::BMPgenerator():
-    size_x(100), size_y(100), mScaling(1)
+BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, int scale_in):
+    size_x(x_in), size_y(y_in), mScaling(scale_in), choosen(0)
 {
     mBMP = new bitmap_image(size_x, size_y);
     srand(time(NULL));
     generatePalettes();
-    choosen = rand()%3;
-}
-
-
-BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, unsigned int scale_in):
-    size_x(x_in), size_y(y_in), mScaling(scale_in)
-{
-    mBMP = new bitmap_image(size_x, size_y);
-    srand(time(NULL));
-    generatePalettes();
-    choosen = rand()%3;
 }
 
 
 void BMPgenerator::drawData(std::vector<int> const& data_in, unsigned int height, unsigned int states_in)
 {
     palette data_out;
-
     //  choosen == 0 => greyscale
     if(choosen != 0)
     {
@@ -53,7 +41,7 @@ void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in)
 
 void BMPgenerator::saveFile(std::string const& filename)
 {
-    std::string temp = "results/" + filename + ".bmp";
+    std::string temp = "results/" + filename + "_p" + char(choosen + 48) + ".bmp";
     mBMP->save_image(temp);
 }
 
@@ -66,7 +54,7 @@ void BMPgenerator::newFile()
 }
 
 
-void BMPgenerator::newFile(unsigned int palette_in)
+void BMPgenerator::newFile(const int palette_in)
 {
     choosen = palette_in;
 }
