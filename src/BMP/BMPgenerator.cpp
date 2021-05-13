@@ -4,8 +4,8 @@
 
 
 
-BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, int scale_in):
-    size_x(x_in), size_y(y_in), mScaling(scale_in), choosen(0)
+BMPgenerator::BMPgenerator(int x_in, int y_in, int scale_in):
+    size_x(x_in * scale_in), size_y(y_in * scale_in), mScaling(scale_in), choosen(0)
 {
     mBMP = new bitmap_image(size_x, size_y);
     srand(time(NULL));
@@ -13,23 +13,26 @@ BMPgenerator::BMPgenerator(unsigned int x_in, unsigned int y_in, int scale_in):
 }
 
 
-void BMPgenerator::drawData(std::vector<int> const& data_in, unsigned int height, unsigned int states_in)
+void BMPgenerator::drawData(std::vector<int> const& data_in, int height, int states_in)
 {
-    palette data_out;
-    //  choosen == 0 => greyscale
-    if(choosen != 0)
+    //Check if dimensions are at least enough for data writing
+    if(((data_in.size() * mScaling) <= size_x) && (height <= size_y))
     {
-        for(int i = 0; i < data_in.size(); i++)
-            data_out.push_back(mPalettes[choosen][data_in[i]]);
-    } else
-    {
-        for(auto& i : data_in)
-            data_out.push_back(Pixel(   (255 / (states_in - 1) * i),
-                                        (255 / (states_in - 1) * i),
-                                        (255 / (states_in - 1) * i)));
+        palette data_out;
+        //  choosen == 0 => greyscale
+        if(choosen != 0)
+        {
+            for(int i = 0; i < data_in.size(); i++)
+                data_out.push_back(mPalettes[choosen][data_in[i]]);
+        } else
+        {
+            for(auto& i : data_in)
+                data_out.push_back(Pixel(   (255 / (states_in - 1) * i),
+                                            (255 / (states_in - 1) * i),
+                                            (255 / (states_in - 1) * i)));
+        }
+        drawLine(data_out, height);
     }
-
-    drawLine(data_out, height);
 }
 
 
@@ -54,16 +57,13 @@ void BMPgenerator::newFile()
 }
 
 
-void BMPgenerator::newFile(const int palette_in)
+void BMPgenerator::newFile(int x_in, int y_in, int scaling)
 {
-    choosen = palette_in;
-}
+    if(scaling)
+        mScaling = scaling;
 
-
-void BMPgenerator::newFile(unsigned int x_in, unsigned int y_in)
-{
-    size_x = x_in;
-    size_y = y_in;
+    size_x = x_in * mScaling;
+    size_y = y_in * mScaling;
     newFile();
 }
 
@@ -76,47 +76,43 @@ void BMPgenerator::generatePalettes()
     mPalettes.push_back({{0, 0, 0}});
 
     mPalettes[1]        ={{0, 0, 0},
-                        {32, 41, 62},
-                        {81, 18, 26},
-                        {232, 181, 130},
-                        {227, 137, 113},
-                        {225, 115, 100},
-                        {255, 255, 255}}; // Changable
+                        {0xE6, 0x39, 0x46},
+                        {0xF1, 0xFA, 0xEE},
+                        {0xA8, 0xDA, 0xDC},
+                        {0x45, 0x7B, 0x9D},
+                        {0x1D, 0x35, 0x57},
+                        {0xFF, 0xFF, 0xFF}};
 
     mPalettes[2]        ={{0, 0, 0},
-                        {4, 17, 61},
-                        {21, 55, 86},
-                        {43, 99, 137},
-                        {44, 101, 161},
-                        {137, 172, 189},
-                        {255, 255, 255}}; // Baby Blue
+                        {0x8E, 0xCA, 0xE6},
+                        {0x21, 0x9E, 0xBC},
+                        {0x02, 0x30, 0x47},
+                        {0xFF, 0xB7, 0x03},
+                        {0xFB, 0x85, 0x00},
+                        {0xFF, 0xFF, 0xFF}};
 
     mPalettes[3]        ={{0, 0, 0},
-                        {34, 5, 4},
-                        {82, 26, 18},
-                        {128, 25, 16},
-                        {133, 97, 34},
-                        {160, 132, 51},
-                        {255, 255, 255}}; // Palermo Fish Market
+                        {0x28, 0x3D, 0x3B},
+                        {0x19, 0x72, 0x78},
+                        {0xED, 0xDD, 0xD4},
+                        {0xC4, 0x45, 0x36},
+                        {0x77, 0x2E, 0x25},
+                        {0xFF, 0xFF, 0xFF}};
 }
 
 
-void BMPgenerator::drawLine(std::vector<Pixel> const& data_in, unsigned int height)
+void BMPgenerator::drawLine(std::vector<Pixel> const& data_in, int height)
 {
-    //Check if dimensions are at least enough for data writing
-    if((data_in.size() * mScaling) <= size_x)
+    for(int i = 0; i < data_in.size(); i++)
     {
-        for(int i = 0; i < data_in.size(); i++)
+        for(int x = 0; x < mScaling; x++)
         {
-            for(int x = 0; x < mScaling; x++)
-            {
-                for(int y = 0; y < mScaling; y++)
-                    mBMP->set_pixel((i * mScaling + x),
-                                    (height * mScaling + y),
-                                    data_in[i].r,
-                                    data_in[i].g,
-                                    data_in[i].b);
-            }
+            for(int y = 0; y < mScaling; y++)
+                mBMP->set_pixel(std::min((i * mScaling + x), size_x),
+                                std::min((height * mScaling + y), size_y),
+                                data_in[i].r,
+                                data_in[i].g,
+                                data_in[i].b);
         }
     }
 }

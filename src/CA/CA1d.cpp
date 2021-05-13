@@ -16,6 +16,7 @@ CA1d::CA1d( Type ca_type,
     CA( stat_in,
         rad_in,
         (rad_in * 2 + 1),
+        //  Unreadable, but works
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
         rule_in),
     mType(ca_type)
@@ -143,7 +144,7 @@ std::string CA1d::str() const
     //  r 3 s 4
     //  r 4 s 4
     //  r 5 s 3
-    //  r 6 s 
+    //  r 6 s 2
     unsigned long long int rule_dec = 0;
     for(int i = 0; i < mRule.size(); i++)
         rule_dec += pow(mStates, i) * mRule[i];

@@ -1,16 +1,19 @@
 #include "../include/Visualizer.hpp"
 
+#include "../utilities.hpp"
+
+
 
 Visualizer::Visualizer():
-    states(5),
-    radius(2),
-    start(CA1d::Start::Middle),
+    mStates(5),
+    mRadius(2),
+    mStart(CA1d::Start::Middle),
     mType(CA1d::Type::Totalistic),
-    scaling(2),
+    mScaling(2),
     ca1d(NULL),
     bmp_p(NULL),
     mtf_p(NULL),
-    rule({})
+    mRule({})
 {
     srand(time(NULL));
 
@@ -48,7 +51,9 @@ void Visualizer::Run()
     {
         erase();
 
+        attron(mStates - 1);
         mvprintw(size_y + 1, 2, "n for new rule, r for random, m for middle, l for left, s to save");
+        attroff(mStates - 1);
         switch(command)
         {
             /// Analyzer
@@ -56,14 +61,14 @@ void Visualizer::Run()
                 analyze();
             /// Left start
             case 'l':
-                start = CA1d::Start::Left;
-                ca1d->initialize(size_x, start);
+                mStart = CA1d::Start::Left;
+                ca1d->initialize(size_x, mStart);
                 generate();
                 break;
             /// Middle start
             case 'm':
-                start = CA1d::Start::Middle;
-                ca1d->initialize(size_x, start);
+                mStart = CA1d::Start::Middle;
+                ca1d->initialize(size_x, mStart);
                 generate();
                 break;
             /// New rule (random-generated)
@@ -73,22 +78,21 @@ void Visualizer::Run()
                 break;
             /// Ordered start
             case 'o':
-                start = CA1d::Other;
+                mStart = CA1d::Other;
                 t0 = {};
                 for(int i = 0; i < size_x; i++)
-                    t0.push_back(modulo(i, states));
+                    t0.push_back(modulo(i, mStates));
                 ca1d->initialize(t0);
                 generate();
                 break;
             /// Open preferences panel
             case 'p':
                 preferences();
-                command = 'n';
                 break;
             /// Random start
             case 'r':
-                start = CA1d::Start::Random;
-                ca1d->initialize(size_x, start);
+                mStart = CA1d::Start::Random;
+                ca1d->initialize(size_x, mStart);
                 generate();
                 break;
             /// Save rule to file (bitmap and midi)
@@ -99,13 +103,15 @@ void Visualizer::Run()
             default:
                 break;
         }
-        mvprintw(0, 1, "States : %d, Radius : %d", states, radius);
-//        mvprintstr(0, 1, ca1d->str());
+        attron(mStates - 1);
+        mvprintw(0, 1, "States : %d, Radius : %d", mStates, mRadius);
+        attroff(mStates - 1);
         command = getch();
     }
 }
 
-
+//  Colors are 1, ..., min(states, colors - 1) for grey scale
+//  COLORS color is left for interface definition and is (0xFF, 0xFF, 0xFF)
 void Visualizer::initializeColors()
 {
     //  Check if terminal has color support
@@ -116,17 +122,9 @@ void Visualizer::initializeColors()
     }
     else
     {
-        //  Initialize color pairs (0, ..., 49)
+        //  Initialize color pairs (0, ..., min(COLORS, mStates)^2)
         start_color();
-
-        for(int i = 0; i < 8; i++)
-        {
-            for(int j = 0; j < 8; j++)
-            {
-                if((i != 0) || (j != 0))
-                    init_pair(((i * 8) + j), j, i);
-            }
-        }
+        initializePairs();
         initializeGrey();
     }
 }
@@ -135,15 +133,29 @@ void Visualizer::initializeColors()
 void Visualizer::initializeGrey()
 {
     //  Initialize colors to be gray scale
-    for(int i = 0; i < std::min(states, COLORS); i++)
-        init_color(i, ((1000/(states - 1)) * i), ((1000/(states - 1)) * i), ((1000/(states - 1)) * i));
+    for(int i = 0; i < std::min(mStates, COLORS); i++)
+        init_color(i, ((1000/(mStates - 1)) * i), ((1000/(mStates - 1)) * i), ((1000/(mStates - 1)) * i));
+}
+
+
+void Visualizer::initializePairs()
+{
+    for(int i = 0; i < mStates; i++)
+    {
+        for(int j = 0; j < mStates; j++)
+        {
+            //  Maybe change also pair(0,0) ?
+            if((i != 0) || (j != 0))
+                init_pair(((i * mStates) + j), j, i);
+        }
+    }
 }
 
 
 void Visualizer::newCA()
 {
     //  Correct size_x to have complete loop in modulo start
-    size_x -= modulo(size_x, states);
+    size_x -= modulo(size_x, mStates);
 
     if(ca1d != NULL)
     {
@@ -151,9 +163,9 @@ void Visualizer::newCA()
         ca1d = NULL;
     }
 
-    ca1d = new CA1d(mType, radius, states, rule);
-    if(start != CA1d::Other)
-        ca1d->initialize(size_x, start);
+    ca1d = new CA1d(mType, mRadius, mStates, mRule);
+    if(mStart != CA1d::Other)
+        ca1d->initialize(size_x, mStart);
     else
         ca1d->initialize(t0);
 }
@@ -166,7 +178,7 @@ void Visualizer::newBMP()
         delete bmp_p;
         bmp_p = NULL;
     }
-    bmp_p = new BMPgenerator(size_x * scaling, size_y * scaling, scaling);
+    bmp_p = new BMPgenerator(size_x, size_y, mScaling);
 }
 
 
@@ -182,7 +194,7 @@ void Visualizer::newMTF()
 
 void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
-    uint8_t color = (data_in[0] * 8);
+    uint8_t color = (data_in[0] * mStates);
     attron(COLOR_PAIR(color));
 
     for(int i = 0; i < data_in.size(); i++)
@@ -190,7 +202,7 @@ void Visualizer::drawLine(std::vector<int> data_in, int y)
         if(data_in[i] != color)
         {
             attroff(COLOR_PAIR(color));
-            color = (data_in[i] * 8);
+            color = (data_in[i] * mStates);
             attron(COLOR_PAIR(color));
         }
         mvaddch(y + 1, i, ' ');
@@ -199,37 +211,18 @@ void Visualizer::drawLine(std::vector<int> data_in, int y)
 }
 
 
-auto Visualizer::printstr(const std::string &str) -> void
-{
-    for(char ch : str)
-        addch (ch);
-}
-
-
-auto Visualizer::mvprintstr(unsigned int y, unsigned int x, const std::string &str) -> void
-{
-    unsigned int temp_x = x;
-
-    for(char ch : str)
-    {
-        mvaddch(y, temp_x, ch);
-        temp_x++;
-    }
-}
-
-
 void Visualizer::generate(bool print, bool bmp, bool mtf)
 {
     if(bmp)
     {
-        bmp_p->newFile(size_x * scaling, size_y * scaling);
-        bmp_p->drawData(ca1d->getData(), 0, states);
+        bmp_p->newFile(size_x, size_y, mScaling);
+        bmp_p->drawData(ca1d->getData(), 0, mStates);
     }
     if(mtf)
     {
         mtf_p->newFile();
 //        mtf_p->drawData(ca1d->getData(), 2);
-        mtf_p->drawChord(ca1d->getData(), states);
+        mtf_p->drawChord(ca1d->getData(), mStates);
     }
 
     if(print)
@@ -247,9 +240,9 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
             refresh();
         }
         if(bmp)
-            bmp_p->drawData(ca1d->getData(), i, states);
+            bmp_p->drawData(ca1d->getData(), i, mStates);
         if(mtf)
-            mtf_p->drawChord(ca1d->getData(), states);
+            mtf_p->drawChord(ca1d->getData(), mStates);
 //            mtf_p->drawData(ca1d->getData(), 2);
     }
 }
@@ -269,35 +262,40 @@ void Visualizer::preferences()
     while(command != 'q' && command != 'n')
     {
         erase();
-        attron(COLOR_PAIR(8));
+        attron(COLOR_PAIR(mStates-1));
         mvprintw(2, 2, " Rule : ");
 
-        if(rule.size() == 0)
-            printw("RANDOM ");
-        else
+        if(mRule.size() == 0)
         {
-            for(auto& i : rule)
+            printw("RANDOM ");
+            printstr(ca1d->str());
+        } else
+        {
+            for(auto& i : mRule)
                 addch(i + 48);
             addch(' ');
         }
 
-        mvprintw(4, 2, " States : %d ", states);
-        mvprintw(6, 2, " Radius : %d ", radius);
+        mvprintw(4, 2, " States : %d ", mStates);
+        mvprintw(6, 2, " Radius : %d ", mRadius);
         mvprintw(8, 2, " Type : %s ", ((mType == CA1d::Type::Standard) ? "Standard" : "Totalistic"));
+        mvprintw(9,2, "-----------------------");
+        mvprintw(10,2, " ncurses info: ");
+        mvprintw(12,2, " colors : %d ", COLORS);
 
-        attroff(COLOR_PAIR(15));
+//        mvprintw(4, 50, " Rule")
+
 
         command = getch();
 
         switch(command)
         {
             case 'r':
-                radius = getch() - 48;
+                mRadius = getch() - 48;
                 break;
 
             case 's':
-                states = getch() - 48;
-                initializeGrey();
+                changeStates();
                 break;
 
             case 't':
@@ -312,6 +310,23 @@ void Visualizer::preferences()
                 break;
         }
     }
+    attroff(COLOR_PAIR(mStates-1));
+    erase();
+}
+
+
+void Visualizer::changeStates()
+{
+    int states_temp = getch() - 48;
+    if(states_temp < (COLORS - 1))
+    {
+        mStates = states_temp;
+        initializeGrey();
+        initializePairs();
+    } else
+    {
+        mvprintw(1, 1, "NOT ENOUGH COLORS FOR THE SELECTED STATES!");
+    }
 }
 
 
@@ -322,12 +337,12 @@ void Visualizer::save()
     //  Backup of start, size_x and size_y;
     const unsigned int  size_x_bak(size_x);
     const unsigned int  size_y_bak(size_y);
-    CA1d::Start         start_bak(start);
+    CA1d::Start         start_bak(mStart);
 
     //  Set size, generate and save bmps
     int image_size_x[4] = {64, 256, 512, 1024};
     int image_size_y[4] = {32, 128, 256, 512};
-    rule = ca1d->getRule();
+    mRule = ca1d->getRule();
     //  Loop through every possible Start and every possible color palette
 //    for(int startInt = CA1d::Start::Random; startInt != CA1d::Start::Right; startInt++)
     for(int j = 0; j < 4; j++)
@@ -337,17 +352,16 @@ void Visualizer::save()
         {
             size_x = image_size_x[i];
             size_y = image_size_y[i];
-            scaling = 1024 / image_size_x[i];
-    //        start = static_cast<CA1d::Start>(startInt);
+            mScaling = 1024 / image_size_x[i];
+    //        mStart = static_cast<CA1d::Start>(startInt);
             newCA();
-            bmp_p->setScaling(scaling);
-            ca1d->initialize(size_x, start);
+            ca1d->initialize(size_x, mStart);
             generate(false, true, false);
             bmp_p->saveFile(ca1d->str());
         }
     }
-    rule = {};
-    start = start_bak;
+    mRule = {};
+    mStart = start_bak;
 
 /*
     //  Set size, generate and save mtf
@@ -355,7 +369,7 @@ void Visualizer::save()
     size_y = 20;
     newMTF();
     newBMP();
-    ca1d->initialize(size_x, start);
+    ca1d->initialize(size_x, mStart);
     generate(false, true, true);
     mtf_p->saveFile(ca1d->str());
     bmp_p->saveFile(ca1d->str());

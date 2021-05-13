@@ -21,15 +21,14 @@ public:
 
 
 public:
-                        CA2d(unsigned int rad_in,
-                             unsigned int stat_in,
-                             std::vector<int> const& rule);
+                        CA2d(int rad_in = 1,
+                             int stat_in = 2,
+                             std::vector<int> const& rule = {});
 
-    void                initialize(unsigned int size_in, Start t0);
+    void                initialize(int size_x_in, int size_y_in, Start t0);
     void                initialize(std::vector<std::vector<int> > const& t0);
-    void                initialize(std::vector<std::vector<int> >&& t0);
 
-    virtual void        generate()  = 0;
+    void                generate();
 
     std::vector<std::vector<int> >
                         getData();
@@ -37,10 +36,10 @@ public:
     std::string         str();
 
 protected:
-    int                 mDim;
-    std::vector<int>    mData;
-
-    int                 mRadius;
+    int                 mDimX;
+    int                 mDimY;
+    std::vector<std::vector<int> >
+                        mData;
 
     Start               mStart;
 };

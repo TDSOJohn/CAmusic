@@ -25,40 +25,43 @@ public:
 
 
 private:
-    int                                 states;
-    int                                 radius;
+    int                                 mStates;
+    int                                 mRadius;
 
     //  Used for screen output
     int                                 size_x;
     int                                 size_y;
 
-    CA1d::Start                         start;
+    CA1d::Start                         mStart;
     CA1d::Type                          mType;
-    int                                 scaling;
+    int                                 mScaling;
 
     CA1d*                               ca1d;
 
     BMPgenerator*                       bmp_p;
     MidiToFile*                         mtf_p;
 
-    std::vector<int>                    rule;
+    std::vector<int>                    mRule;
     std::vector<int>                    t0;
 
 private:
     void                                initializeColors();
     void                                initializeGrey();
+    void                                initializePairs();
+
     void                                newCA();
     void                                newBMP();
     void                                newMTF();
 
     void                                drawLine(std::vector<int> data_in, int y);
-    auto                                printstr(const std::string &str) -> void;
-    auto                                mvprintstr(unsigned int y, unsigned int x, const std::string &str) -> void;
 
     void                                generate(bool print = true, bool bmp = false, bool mtf = false);
 
     void                                analyze();
+
     void                                preferences();
+    void                                changeStates();
+
     void                                save();
 };
 

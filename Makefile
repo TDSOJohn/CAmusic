@@ -1,5 +1,5 @@
 # library object files
-lobjects = utilities.o CA.o CA1d.o BMPgenerator.o midiToFile.o DataAnalyzer.o Visualizer.o
+lobjects = utilities.o CA.o CA1d.o CA2d.o BMPgenerator.o midiToFile.o DataAnalyzer.o Visualizer.o
 # standalone executable object files
 oobjects = main.o
 # instrument executable object files
@@ -33,6 +33,8 @@ CA.o : CA.cpp CA.hpp
 	g++ $(flags) src/CA/CA.cpp
 CA1d.o : CA1d.hpp CA1d.cpp CA.hpp
 	g++ $(flags) src/CA/CA1d.cpp
+CA2d.o : CA2d.hpp CA2d.cpp
+	g++ $(flags) src/CA/CA2d.cpp
 
 MIDIout.o : MIDIout.cpp MIDIout.hpp
 	g++ $(flags) src/MIDI/MIDIout.cpp
