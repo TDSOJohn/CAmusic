@@ -4,3 +4,6 @@
 [submodule "rtmidi"]
 	path = rtmidi
 	url = https://github.com/thestk/rtmidi
+[submodule "bitmap"]
+	path = bitmap
+	url = https://github.com/ArashPartow/bitmap.git

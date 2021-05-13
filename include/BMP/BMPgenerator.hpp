@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "bitmap_image.hpp"
+#include "../../bitmap/bitmap_image.hpp"
 
 
 
