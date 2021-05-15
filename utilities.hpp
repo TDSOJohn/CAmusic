@@ -7,19 +7,27 @@
 #include <curses.h>
 
 
+
 /// A set of C++11 functions to simplify dealing with ncurses bad std::string support
 
 void printstr(const std::string &str);
 
 void mvprintstr(const int y, const int x, const std::string &str);
 
+void printvec(std::vector<int> const& v_in);
+
+void mvprintvec(const int y, const int x, std::vector<int> const& v_in);
+
 
 
 /// Simple modulo operator function that only returns positive values
 unsigned modulo(int value, int m);
 
-/// Simple int to base n vector converter
-std::vector<int> decimalToBaseN(const int n);
+/// Simple decimal int to base n vector converter
+std::vector<int> decimalToBaseN(const long long int n, const int base);
+
+/// Simple base n vector to decimal int converter
+long long int baseNtoDecimal(std::vector<int> const& n, const int base);
 
 
 

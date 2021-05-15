@@ -21,8 +21,9 @@ public:
 
 
     void                setRule(std::vector<int> const& rule_in);
-    void                setRule(const int rule_in);
+    void                setRule(const long long int rule_in);
     std::vector<int>    getRule() const { return mRule; }
+    std::string         getRuleString() const;
 
     virtual std::string str() const = 0;
 

@@ -1,15 +1,15 @@
 # library object files
-lobjects = utilities.o CA.o CA1d.o CA2d.o BMPgenerator.o midiToFile.o DataAnalyzer.o Visualizer.o
+lobjects = utilities.o utilities_gmp.o CA.o CA1d.o CA2d.o BMPgenerator.o midiToFile.o DataAnalyzer.o Visualizer.o
 # standalone executable object files
 oobjects = main.o
 # instrument executable object files
 iobjects = MIDIout.o
 
 
-# g++ compiler flags (no linker, use c++11)
+# g++ compiler flags (use c++11, no linker)
 flags 	= --std=c++11 -c
 # libs to use during linking (thread, rtmidi, midifile, ncurses)
-libs 	= -pthread -lmidifile -lncurses -Lmidifile/lib
+libs 	= -pthread -lmidifile -lncurses -lgmp -Lmidifile/lib
 ilibs = -lrtmidi
 
 # search for files in these paths
@@ -28,8 +28,10 @@ Visualizer.o : Visualizer.cpp Visualizer.hpp CA1d.hpp MIDIout.hpp midiToFile.hpp
 
 utilities.o : utilities.cpp utilities.hpp
 	g++ $(flags) utilities.cpp
+utilities_gmp.o : utilities_gmp.hpp utilities_gmp.cpp
+	g++ $(flags) utilities_gmp.cpp
 
-CA.o : CA.cpp CA.hpp
+CA.o : CA.cpp CA.hpp utilities_gmp.hpp
 	g++ $(flags) src/CA/CA.cpp
 CA1d.o : CA1d.hpp CA1d.cpp CA.hpp
 	g++ $(flags) src/CA/CA1d.cpp

@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "../../utilities.hpp"
+#include "../../utilities_gmp.hpp"
 
 
 
@@ -20,7 +21,10 @@ CA1d::CA1d( Type ca_type,
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
         rule_in),
     mType(ca_type)
-{}
+{
+//    mvprintw(0, 1, "%d", mRule.size());
+//    mvprintstr(0, 1, baseNtoDecimalGMP(mRule, mStates));
+}
 
 
 void CA1d::initialize(unsigned int size_in, Start t0)
@@ -42,11 +46,11 @@ void CA1d::initialize(unsigned int size_in, Start t0)
             i = 0;
 
         if(mStart == Start::Middle)
-            mData[mDim/2] = 1;
+            mData[mDim/2] = (mStates - 1);
         if(mStart == Start::Left)
-            mData[0] = 1;
+            mData[0] = (mStates - 1);
         if(mStart == Start::Right)
-            mData[mDim - 1] = 1;
+            mData[mDim - 1] = (mStates - 1);
     }
 }
 
@@ -67,6 +71,8 @@ void CA1d::initialize(std::vector<int>&& t0)
 
 void CA1d::generate()
 {
+    for(int i = 0; i < mRule.size(); i++)
+        mvprintw(0, i, "%d", mRule[i]);
     int temp = 0;
 
     //  Maybe not the best way, copying entire vector is not efficient
@@ -85,7 +91,7 @@ void CA1d::generate()
             else if(mType == Type::Totalistic)
                 temp +=  mData[modulo(i-j, mDim)];
         }
-        temp_data[i] = mRule[temp];
+        temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     //  Central part (no wrapping)
     for(int i = mRadius; i < (mDim - mRadius); i++)
@@ -98,7 +104,7 @@ void CA1d::generate()
             else if(mType == Type::Totalistic)
                 temp +=  mData[modulo(i-j, mDim)];
         }
-        temp_data[i] = mRule[temp];
+        temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     //  Right border (wrapping)
     for(int i = (mDim - mRadius); i < mDim; i++)
@@ -111,7 +117,7 @@ void CA1d::generate()
             else if(mType == Type::Totalistic)
                 temp +=  mData[modulo(i-j, mDim)];
         }
-        temp_data[i] = mRule[temp];
+        temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     mData = temp_data;
 }
@@ -128,31 +134,16 @@ std::string CA1d::str() const
     std::stringstream ss;
 
     if(mType == Type::Standard)
-        ss << "std_";
+        ss << "std";
     else
-        ss << "tot_";
+        ss << "tot";
 
-    ss << "r";
+    ss << "_rule";
 
-    //  std::copy(mRule.rbegin(), mRule.rend(), std::ostream_iterator<int>(ss));
+    ss << getRuleString();
 
-    //  Convert rule vector to base 10 int
-    //  only works for standard r+s <= 4 or
-    //  totalistic:
-    //  r 1 s 8
-    //  r 2 s 5
-    //  r 3 s 4
-    //  r 4 s 4
-    //  r 5 s 3
-    //  r 6 s 2
-    unsigned long long int rule_dec = 0;
-    for(int i = 0; i < mRule.size(); i++)
-        rule_dec += pow(mStates, i) * mRule[i];
-
-    ss << rule_dec;
-
-    ss << "k" << mRadius;
-    ss << "s" << mStates;
+    ss << "_r" << mRadius;
+    ss << "_k" << mStates;
 
     if(ss.str().size() < 240)
     {

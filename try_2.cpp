@@ -2,7 +2,11 @@
 #include <vector>
 #include <algorithm>
 
-#include "include/MIDI/midiToFile.hpp"
+#include <gmp.h>
+
+#include "utilities.hpp"
+#include "utilities_gmp.hpp"
+//#include "include/MIDI/midiToFile.hpp"
 
 //#include "include/Data/DataAnalyzer.hpp"
 
@@ -19,7 +23,17 @@ std::vector<int> edge_v0 = {1,1,2,2,3,1,3,3,2,1,2,3,1,1,2,2,3,1,3,3};
 
 int main()
 {
-    srand(time(NULL));
+    int k = -47;
+    std::vector<int> temp = decimalToBaseN(k, 3);
+    for(auto& i: temp)
+        std::cout << i << "\t";
+    std::cout << std::endl;
+
+    std::string s = baseNtoDecimalGMP(temp, 3);
+
+    std::cout << s << std::endl;
+
+/*    srand(time(NULL));
 
     const_v0.resize(20, 0);
     const_v1.resize(20, 1);
@@ -39,6 +53,6 @@ int main()
 
     mtf.drawChord(rand_v0, states);
     mtf.saveFile("diocan");
-
+*/
     return 0;
 }

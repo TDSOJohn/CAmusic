@@ -44,6 +44,9 @@ private:
     std::vector<int>                    mRule;
     std::vector<int>                    t0;
 
+    bool                                analyzeData;
+    std::vector<int>                    analyzeOutput;
+
 private:
     void                                initializeColors();
     void                                initializeGrey();

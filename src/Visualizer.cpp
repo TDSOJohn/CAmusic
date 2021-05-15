@@ -1,19 +1,21 @@
 #include "../include/Visualizer.hpp"
 
+#include "../include/Data/DataAnalyzer.hpp"
 #include "../utilities.hpp"
 
 
 
 Visualizer::Visualizer():
-    mStates(5),
-    mRadius(2),
+    mStates(2),
+    mRadius(1),
     mStart(CA1d::Start::Middle),
-    mType(CA1d::Type::Totalistic),
+    mType(CA1d::Type::Standard),
     mScaling(2),
     ca1d(NULL),
     bmp_p(NULL),
     mtf_p(NULL),
-    mRule({})
+    mRule({}),
+    analyzeData(false)
 {
     srand(time(NULL));
 
@@ -104,7 +106,7 @@ void Visualizer::Run()
                 break;
         }
         attron(mStates - 1);
-        mvprintw(0, 1, "States : %d, Radius : %d", mStates, mRadius);
+//        mvprintw(0, 1, "States : %d, Radius : %d", mStates, mRadius);
         attroff(mStates - 1);
         command = getch();
     }
@@ -154,6 +156,9 @@ void Visualizer::initializePairs()
 
 void Visualizer::newCA()
 {
+    //  Get current screen size, leave some space for analyze Data
+    getmaxyx(stdscr, size_y, size_x);
+    if(analyzeData) size_x -= mStates * 5;
     //  Correct size_x to have complete loop in modulo start
     size_x -= modulo(size_x, mStates);
 
@@ -224,11 +229,15 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
 //        mtf_p->drawData(ca1d->getData(), 2);
         mtf_p->drawChord(ca1d->getData(), mStates);
     }
-
     if(print)
     {
         drawLine(ca1d->getData(), 0);
         refresh();
+    }
+    if(analyzeData)
+    {
+        analyzeOutput = counter(ca1d->getData());
+        mvprintvec(1, size_x, analyzeOutput);
     }
 
     for(int i = 1; i < size_y; i++)
@@ -244,6 +253,11 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
         if(mtf)
             mtf_p->drawChord(ca1d->getData(), mStates);
 //            mtf_p->drawData(ca1d->getData(), 2);
+        if(analyzeData)
+        {
+            analyzeOutput = counter(ca1d->getData());
+            mvprintvec(i + 1, size_x, analyzeOutput);
+        }
     }
 }
 
@@ -258,17 +272,16 @@ void Visualizer::preferences()
 {
     char command = ' ';
 
-    mvprintw(size_y + 1, 2, "q quit r radius s states t type");
-    while(command != 'q' && command != 'n')
+    do
     {
         erase();
-        attron(COLOR_PAIR(mStates-1));
+        attron(COLOR_PAIR(mStates - 1));
         mvprintw(2, 2, " Rule : ");
 
         if(mRule.size() == 0)
         {
             printw("RANDOM ");
-            printstr(ca1d->str());
+            printstr(ca1d->getRuleString());
         } else
         {
             for(auto& i : mRule)
@@ -276,20 +289,23 @@ void Visualizer::preferences()
             addch(' ');
         }
 
-        mvprintw(4, 2, " States : %d ", mStates);
-        mvprintw(6, 2, " Radius : %d ", mRadius);
-        mvprintw(8, 2, " Type : %s ", ((mType == CA1d::Type::Standard) ? "Standard" : "Totalistic"));
-        mvprintw(9,2, "-----------------------");
+        mvprintw(4, 2, " States : %d (press s to change) ", mStates);
+        mvprintw(6, 2, " Radius : %d (press r to change) ", mRadius);
+        mvprintw(8, 2, " Type : %s (press t to change) ", ((mType == CA1d::Type::Standard) ? "Standard" : "Totalistic"));
+        mvprintw(9, 2, "-----------------------");
         mvprintw(10,2, " ncurses info: ");
-        mvprintw(12,2, " colors : %d ", COLORS);
-
-//        mvprintw(4, 50, " Rule")
-
+        mvprintw(12,2, " Supported colors : %d ", COLORS);
+        mvprintw(13,2, "-----------------------");
+        mvprintw(14,2, " Analyzer: %d (press a to change) ", static_cast<int>(analyzeData));
 
         command = getch();
 
         switch(command)
         {
+            case 'a':
+                analyzeData = !analyzeData;
+                break;
+
             case 'r':
                 mRadius = getch() - 48;
                 break;
@@ -310,7 +326,9 @@ void Visualizer::preferences()
                 break;
         }
     }
-    attroff(COLOR_PAIR(mStates-1));
+    while(command == 'a' || command == 'r' || command == 's' || command == 't');
+
+    attroff(COLOR_PAIR(mStates - 1));
     erase();
 }
 

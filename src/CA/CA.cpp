@@ -1,5 +1,7 @@
 #include "../../include/CA/CA.hpp"
 
+#include "../../utilities.hpp"
+#include "../../utilities_gmp.hpp"
 
 #include <sstream>
 #include <random>
@@ -17,8 +19,6 @@ CA::CA( unsigned int stat_in,
     mRuleSize(rule_size_in),
     mRule(rule_in)
 {
-    //CHECK IF RULE IS BIGGER THAN RULE SIZE
-
     if(mRule.size() == 0)
     {
         std::random_device rd;
@@ -29,7 +29,10 @@ CA::CA( unsigned int stat_in,
             mRule.push_back(distrib(gen));
     } else
     {
-        //  check rule size and correct accordingly
+        //  check rule size and delete elements if too big
+        while(mRule.size() > mRuleSize)
+            mRule.pop_back();
+        //  check rule size and add zeros if too small
         while(mRule.size() < mRuleSize)
             mRule.push_back(0);
     }
@@ -39,10 +42,22 @@ CA::CA( unsigned int stat_in,
 void CA::setRule(std::vector<int> const& rule_in)
 {
     mRule = rule_in;
+    //  check rule size and delete elements if too big
+    while(mRule.size() > mRuleSize)
+        mRule.pop_back();
+    //  check rule size and add zeros if too small
+    while(mRule.size() < mRuleSize)
+        mRule.push_back(0);
 }
 
 
-void CA::setRule(const int rule_in)
+void CA::setRule(const long long int rule_in)
 {
+    mRule = decimalToBaseN(rule_in, mStates);
+}
 
+
+std::string CA::getRuleString() const
+{
+    return baseNtoDecimalGMP(mRule, mStates);
 }
