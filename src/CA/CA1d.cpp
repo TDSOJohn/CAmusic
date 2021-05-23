@@ -6,7 +6,6 @@
 #include <cmath>
 
 #include "../../utilities.hpp"
-#include "../../utilities_gmp.hpp"
 
 
 
@@ -21,10 +20,7 @@ CA1d::CA1d( Type ca_type,
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
         rule_in),
     mType(ca_type)
-{
-//    mvprintw(0, 1, "%d", mRule.size());
-//    mvprintstr(0, 1, baseNtoDecimalGMP(mRule, mStates));
-}
+{}
 
 
 void CA1d::initialize(unsigned int size_in, Start t0)
@@ -62,17 +58,9 @@ void CA1d::initialize(std::vector<int> const& t0)
     mDim = mData.size();
 }
 
-/*
-void CA1d::initialize(std::vector<int>&& t0)
-{
-    mData = std::move(t0);
-}
-*/
 
 void CA1d::generate()
 {
-    for(int i = 0; i < mRule.size(); i++)
-        mvprintw(0, i, "%d", mRule[i]);
     int temp = 0;
 
     //  Maybe not the best way, copying entire vector is not efficient

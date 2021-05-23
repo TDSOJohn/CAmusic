@@ -2,43 +2,86 @@
 
 #include <algorithm>
 
+//  Linux version
+#if defined(__LINUX__) || defined(__LINUX) || defined(LINUX)
+    #include <math>
+#endif
 
 
-void printstr(const std::string &str)
-{
-    for(char ch : str)
-        addch(ch);
-}
 
-
-void mvprintstr(const int y, const int x, const std::string &str)
-{
-    unsigned int temp_x = x;
-    for(char ch : str)
+//===================== NEEDS NCURSES =====================//
+#if __has_include(<curses.h>)
+    void printstr(const std::string &str)
     {
-        mvaddch(y, temp_x, ch);
-        temp_x++;
+        for(char ch : str)
+            addch(ch);
     }
-}
 
 
-void printvec(std::vector<int> const& v_in)
-{
-    for(int i : v_in)
-        printw("%d|", i);
-}
-
-
-void mvprintvec(const int y, const int x, std::vector<int> const& v_in)
-{
-    unsigned int temp_x = x;
-    mvprintw(y, x, "");
-    for(int i : v_in)
+    void mvprintstr(const int y, const int x, const std::string &str)
     {
-        mvprintw(y, temp_x, "|%d", i);
-        temp_x += 4;
+        unsigned int temp_x = x;
+        for(char ch : str)
+        {
+            mvaddch(y, temp_x, ch);
+            temp_x++;
+        }
     }
-}
+
+
+    void printvec(std::vector<int> const& v_in)
+    {
+        for(int i : v_in)
+            printw("%d|", i);
+    }
+
+
+    void mvprintvec(const int y, const int x, std::vector<int> const& v_in)
+    {
+        unsigned int temp_x = x;
+        mvprintw(y, x, "");
+        for(int i : v_in)
+        {
+            mvprintw(y, temp_x, "|%d", i);
+            temp_x += 4;
+        }
+    }
+#endif
+//===================== END =====================//
+
+
+
+//===================== NEEDS GMP =====================//
+#if __has_include(<gmp.h>)
+    std::string baseNtoDecimalGMP(std::vector<int> n, const int base_in)
+    {
+        //  New mpz integer
+        mpz_t temp;
+        mpz_init(temp);
+        mpz_t decimal;
+        mpz_init(decimal);
+
+        for(int i = 0; i < n.size(); i++)
+        {
+            if(n[i] < base_in)
+            {
+                mpz_ui_pow_ui(temp, base_in, (n.size() - (i+1)));
+                mpz_mul_si(temp, temp, n[i]);
+                mpz_add(decimal, decimal, temp);
+            } else
+            {
+                return "";
+            }
+        }
+        //  create char* to convert from mpz integer
+        char* bigInt = NULL;
+        bigInt = mpz_get_str(bigInt, 10, decimal);
+        std::string result(bigInt);
+        return result;
+    }
+#endif
+//===================== END =====================//
+
 
 
 unsigned modulo(int value, int m)

@@ -1,7 +1,6 @@
 #include "../../include/MIDI/midiToFile.hpp"
 #include "../../utilities.hpp"
 
-#include <iostream>
 
 
 MidiToFile::MidiToFile():

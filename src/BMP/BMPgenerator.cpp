@@ -1,7 +1,5 @@
 #include "../../include/BMP/BMPgenerator.hpp"
 
-#include <iostream>
-
 
 
 BMPgenerator::BMPgenerator(int x_in, int y_in, int scale_in):

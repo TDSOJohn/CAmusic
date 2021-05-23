@@ -4,19 +4,35 @@
 #include <vector>
 #include <string>
 
-#include <curses.h>
 
 
+//===================== NEEDS NCURSES =====================//
+#if __has_include(<curses.h>)
+    #include <curses.h>
 
 /// A set of C++11 functions to simplify dealing with ncurses bad std::string support
+/// Only added if ncurses header file is found
 
-void printstr(const std::string &str);
+    void printstr(const std::string &str);
 
-void mvprintstr(const int y, const int x, const std::string &str);
+    void mvprintstr(const int y, const int x, const std::string &str);
 
-void printvec(std::vector<int> const& v_in);
+    void printvec(std::vector<int> const& v_in);
 
-void mvprintvec(const int y, const int x, std::vector<int> const& v_in);
+    void mvprintvec(const int y, const int x, std::vector<int> const& v_in);
+#endif
+//===================== END =====================//
+
+
+
+//===================== NEEDS GMP =====================//
+#if __has_include(<gmp.h>)
+    #include <gmp.h>
+
+    /// Simple base n vector to decimal int string converter
+    std::string baseNtoDecimalGMP(std::vector<int> n, const int base);
+#endif
+//===================== END =====================//
 
 
 

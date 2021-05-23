@@ -1,7 +1,6 @@
 #include "../../include/CA/CA.hpp"
 
 #include "../../utilities.hpp"
-#include "../../utilities_gmp.hpp"
 
 #include <sstream>
 #include <random>
@@ -59,5 +58,12 @@ void CA::setRule(const long long int rule_in)
 
 std::string CA::getRuleString() const
 {
-    return baseNtoDecimalGMP(mRule, mStates);
+    #if __has_include(<gmp.h>)
+        return baseNtoDecimalGMP(mRule, mStates);
+    #endif
+
+    std::stringstream ss;
+    for(auto& i : mRule)
+        ss << i;
+    return ss.str();
 }

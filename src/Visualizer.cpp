@@ -371,8 +371,6 @@ void Visualizer::save()
             size_x = image_size_x[i];
             size_y = image_size_y[i];
             mScaling = 1024 / image_size_x[i];
-    //        mStart = static_cast<CA1d::Start>(startInt);
-            newCA();
             ca1d->initialize(size_x, mStart);
             generate(false, true, false);
             bmp_p->saveFile(ca1d->str());

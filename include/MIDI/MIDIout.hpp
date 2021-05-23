@@ -1,8 +1,6 @@
 #ifndef midiout_hpp
 #define midiout_hpp
 
-
-#include <iostream>
 #include <cstdlib>
 #include <vector>
 #include <thread>

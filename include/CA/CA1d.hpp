@@ -29,6 +29,10 @@ public:
 
 public:
                         /// Constructor that copies rule_in lvalue or rvalue
+                        /// parameters:
+                        /// cellular automata type (standard or totalistic),
+                        /// radius, number of states,
+                        /// std::vector<int> containing the rule
                         CA1d(Type ca_type                    = Type::Standard,
                              unsigned int rad_in             = 1,
                              unsigned int stat_in            = 2,
@@ -37,7 +41,6 @@ public:
 
     void                initialize(unsigned int size_in, Start t0);
     void                initialize(std::vector<int> const& t0);
-//    void                initialize(std::vector<int>&& t0);
 
     void                generate();
 
