@@ -21,7 +21,7 @@ public:
                                         Visualizer();
                                         ~Visualizer();
 
-    void                                Run();
+    void                                run();
 
 private:
     int                                 mStates;
@@ -37,8 +37,8 @@ private:
 
     CA1d*                               ca1d;
 
-    BMPgenerator*                       bmp_p;
-    MidiToFile*                         mtf_p;
+    BMPgenerator                        bmp_p;
+    MidiToFile                          mtf_p;
 
     std::vector<int>                    mRule;
     std::vector<int>                    t0;

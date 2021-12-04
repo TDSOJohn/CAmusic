@@ -11,8 +11,8 @@ Visualizer::Visualizer():
     mType(CA1d::Type::Standard),
     mScaling(2),
     ca1d(NULL),
-    bmp_p(NULL),
-    mtf_p(NULL),
+    bmp_p(),
+    mtf_p(),
     mRule({}),
     analyzeData(false)
 {
@@ -36,13 +36,9 @@ Visualizer::Visualizer():
 Visualizer::~Visualizer()
 {
     endwin();
-
-    delete ca1d;
-    delete bmp_p;
-    delete mtf_p;
 }
 
-void Visualizer::Run()
+void Visualizer::run()
 {
     char command = 'n';
 
@@ -55,7 +51,7 @@ void Visualizer::Run()
         erase();
 
         attron(mStates - 1);
-        mvprintw(0, 2, "n for new rule, r for random, m for middle, l for left, s to save");
+//        mvprintw(0, 2, "n for new rule, r for random, m for middle, l for left, s to save");
         attroff(mStates - 1);
         switch(command)
         {
@@ -65,13 +61,10 @@ void Visualizer::Run()
             /// Middle start
             case 'm':
                 mStart = CA1d::Start::Middle;
-                ca1d->initialize(size_x, mStart);
-                generate();
                 break;
             /// New rule (random-generated)
             case 'n':
                 newCA();
-                generate();
                 break;
             /// Ordered start
             case 'o':
@@ -79,8 +72,6 @@ void Visualizer::Run()
                 t0 = {};
                 for(int i = 0; i < size_x; i++)
                     t0.push_back(modulo(i, mStates));
-                ca1d->initialize(t0);
-                generate();
                 break;
             /// Open preferences panel
             case 'p':
@@ -94,14 +85,20 @@ void Visualizer::Run()
                 break;
             /// Save rule to file (bitmap and midi)
             case 's':
+                genBMP = true;
+                genMIDI = false;
+                genPRINT = false;
                 save();
                 break;
 
             default:
                 break;
         }
+        ca1d->initialize(size_x, mStart);
+        generate();
+
         attron(mStates - 1);
-//        mvprintw(0, 1, "States : %d, Radius : %d", mStates, mRadius);
+        mvprintw(0, 1, "States : %d, Radius : %d", mStates, mRadius);
         attroff(mStates - 1);
         command = getch();
     }
@@ -167,25 +164,6 @@ void Visualizer::newCA()
         ca1d->initialize(t0);
 }
 
-void Visualizer::newBMP()
-{
-    if(bmp_p != NULL)
-    {
-        delete bmp_p;
-        bmp_p = NULL;
-    }
-    bmp_p = new BMPgenerator(size_x, size_y, mScaling);
-}
-
-void Visualizer::newMTF()
-{
-    if(mtf_p != NULL)
-    {
-        delete mtf_p;
-    }
-    mtf_p = new MidiToFile();
-}
-
 void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
     uint8_t color = (data_in[0] * mStates);
@@ -208,14 +186,14 @@ void Visualizer::generate()
 {
     if(genBMP)
     {
-        bmp_p->newFile(size_x, size_y, mScaling);
-        bmp_p->drawData(ca1d->getData(), 0, mStates);
+        bmp_p.newFile(size_x, size_y, mScaling);
+        bmp_p.drawData(ca1d->getData(), 0, mStates);
     }
     if(genMIDI)
     {
-        mtf_p->newFile();
-//        mtf_p->drawData(ca1d->getData(), 2);
-        mtf_p->drawChord(ca1d->getData(), mStates);
+        mtf_p.newFile();
+//        mtf_p.drawData(ca1d->getData(), 2);
+        mtf_p.drawChord(ca1d->getData(), mStates);
     }
     if(genPRINT)
     {
@@ -232,10 +210,10 @@ void Visualizer::generate()
     {
         ca1d->generate();
         if(genBMP)
-            bmp_p->drawData(ca1d->getData(), i, mStates);
+            bmp_p.drawData(ca1d->getData(), i, mStates);
         if(genMIDI)
-            mtf_p->drawChord(ca1d->getData(), mStates);
-//            mtf_p->drawData(ca1d->getData(), 2);
+            mtf_p.drawChord(ca1d->getData(), mStates);
+//            mtf_p.drawData(ca1d->getData(), 2);
         if(genPRINT)
         {
             drawLine(ca1d->getData(), i);
@@ -251,7 +229,6 @@ void Visualizer::generate()
 
 void Visualizer::analyze()
 {
-
 }
 
 void Visualizer::preferences()
@@ -327,19 +304,11 @@ void Visualizer::changeStates()
         initializeGrey();
         initializePairs();
     } else
-    {
         mvprintw(1, 1, "NOT ENOUGH COLORS FOR THE SELECTED STATES!");
-    }
 }
 
 void Visualizer::save()
 {
-    genBMP = true;
-    genMIDI = false;
-    genPRINT = false;
-
-    erase();
-    newBMP();
     //  Backup of start, size_x and size_y;
     const unsigned int  size_x_bak(size_x);
     const unsigned int  size_y_bak(size_y);
@@ -354,7 +323,7 @@ void Visualizer::save()
 //    for(int startInt = CA1d::Start::Random; startInt != CA1d::Start::Right; startInt++)
     for(int j = 0; j < 4; j++)
     {
-        bmp_p->setPalette(j);
+        bmp_p.setPalette(j);
         for(int i = 0; i < arrSize; i++)
         {
             size_x = image_size_x[i];
@@ -362,26 +331,16 @@ void Visualizer::save()
             mScaling = 1024 / image_size_x[i];
             ca1d->initialize(size_x, mStart);
             generate();
-            bmp_p->saveFile(ca1d->str());
+            bmp_p.saveFile(ca1d->str());
         }
     }
     mRule = {};
     mStart = start_bak;
 
-/*
-    //  Set size, generate and save mtf
-    size_x = 32;
-    size_y = 20;
-    newMTF();
-    newBMP();
-    ca1d->initialize(size_x, mStart);
-    generate(false, true, true);
-    mtf_p->saveFile(ca1d->str());
-    bmp_p->saveFile(ca1d->str());
-*/
     size_x = size_x_bak;
     size_y = size_y_bak;
 
+    erase();
     mvprintw(1, 1, "Image and MIDI saved!");
     refresh();
 }
