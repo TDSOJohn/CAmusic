@@ -22,8 +22,6 @@ public:
     {
         Random,
         Middle,
-        Left,
-        Right,
         Other
     };
 

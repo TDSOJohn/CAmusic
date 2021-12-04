@@ -41,10 +41,6 @@ void CA1d::initialize(unsigned int size_in, Start t0)
 
         if(mStart == Start::Middle)
             mData[mDim/2] = (mStates - 1);
-        if(mStart == Start::Left)
-            mData[0] = (mStates - 1);
-        if(mStart == Start::Right)
-            mData[mDim - 1] = (mStates - 1);
     }
 }
 
