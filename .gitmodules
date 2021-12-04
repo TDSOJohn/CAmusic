@@ -1,5 +1,5 @@
 [submodule "MidiFile"]
-	path = MidiFile
+	path = midifile
 	url = https://github.com/craigsapp/midifile.git
 [submodule "rtmidi"]
 	path = rtmidi

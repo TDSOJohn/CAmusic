@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 
-#include "../../MidiFile/include/MidiFile.h"
+#include "../../midifile/include/MidiFile.h"
 
 
 

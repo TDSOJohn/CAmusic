@@ -31,9 +31,14 @@ void BMPgenerator::drawData(std::vector<int> const& data_in, int height, int sta
     }
 }
 
-void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in)
+void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in, int states_in)
 {
-
+    int y = 0;
+    for(auto& i : data_in)
+    {
+        drawData(i, y, states_in);
+        y++;
+    }
 }
 
 void BMPgenerator::saveFile(std::string const& filename)

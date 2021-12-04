@@ -18,7 +18,7 @@ coreheaders = utilities.hpp include/CA/CA.hpp include/CA/CA1d.hpp include/CA/CA2
 # g++ compiler flags (use c++11, no linker)
 flags 	= --std=c++11 -c
 # libs to use during linking (thread, rtmidi, midifile, ncurses)
-libs 	= -pthread -lmidifile -lncurses -lgmp -LMidiFile/lib
+libs 	= -pthread -lmidifile -lncurses -lgmp -Lmidifile/lib
 ilibs 	= -lrtmidi
 
 objfold = obj

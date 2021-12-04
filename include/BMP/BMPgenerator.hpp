@@ -29,7 +29,7 @@ public:
 
                             /// draw an array of data horizontally at input height
     void                    drawData(std::vector<int> const& data_in, int height, int states_in);
-    void                    drawMatrix(std::vector<std::vector<int> > const& data_in);
+    void                    drawMatrix(std::vector<std::vector<int> > const& data_in, int states_in);
 
     void                    saveFile(std::string const& filename);
 
