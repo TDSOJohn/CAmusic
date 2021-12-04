@@ -6,7 +6,6 @@
 #include <random>
 
 
-
 CA::CA( unsigned int stat_in,
         unsigned int rad_in,
         unsigned int neigh_in,
@@ -37,7 +36,6 @@ CA::CA( unsigned int stat_in,
     }
 }
 
-
 void CA::setRule(std::vector<int> const& rule_in)
 {
     mRule = rule_in;
@@ -49,12 +47,10 @@ void CA::setRule(std::vector<int> const& rule_in)
         mRule.push_back(0);
 }
 
-
 void CA::setRule(const long long int rule_in)
 {
     mRule = decimalToBaseN(rule_in, mStates);
 }
-
 
 std::string CA::getRuleString() const
 {

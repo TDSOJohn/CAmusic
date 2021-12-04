@@ -8,7 +8,6 @@
 #include "../../utilities.hpp"
 
 
-
 CA1d::CA1d( Type ca_type,
             unsigned int rad_in,
             unsigned int stat_in,
@@ -21,7 +20,6 @@ CA1d::CA1d( Type ca_type,
         rule_in),
     mType(ca_type)
 {}
-
 
 void CA1d::initialize(unsigned int size_in, Start t0)
 {
@@ -50,14 +48,12 @@ void CA1d::initialize(unsigned int size_in, Start t0)
     }
 }
 
-
 void CA1d::initialize(std::vector<int> const& t0)
 {
     mStart = Start::Other;
     mData = t0;
     mDim = mData.size();
 }
-
 
 void CA1d::generate()
 {
@@ -110,12 +106,10 @@ void CA1d::generate()
     mData = temp_data;
 }
 
-
 std::vector<int> CA1d::getData() const
 {
     return mData;
 }
-
 
 std::string CA1d::str() const
 {
@@ -141,7 +135,6 @@ std::string CA1d::str() const
 
     return ss.str();
 }
-
 
 std::ostream& operator<<(std::ostream& os, const CA1d& ca_out)
 {

@@ -1,19 +1,16 @@
 #include "../../include/CA/CA2d.hpp"
 
 
-
 CA2d::CA2d(int rad_in, int stat_in, std::vector<int> const& rule):
     CA(stat_in, rad_in, 8, 8, rule)
 {
 
 }
 
-
 void CA2d::generate()
 {
 //    for(int i = 0; i < )
 }
-
 
 void CA2d::initialize(int size_x_in, int size_y_in, Start t0)
 {
@@ -26,7 +23,6 @@ void CA2d::initialize(int size_x_in, int size_y_in, Start t0)
         }
     }
 }
-
 
 void CA2d::initialize(std::vector<std::vector<int> > const& t0)
 {

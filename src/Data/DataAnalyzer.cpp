@@ -23,7 +23,6 @@ std::vector<int> counter(std::vector<int> const& data_in)
     return data_out;
 }
 
-
 std::vector<std::vector<int> > jumps(std::vector<int> const& data_in)
 {
     std::vector<std::vector<int> > data_out;
@@ -41,7 +40,6 @@ std::vector<std::vector<int> > jumps(std::vector<int> const& data_in)
     }
     return data_out;
 }
-
 
 int harmony(std::vector<int> const& data_in)
 {
@@ -136,7 +134,6 @@ int harmony(std::vector<int> const& data_in)
     return result_true;
 }
 
-
 float entropy(std::vector<int> const& data_in)
 {
     std::vector<int> temp = std::move(counter(data_in));
@@ -157,7 +154,6 @@ float entropy(std::vector<int> const& data_in)
     return result;
 }
 
-
 std::vector<int> compressor(std::vector<int> const& data_in)
 {
     std::vector<int> result = {};
@@ -174,7 +170,6 @@ std::vector<int> compressor(std::vector<int> const& data_in)
     result.push_back(data_in[data_in.size() - 1]);
     return result;
 }
-
 
 std::vector<int> groupMatch(std::vector<int> const& data_in)
 {

@@ -23,7 +23,6 @@ public:
 
     void                                Run();
 
-
 private:
     int                                 mStates;
     int                                 mRadius;
@@ -67,7 +66,6 @@ private:
 
     void                                save();
 };
-
 
 // rule 101010
 

@@ -1,7 +1,6 @@
 #include "../../include/BMP/BMPgenerator.hpp"
 
 
-
 BMPgenerator::BMPgenerator(int x_in, int y_in, int scale_in):
     size_x(x_in * scale_in), size_y(y_in * scale_in), mScaling(scale_in), choosen(0)
 {
@@ -9,7 +8,6 @@ BMPgenerator::BMPgenerator(int x_in, int y_in, int scale_in):
     srand(time(NULL));
     generatePalettes();
 }
-
 
 void BMPgenerator::drawData(std::vector<int> const& data_in, int height, int states_in)
 {
@@ -33,12 +31,10 @@ void BMPgenerator::drawData(std::vector<int> const& data_in, int height, int sta
     }
 }
 
-
 void BMPgenerator::drawMatrix(std::vector<std::vector<int> > const& data_in)
 {
 
 }
-
 
 void BMPgenerator::saveFile(std::string const& filename)
 {
@@ -46,14 +42,12 @@ void BMPgenerator::saveFile(std::string const& filename)
     mBMP->save_image(temp);
 }
 
-
 void BMPgenerator::newFile()
 {
     if(mBMP != nullptr)
         delete mBMP;
     mBMP = new bitmap_image(size_x, size_y);
 }
-
 
 void BMPgenerator::newFile(int x_in, int y_in, int scaling)
 {
@@ -64,7 +58,6 @@ void BMPgenerator::newFile(int x_in, int y_in, int scaling)
     size_y = y_in * mScaling;
     newFile();
 }
-
 
 void BMPgenerator::generatePalettes()
 {
@@ -97,7 +90,6 @@ void BMPgenerator::generatePalettes()
                         {0x77, 0x2E, 0x25},
                         {0xFF, 0xFF, 0xFF}};
 }
-
 
 void BMPgenerator::drawLine(std::vector<Pixel> const& data_in, int height)
 {

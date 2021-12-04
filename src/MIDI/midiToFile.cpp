@@ -2,7 +2,6 @@
 #include "../../utilities.hpp"
 
 
-
 MidiToFile::MidiToFile():
     mTrack(0), mChannel(0), mInstr(1), mPosition(0)
 {
@@ -12,12 +11,10 @@ MidiToFile::MidiToFile():
     mTPQ            = mMidifile->getTPQ();
 }
 
-
 void MidiToFile::drawData(std::vector<int> data_in, int octave)
 {
     drawLine(ca_to_midi_note(data_in, octave));
 }
-
 
 void MidiToFile::drawChord(std::vector<int> data_in, int states)
 {
@@ -40,14 +37,12 @@ void MidiToFile::drawChord(std::vector<int> data_in, int states)
     mMidifile->sortTracks();
 }
 
-
 void MidiToFile::saveFile(std::string fn_in)
 {
     std::string filename = "results/" + fn_in + ".mid";
 //    mMidifile->sortTracks();
     mMidifile->write(filename);
 }
-
 
 void MidiToFile::newFile()
 {
@@ -61,7 +56,6 @@ void MidiToFile::newFile()
     mPosition       = 0;
 }
 
-
 void MidiToFile::noteOut(int note, int velocity, int start, int end)
 {
     if(note != 0)
@@ -70,7 +64,6 @@ void MidiToFile::noteOut(int note, int velocity, int start, int end)
         mMidifile->addNoteOff(mTrack, end, mChannel, note);
     }
 }
-
 
 void MidiToFile::drawLine(std::vector<int> note_in)
 {
@@ -92,7 +85,6 @@ void MidiToFile::drawLine(std::vector<int> note_in)
     noteOut(start_note, 90, start, end);
     mPosition       = end;
 }
-
 
 void MidiToFile::drawLine(std::vector<int> note_in, std::vector<int> vel_in)
 {

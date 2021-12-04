@@ -4,7 +4,6 @@
 #include "../utilities.hpp"
 
 
-
 Visualizer::Visualizer():
     mStates(2),
     mRadius(1),
@@ -34,7 +33,6 @@ Visualizer::Visualizer():
     size_y -= 2;
 }
 
-
 Visualizer::~Visualizer()
 {
     endwin();
@@ -43,7 +41,6 @@ Visualizer::~Visualizer()
     delete bmp_p;
     delete mtf_p;
 }
-
 
 void Visualizer::Run()
 {
@@ -131,14 +128,12 @@ void Visualizer::initializeColors()
     }
 }
 
-
 void Visualizer::initializeGrey()
 {
     //  Initialize colors to be gray scale
     for(int i = 0; i < std::min(mStates, COLORS); i++)
         init_color(i, ((1000/(mStates - 1)) * i), ((1000/(mStates - 1)) * i), ((1000/(mStates - 1)) * i));
 }
-
 
 void Visualizer::initializePairs()
 {
@@ -152,7 +147,6 @@ void Visualizer::initializePairs()
         }
     }
 }
-
 
 void Visualizer::newCA()
 {
@@ -175,7 +169,6 @@ void Visualizer::newCA()
         ca1d->initialize(t0);
 }
 
-
 void Visualizer::newBMP()
 {
     if(bmp_p != NULL)
@@ -186,7 +179,6 @@ void Visualizer::newBMP()
     bmp_p = new BMPgenerator(size_x, size_y, mScaling);
 }
 
-
 void Visualizer::newMTF()
 {
     if(mtf_p != NULL)
@@ -195,7 +187,6 @@ void Visualizer::newMTF()
     }
     mtf_p = new MidiToFile();
 }
-
 
 void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
@@ -214,7 +205,6 @@ void Visualizer::drawLine(std::vector<int> data_in, int y)
     }
     attroff(COLOR_PAIR(color));
 }
-
 
 void Visualizer::generate(bool print, bool bmp, bool mtf)
 {
@@ -261,12 +251,10 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
     }
 }
 
-
 void Visualizer::analyze()
 {
 
 }
-
 
 void Visualizer::preferences()
 {
@@ -332,7 +320,6 @@ void Visualizer::preferences()
     erase();
 }
 
-
 void Visualizer::changeStates()
 {
     int states_temp = getch() - 48;
@@ -347,7 +334,6 @@ void Visualizer::changeStates()
     }
 }
 
-
 void Visualizer::save()
 {
     erase();
@@ -357,16 +343,17 @@ void Visualizer::save()
     const unsigned int  size_y_bak(size_y);
     CA1d::Start         start_bak(mStart);
 
+    const int arrSize = 2;
     //  Set size, generate and save bmps
-    int image_size_x[4] = {64, 256, 512, 1024};
-    int image_size_y[4] = {32, 128, 256, 512};
+    int image_size_x[arrSize] = {512, 1024};
+    int image_size_y[arrSize] = {256, 512};
     mRule = ca1d->getRule();
     //  Loop through every possible Start and every possible color palette
 //    for(int startInt = CA1d::Start::Random; startInt != CA1d::Start::Right; startInt++)
     for(int j = 0; j < 4; j++)
     {
         bmp_p->setPalette(j);
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < arrSize; i++)
         {
             size_x = image_size_x[i];
             size_y = image_size_y[i];

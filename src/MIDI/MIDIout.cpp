@@ -1,8 +1,6 @@
 #include "../../include/MIDI/MIDIout.hpp"
 
-
 #include <chrono>
-
 
 // Note On : status 144
 // Note Off: status 128
@@ -33,7 +31,6 @@ MIDIout::MIDIout(int bpm_in):   mBpm(bpm_in),
     messageOut(176, 7, 100);
 }
 
-
 MIDIout::~MIDIout()
 {
     for(int i = 0; i < 127; i++)
@@ -42,14 +39,12 @@ MIDIout::~MIDIout()
 
 }
 
-
 void MIDIout::setPattern(std::vector<int> const& notes_in)
 {
     scoreMutex.lock();
         mScore      = notes_in;
     scoreMutex.unlock();
 }
-
 
 void MIDIout::setPattern(std::vector<int> const& notes_in, std::vector<int> const& vel_in)
 {
@@ -58,7 +53,6 @@ void MIDIout::setPattern(std::vector<int> const& notes_in, std::vector<int> cons
         mVelocity   = vel_in;
     scoreMutex.unlock();
 }
-
 
 void MIDIout::setState(State s_in)
 {
@@ -76,7 +70,6 @@ void MIDIout::setState(State s_in)
         mThreads.back().join();
     }
 }
-
 
 void MIDIout::play()
 {
@@ -106,18 +99,15 @@ void MIDIout::play()
     }
 }
 
-
 void MIDIout::pause()
 {
 
 }
 
-
 void MIDIout::stop()
 {
 
 }
-
 
 void MIDIout::metronome()
 {
@@ -136,7 +126,6 @@ void MIDIout::metronome()
         counter++;
     }
 }
-
 
 int MIDIout::portProbing()
 {
@@ -165,7 +154,6 @@ int MIDIout::portProbing()
 */
     return port_in;
 }
-
 
 void MIDIout::messageOut(   unsigned short status,
                             unsigned short data1,
