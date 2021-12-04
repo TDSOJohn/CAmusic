@@ -1,12 +1,9 @@
 #ifndef ca2d_hpp
 #define ca2d_hpp
 
-
 #include <vector>
 
-
 #include "CA.hpp"
-
 
 
 class CA2d : public CA
@@ -18,7 +15,6 @@ public:
         Middle,
         Corner
     };
-
 
 public:
                         CA2d(int rad_in = 1,

@@ -1,10 +1,8 @@
 #ifndef ca_hpp
 #define ca_hpp
 
-
 #include <vector>
 #include <string>
-
 
 
 class CA

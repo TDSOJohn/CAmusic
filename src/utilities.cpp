@@ -50,41 +50,6 @@
 #endif
 //===================== END =====================//
 
-
-
-//===================== NEEDS GMP =====================//
-#if __has_include(<gmp.h>)
-    std::string baseNtoDecimalGMP(std::vector<int> n, const int base_in)
-    {
-        //  New mpz integer
-        mpz_t temp;
-        mpz_init(temp);
-        mpz_t decimal;
-        mpz_init(decimal);
-
-        for(int i = 0; i < n.size(); i++)
-        {
-            if(n[i] < base_in)
-            {
-                mpz_ui_pow_ui(temp, base_in, (n.size() - (i+1)));
-                mpz_mul_si(temp, temp, n[i]);
-                mpz_add(decimal, decimal, temp);
-            } else
-            {
-                return "";
-            }
-        }
-        //  create char* to convert from mpz integer
-        char* bigInt = NULL;
-        bigInt = mpz_get_str(bigInt, 10, decimal);
-        std::string result(bigInt);
-        return result;
-    }
-#endif
-//===================== END =====================//
-
-
-
 unsigned modulo(int value, int m)
 {
     int mod = value % m;
@@ -92,7 +57,6 @@ unsigned modulo(int value, int m)
         mod += m;
     return mod;
 }
-
 
 std::vector<int> decimalToBaseN(const long long int n, const int base)
 {
@@ -112,7 +76,6 @@ std::vector<int> decimalToBaseN(const long long int n, const int base)
     return result;
 }
 
-
 long long int baseNtoDecimal(std::vector<int> const& n, const int base)
 {
     long long int result = 0;
@@ -120,7 +83,6 @@ long long int baseNtoDecimal(std::vector<int> const& n, const int base)
         result += pow(base, n.size() - (i+1)) * n[i];
     return result;
 }
-
 
 std::vector<int> ca_to_midi_note(std::vector<int> data_in, int octave)
 {
@@ -138,7 +100,6 @@ std::vector<int> ca_to_midi_note(std::vector<int> data_in, int octave)
 
     return result;
 }
-
 
 std::vector<int> ca_to_velocity(std::vector<int> ca_in)
 {

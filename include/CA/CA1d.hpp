@@ -1,12 +1,10 @@
 #ifndef ca1d_hpp
 #define ca1d_hpp
 
-
 #include <vector>
 #include <string>
 
 #include "CA.hpp"
-
 
 
 class CA1d : public CA
@@ -35,7 +33,6 @@ public:
                              unsigned int rad_in             = 1,
                              unsigned int stat_in            = 2,
                              std::vector<int> const& rule_in = {});
-
 
     void                initialize(unsigned int size_in, Start t0);
     void                initialize(std::vector<int> const& t0);

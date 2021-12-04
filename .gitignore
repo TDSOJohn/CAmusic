@@ -1,9 +1,12 @@
 *.out
 *.o
 *.a
+
 camusic
+
 try.cpp
+
 instrument/
-sources/BMP/bitmap_image.hpp
 results/
 midifile/
+build/

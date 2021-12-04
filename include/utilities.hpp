@@ -23,19 +23,6 @@
 #endif
 //===================== END =====================//
 
-
-
-//===================== NEEDS GMP =====================//
-#if __has_include(<gmp.h>)
-    #include <gmp.h>
-
-    /// Simple base n vector to decimal int string converter
-    std::string baseNtoDecimalGMP(std::vector<int> n, const int base);
-#endif
-//===================== END =====================//
-
-
-
 /// Simple modulo operator function that only returns positive values
 unsigned modulo(int value, int m);
 

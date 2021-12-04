@@ -1,11 +1,11 @@
-#include "../../include/CA/CA1d.hpp"
+#include "CA/CA1d.hpp"
 
 
 #include <sstream>
 #include <iterator>
 #include <cmath>
 
-#include "../../utilities.hpp"
+#include "utilities.hpp"
 
 
 CA1d::CA1d( Type ca_type,
