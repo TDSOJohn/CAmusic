@@ -1,5 +1,4 @@
 set (SRC
-    BMP/BMPgenerator.cpp
     CA/CA.cpp
     CA/CA1d.cpp
     CA/CA2d.cpp
