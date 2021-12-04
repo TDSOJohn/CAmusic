@@ -2,11 +2,12 @@
 
 #include <algorithm>
 
-//  Linux version
+//  Linux version NOT WORKING
 #if defined(__LINUX__) || defined(__LINUX) || defined(LINUX)
     #include <math>
 #endif
 
+#include <cmath>
 
 
 //===================== NEEDS NCURSES =====================//
