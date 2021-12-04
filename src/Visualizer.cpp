@@ -48,22 +48,20 @@ void Visualizer::Run()
 
     while(command != 'q')
     {
+        genBMP = false;
+        genMIDI = false;
+        genPRINT = true;
+
         erase();
 
         attron(mStates - 1);
-        mvprintw(size_y + 1, 2, "n for new rule, r for random, m for middle, l for left, s to save");
+        mvprintw(0, 2, "n for new rule, r for random, m for middle, l for left, s to save");
         attroff(mStates - 1);
         switch(command)
         {
             /// Analyzer
             case 'a':
                 analyze();
-            /// Left start
-            case 'l':
-                mStart = CA1d::Start::Left;
-                ca1d->initialize(size_x, mStart);
-                generate();
-                break;
             /// Middle start
             case 'm':
                 mStart = CA1d::Start::Middle;
@@ -206,20 +204,20 @@ void Visualizer::drawLine(std::vector<int> data_in, int y)
     attroff(COLOR_PAIR(color));
 }
 
-void Visualizer::generate(bool print, bool bmp, bool mtf)
+void Visualizer::generate()
 {
-    if(bmp)
+    if(genBMP)
     {
         bmp_p->newFile(size_x, size_y, mScaling);
         bmp_p->drawData(ca1d->getData(), 0, mStates);
     }
-    if(mtf)
+    if(genMIDI)
     {
         mtf_p->newFile();
 //        mtf_p->drawData(ca1d->getData(), 2);
         mtf_p->drawChord(ca1d->getData(), mStates);
     }
-    if(print)
+    if(genPRINT)
     {
         drawLine(ca1d->getData(), 0);
         refresh();
@@ -233,16 +231,16 @@ void Visualizer::generate(bool print, bool bmp, bool mtf)
     for(int i = 1; i < size_y; i++)
     {
         ca1d->generate();
-        if(print)
+        if(genBMP)
+            bmp_p->drawData(ca1d->getData(), i, mStates);
+        if(genMIDI)
+            mtf_p->drawChord(ca1d->getData(), mStates);
+//            mtf_p->drawData(ca1d->getData(), 2);
+        if(genPRINT)
         {
             drawLine(ca1d->getData(), i);
             refresh();
         }
-        if(bmp)
-            bmp_p->drawData(ca1d->getData(), i, mStates);
-        if(mtf)
-            mtf_p->drawChord(ca1d->getData(), mStates);
-//            mtf_p->drawData(ca1d->getData(), 2);
         if(analyzeData)
         {
             analyzeOutput = counter(ca1d->getData());
@@ -336,6 +334,10 @@ void Visualizer::changeStates()
 
 void Visualizer::save()
 {
+    genBMP = true;
+    genMIDI = false;
+    genPRINT = false;
+
     erase();
     newBMP();
     //  Backup of start, size_x and size_y;
@@ -359,7 +361,7 @@ void Visualizer::save()
             size_y = image_size_y[i];
             mScaling = 1024 / image_size_x[i];
             ca1d->initialize(size_x, mStart);
-            generate(false, true, false);
+            generate();
             bmp_p->saveFile(ca1d->str());
         }
     }

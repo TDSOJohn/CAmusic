@@ -43,6 +43,7 @@ private:
     std::vector<int>                    mRule;
     std::vector<int>                    t0;
 
+    bool                                genBMP, genMIDI, genPRINT;
     bool                                analyzeData;
     std::vector<int>                    analyzeOutput;
 
@@ -57,7 +58,7 @@ private:
 
     void                                drawLine(std::vector<int> data_in, int y);
 
-    void                                generate(bool print = true, bool bmp = false, bool mtf = false);
+    void                                generate();
 
     void                                analyze();
 
