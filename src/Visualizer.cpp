@@ -9,7 +9,7 @@
 const sf::Time Visualizer::TimePerFrame = sf::seconds(1.f/60.f);
 
 Visualizer::Visualizer():
-    mWindow(sf::VideoMode(800, 600),
+    mWindow(sf::VideoMode(1600, 1200),
         "caMusic"),
     mStates(2),
     mRadius(1),
@@ -108,10 +108,10 @@ void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
     for(int i = 0; i < data_in.size(); i++)
     {
-        int buffer_val = y * size_x * 4;
-        int rgb_val = data_in[i] * 100;
-        buffer[buffer_val + i*4] = buffer[buffer_val + i*4+1] = buffer[buffer_val + i*4+2] = rgb_val;
-        buffer[buffer_val + i*4+3] = 255;
+        int buffer_x_val = y * size_x * 4;
+        int rgb_val = data_in[i] * 255;
+        buffer[buffer_x_val + i*4] = buffer[buffer_x_val + i*4+1] = buffer[buffer_x_val + i*4+2] = rgb_val;
+        buffer[buffer_x_val + i*4+3] = 255;
     }
 }
 
