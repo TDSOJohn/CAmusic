@@ -4,24 +4,13 @@
 #include <vector>
 #include <string>
 
-
-
-//===================== NEEDS NCURSES =====================//
-#if __has_include(<curses.h>)
-    #include <curses.h>
-
-/// A set of C++11 functions to simplify dealing with ncurses bad std::string support
-/// Only added if ncurses header file is found
-
-    void printstr(const std::string &str);
-
-    void mvprintstr(const int y, const int x, const std::string &str);
-
-    void printvec(std::vector<int> const& v_in);
-
-    void mvprintvec(const int y, const int x, std::vector<int> const& v_in);
-#endif
-//===================== END =====================//
+struct Pixel
+{
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+};
 
 /// Simple modulo operator function that only returns positive values
 unsigned modulo(int value, int m);
@@ -40,5 +29,8 @@ std::vector<int> ca_to_midi_note(std::vector<int> data_in, int octave);
 
 /// Simple function that maps 0-5 ints to 0-125 velocity
 std::vector<int> ca_to_velocity(std::vector<int> data_in);
+
+Pixel inverse(const Pixel& in);
+std::vector<Pixel> state_to_palette(int states, int palette = 0);
 
 #endif //utilities_hpp

@@ -15,5 +15,3 @@ add_library(src ${SRC})
 target_include_directories(src
             INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
             )
-
-#build_chapter(src SOURCES ${SRC})

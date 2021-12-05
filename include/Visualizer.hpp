@@ -32,14 +32,15 @@ private:
     int                                 mRadius;
 
     //  DON'T LIKE IT   Used for screen output
-    static const int                    size_x = 800;
-    static const int                    size_y = 600;
+    int                                 size_x = 720;
+    int                                 size_y = 450;
 
     CA1d::Start                         mStart;
     CA1d::Type                          mType;
     int                                 mScaling;
 
-    uint8_t                             buffer[size_x*4*size_y];
+    std::vector<uint8_t>                buffer;
+    int                                 mPalette;
 
     CA1d*                               ca1d;
     MidiToFile                          mtf_p;
@@ -48,8 +49,6 @@ private:
     std::vector<int>                    t0;
 
     bool                                genBMP, genMIDI, genPRINT;
-
-    static const sf::Time               TimePerFrame;
 
     sf::RenderWindow                    mWindow;
     sf::Texture                         mTexture;
@@ -63,6 +62,7 @@ private:
     void                                drawLine(std::vector<int> data_in, int y);
 
     void                                generate();
+    void                                scrolling();
 
     void                                processInput();
     void                                update();

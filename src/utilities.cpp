@@ -10,45 +10,13 @@
 #include <cmath>
 
 
-//===================== NEEDS NCURSES =====================//
-#if __has_include(<curses.h>)
-    void printstr(const std::string &str)
-    {
-        for(char ch : str)
-            addch(ch);
-    }
-
-
-    void mvprintstr(const int y, const int x, const std::string &str)
-    {
-        unsigned int temp_x = x;
-        for(char ch : str)
-        {
-            mvaddch(y, temp_x, ch);
-            temp_x++;
-        }
-    }
-
-
-    void printvec(std::vector<int> const& v_in)
-    {
-        for(int i : v_in)
-            printw("%d|", i);
-    }
-
-
-    void mvprintvec(const int y, const int x, std::vector<int> const& v_in)
-    {
-        unsigned int temp_x = x;
-        mvprintw(y, x, "");
-        for(int i : v_in)
-        {
-            mvprintw(y, temp_x, "|%d", i);
-            temp_x += 4;
-        }
-    }
-#endif
-//===================== END =====================//
+std::vector<Pixel> palettes =
+{
+    {255, 255, 255, 255},
+    {255, 0, 0, 255},
+    {0, 255, 0, 255},
+    {0, 0, 255, 255}
+};
 
 unsigned modulo(int value, int m)
 {
@@ -109,4 +77,27 @@ std::vector<int> ca_to_velocity(std::vector<int> ca_in)
         result.push_back(ca_in[i] * 25);
 
     return result;
+}
+
+Pixel inverse(const Pixel& in)
+{
+    Pixel res;
+    res.r = 255 - in.r;
+    res.g = 255 - in.g;
+    res.b = 255 - in.b;
+    return res;
+}
+
+std::vector<Pixel> state_to_palette(int states, int palette)
+{
+    std::vector<Pixel> rgb(states);
+    for(int i = 0; i < states; i++)
+    {
+        rgb[i].r = ((palettes[palette].r / (states - 1)) * i);
+        rgb[i].g = ((palettes[palette].g / (states - 1)) * i);
+        rgb[i].b = ((palettes[palette].b / (states - 1)) * i);
+        rgb[i].a = 255;
+    }
+
+    return rgb;
 }

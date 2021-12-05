@@ -6,17 +6,19 @@
 #include <sstream>
 
 
-const sf::Time Visualizer::TimePerFrame = sf::seconds(1.f/60.f);
-
 Visualizer::Visualizer():
-    mWindow(sf::VideoMode(1600, 1200),
+    mWindow(sf::VideoMode(1440, 720),
         "caMusic"),
-    mStates(2),
+    mStates(3),
     mRadius(1),
+    size_x(720),
+    size_y(450),
     mStart(CA1d::Start::Middle),
     mType(CA1d::Type::Standard),
     mScaling(2),
     ca1d(NULL),
+    buffer(720 * 450 * 4),
+    mPalette(0),
     mtf_p(),
     mRule({}),
     mTexture()
@@ -24,7 +26,7 @@ Visualizer::Visualizer():
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(60.f);
+    mWindow.setFramerateLimit(30.f);
     mTexture.create(size_x, size_y);
 }
 
@@ -62,11 +64,11 @@ void Visualizer::processInput()
                     break;
                 case sf::Keyboard::R:
                     mStart = CA1d::Start::Random;
-                    newCA();
+                    generate();
                     break;
                 case sf::Keyboard::M:
                     mStart = CA1d::Start::Middle;
-                    newCA();
+                    generate();
                     break;
                 case sf::Keyboard::S:
                     save();
@@ -78,6 +80,7 @@ void Visualizer::processInput()
 
 void Visualizer::update()
 {
+//    scrolling();
 }
 
 void Visualizer::render()
@@ -86,6 +89,7 @@ void Visualizer::render()
     mWindow.setView(mWindow.getDefaultView());
 
     mSprite.setTexture(mTexture);
+    mSprite.setScale(mScaling, mScaling);
     mWindow.draw(mSprite);
 
     mWindow.display();
@@ -93,6 +97,7 @@ void Visualizer::render()
 
 void Visualizer::newCA()
 {
+    mPalette = rand()%4;
     if(ca1d != NULL)
     {
         delete ca1d;
@@ -106,12 +111,16 @@ void Visualizer::newCA()
 
 void Visualizer::drawLine(std::vector<int> data_in, int y)
 {
+    std::vector<Pixel> palette = std::move(state_to_palette(mStates, mPalette));
+
     for(int i = 0; i < data_in.size(); i++)
     {
         int buffer_x_val = y * size_x * 4;
-        int rgb_val = data_in[i] * 255;
-        buffer[buffer_x_val + i*4] = buffer[buffer_x_val + i*4+1] = buffer[buffer_x_val + i*4+2] = rgb_val;
-        buffer[buffer_x_val + i*4+3] = 255;
+        Pixel rgb_val = palette[data_in[i]];
+        buffer[buffer_x_val + i*4] = rgb_val.r;
+        buffer[buffer_x_val + i*4+1] = rgb_val.g;
+        buffer[buffer_x_val + i*4+2] = rgb_val.b;
+        buffer[buffer_x_val + i*4+3] = rgb_val.a;
     }
 }
 
@@ -123,7 +132,22 @@ void Visualizer::generate()
         ca1d->generate();
         drawLine(ca1d->getData(), i);
     }
-    mTexture.update(buffer);
+    uint8_t* buffer_tmp = buffer.data();
+    mTexture.update(buffer_tmp);
+}
+
+//  NOT WORKING
+void Visualizer::scrolling()
+{
+    int x = size_x * 4;
+    buffer.erase(buffer.begin(), buffer.begin() + x);
+    for(int i = 0; i < x; i++)
+    {
+        ca1d->generate();
+        drawLine(ca1d->getData(), size_y - 1);
+    }
+    uint8_t* buffer_tmp = buffer.data();
+    mTexture.update(buffer_tmp);
 }
 
 void Visualizer::preferences()
