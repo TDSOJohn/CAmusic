@@ -1,4 +1,4 @@
-#include "Visualizer.hpp"
+#include "App/Application.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -8,7 +8,7 @@ int main()
 {
     try
     {
-        Visualizer app;
+        Application app;
         app.run();
     }
     catch(std::exception& e)

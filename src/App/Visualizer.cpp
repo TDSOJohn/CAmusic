@@ -1,14 +1,13 @@
-#include "Visualizer.hpp"
+#include "App/Visualizer.hpp"
 
-#include "Data/DataAnalyzer.hpp"
 #include "utilities.hpp"
 
 #include <sstream>
 
 
-Visualizer::Visualizer():
-    mWindow(sf::VideoMode(1440, 720),
-        "caMusic"),
+Visualizer::Visualizer(sf::RenderTarget& outputTarget):
+    mTarget(outputTarget),
+    mTexture(),
     mStates(3),
     mRadius(1),
     size_x(720),
@@ -20,83 +19,43 @@ Visualizer::Visualizer():
     buffer(720 * 450 * 4),
     mPalette(0),
     mtf_p(),
-    mRule({}),
-    mTexture()
+    mRule({})
 {
-    srand(time(NULL));
-
-    mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(30.f);
     mTexture.create(size_x, size_y);
-}
-
-void Visualizer::run()
-{
-    newCA();
-    ca1d->initialize(size_x, mStart);
-
-    while(mWindow.isOpen())
-    {
-        genBMP = false;
-        genMIDI = false;
-        genPRINT = true;
-
-        processInput();
-        update();
-        render();
-    }
-}
-
-void Visualizer::processInput()
-{
-    sf::Event event;
-    while (mWindow.pollEvent(event))
-    {
-        if(event.type == sf::Event::Closed)
-            mWindow.close();
-
-        if (event.type == sf::Event::KeyPressed)
-        {
-            switch(event.key.code)
-            {
-                case sf::Keyboard::N:
-                    newCA();
-                    break;
-                case sf::Keyboard::R:
-                    mStart = CA1d::Start::Random;
-                    generate();
-                    break;
-                case sf::Keyboard::M:
-                    mStart = CA1d::Start::Middle;
-                    generate();
-                    break;
-                case sf::Keyboard::S:
-                    save();
-                    break;
-            }
-        }
-    }
+    mSprite.setScale(mScaling, mScaling);
 }
 
 void Visualizer::update()
 {
-//    scrolling();
 }
 
-void Visualizer::render()
+void Visualizer::handleEvent(sf::Event event)
 {
-    mWindow.clear();
-    mWindow.setView(mWindow.getDefaultView());
-
-    mSprite.setTexture(mTexture);
-    mSprite.setScale(mScaling, mScaling);
-    mWindow.draw(mSprite);
-
-    mWindow.display();
+    if (event.type == sf::Event::KeyPressed)
+    {
+        switch(event.key.code)
+        {
+            case sf::Keyboard::N:
+                newCA();
+                break;
+            case sf::Keyboard::R:
+                mStart = CA1d::Start::Random;
+                generate();
+                break;
+            case sf::Keyboard::M:
+                mStart = CA1d::Start::Middle;
+                generate();
+                break;
+            case sf::Keyboard::S:
+                save();
+                break;
+        }
+    }
 }
 
 void Visualizer::newCA()
 {
+    mRule = {};
     mPalette = rand()%4;
     if(ca1d != NULL)
     {
@@ -105,6 +64,7 @@ void Visualizer::newCA()
     }
 
     ca1d = new CA1d(mType, mRadius, mStates, mRule);
+    mRule = ca1d->getRule();
 
     generate();
 }
@@ -150,13 +110,15 @@ void Visualizer::scrolling()
     mTexture.update(buffer_tmp);
 }
 
-void Visualizer::preferences()
+void Visualizer::draw()
 {
+    mSprite.setTexture(mTexture);
+    mTarget.draw(mSprite);
 }
 
 void Visualizer::save()
 {
     std::stringstream ss;
-    ss << "results/" << rand()%38290182 << ".png";
+    ss << "results/" << baseNtoDecimal(mRule, mStates) << ".png";
     mTexture.copyToImage().saveToFile(ss.str());
 }

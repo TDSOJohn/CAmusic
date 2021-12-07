@@ -1,4 +1,9 @@
 set (SRC
+    App/Application.cpp
+    App/State.cpp
+    App/StateStack.cpp
+    App/Visualizer.cpp
+    App/VisualizerState.cpp
     CA/CA.cpp
     CA/CA1d.cpp
     CA/CA2d.cpp
@@ -6,7 +11,7 @@ set (SRC
 #    MIDI/MIDIout.cpp
     MIDI/midiToFile.cpp
     utilities.cpp
-    Visualizer.cpp)
+)
 
 add_library(src ${SRC})
 
