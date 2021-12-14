@@ -15,7 +15,7 @@ std::vector<Pixel> palettes =
     {255, 255, 255, 255},
     {255, 0, 0, 255},
     {0, 255, 0, 255},
-    {0, 0, 255, 255}
+    {100, 100, 255, 255}
 };
 
 unsigned modulo(int value, int m)

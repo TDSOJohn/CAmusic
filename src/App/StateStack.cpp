@@ -10,6 +10,8 @@
 
 #include <cassert>
 
+#include <iostream>
+
 
 StateStack::StateStack(State::Context context) :
     mStack(),
@@ -21,12 +23,8 @@ StateStack::StateStack(State::Context context) :
 
 void StateStack::update()
 {
-    // Iterate from top to bottom, stop as soon as update() returns false
-    for (auto itr = mStack.rbegin(); itr != mStack.rend(); ++itr)
-    {
-        if (!(*itr)->update())
-            break;
-    }
+    if(mStack.size() != 0)
+        mStack.back()->update();
 
     applyPendingChanges();
 }
@@ -34,18 +32,15 @@ void StateStack::update()
 void StateStack::draw()
 {
     // Draw all active states from bottom to top
-    for(State::Ptr& state : mStack)
-        state->draw();
+//    for(State::Ptr& state : mStack)
+//        state->draw();
+    mStack.back()->draw();
 }
 
 void StateStack::handleEvent(const sf::Event& event)
 {
-    // Iterate from top to bottom, stop as soon as handleEvent() returns false
-    for (auto itr = mStack.rbegin(); itr != mStack.rend(); ++itr)
-    {
-        if (!(*itr)->handleEvent(event))
-            break;
-    }
+    if(mStack.size() != 0)
+        mStack.back()->handleEvent(event);
 
     applyPendingChanges();
 }
@@ -82,7 +77,7 @@ void StateStack::applyPendingChanges()
 {
     for(PendingChange change : mPendingList)
     {
-        switch (change.action)
+        switch(change.action)
         {
             case Push:
                 mStack.push_back(createState(change.stateID));
@@ -105,5 +100,4 @@ StateStack::PendingChange::PendingChange(Action action, States::ID stateID):
     action(action),
     stateID(stateID)
 {
-
 }

@@ -40,8 +40,7 @@ elseif(APPLE)
 endif()
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-# include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Resources")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 
 add_subdirectory(src)
 list(APPEND EXTRA_LIBS src)

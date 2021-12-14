@@ -9,7 +9,6 @@
 #include <SFML/Window/Event.hpp>
 
 #include "CA/CA1d.hpp"
-#include "MIDI/midiToFile.hpp"
 
 
 class Visualizer : private sf::NonCopyable
@@ -21,6 +20,8 @@ public:
     void                                draw();
 
     void                                handleEvent(sf::Event event);
+
+    CA1d*                               getCA() { return ca1d; }
 
 private:
     void                                newCA();
@@ -52,9 +53,5 @@ private:
     int                                 mPalette;
 
     CA1d*                               ca1d;
-    MidiToFile                          mtf_p;
-
-    std::vector<int>                    mRule;
-    std::vector<int>                    t0;
 };
 #endif //visualizer_hpp

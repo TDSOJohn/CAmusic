@@ -10,6 +10,8 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include <iostream>
+
 
 VisualizerState::VisualizerState(StateStack& stack, Context context):
     State(stack, context),
@@ -30,14 +32,14 @@ bool VisualizerState::update()
 
 bool VisualizerState::handleEvent(const sf::Event& event)
 {
-    // Escape pressed, trigger the pause screen
-/*    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
-        requestStackPush(States::Save);
-
-    // Escape pressed, trigger the pause screen
+    // P pressed, trigger the settings screen
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+    {
+        std::cout << "Settings!" << std::endl;
+        mContext.ca1d = mVisualizer.getCA();
         requestStackPush(States::Settings);
-*/
+    }
+
     mVisualizer.handleEvent(event);
 
     return true;

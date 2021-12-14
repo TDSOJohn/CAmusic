@@ -10,9 +10,10 @@
 #include "App/StateStack.hpp"
 
 
-State::Context::Context(sf::RenderWindow& window, CA1d* ca):
+State::Context::Context(sf::RenderWindow& window, CA1d* ca, FontHolder fonts):
     window(&window),
-    ca1d(ca)
+    ca1d(ca),
+    fonts(&fonts)
 {
 }
 

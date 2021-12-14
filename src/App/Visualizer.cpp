@@ -17,12 +17,11 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget):
     mScaling(2),
     ca1d(NULL),
     buffer(720 * 450 * 4),
-    mPalette(0),
-    mtf_p(),
-    mRule({})
+    mPalette(0)
 {
     mTexture.create(size_x, size_y);
     mSprite.setScale(mScaling, mScaling);
+    newCA();
 }
 
 void Visualizer::update()
@@ -55,7 +54,6 @@ void Visualizer::handleEvent(sf::Event event)
 
 void Visualizer::newCA()
 {
-    mRule = {};
     mPalette = rand()%4;
     if(ca1d != NULL)
     {
@@ -63,9 +61,7 @@ void Visualizer::newCA()
         ca1d = NULL;
     }
 
-    ca1d = new CA1d(mType, mRadius, mStates, mRule);
-    mRule = ca1d->getRule();
-
+    ca1d = new CA1d(mType, mRadius, mStates, {});
     generate();
 }
 
@@ -119,6 +115,10 @@ void Visualizer::draw()
 void Visualizer::save()
 {
     std::stringstream ss;
-    ss << "results/" << baseNtoDecimal(mRule, mStates) << ".png";
+    ss << "results/" << baseNtoDecimal(ca1d->getRule(), mStates) << ".png";
     mTexture.copyToImage().saveToFile(ss.str());
 }
+
+
+
+//      1, 2, 0, 2, 2, 0, 2, 2, 2, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 2, 1, 0, 2, 0, 0

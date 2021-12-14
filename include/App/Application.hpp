@@ -9,6 +9,8 @@
 //  #include "MIDI/MIDIout.hpp"
 //  #include "MIDI/midiToFile.hpp"
 #include "App/StateStack.hpp"
+#include "ResourceIdentifiers.h"
+#include "ResourceHolder.hpp"
 #include "utilities.hpp"
 
 #include <SFML/System/Time.hpp>
@@ -30,6 +32,7 @@ public:
 private:
     sf::RenderWindow                    mWindow;
     StateStack                          mStateStack;
+    FontHolder                          mFonts;
 
 private:
     void                                registerStates();

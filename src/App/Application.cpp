@@ -1,5 +1,6 @@
 #include "App/Application.hpp"
 #include "App/VisualizerState.hpp"
+#include "App/SettingsState.hpp"
 
 #include <iostream>
 
@@ -7,7 +8,8 @@
 Application::Application():
     mWindow(sf::VideoMode(1440, 720),
         "camusic"),
-    mStateStack(State::Context(mWindow, nullptr))
+    mFonts(),
+    mStateStack(State::Context(mWindow, nullptr, mFonts))
 {
     srand(time(NULL));
 
@@ -16,6 +18,8 @@ Application::Application():
 
     registerStates();
     mStateStack.pushState(States::Visualizer);
+
+    mFonts.load(Fonts::Mono, "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMono.ttf");
 }
 
 void Application::run()
@@ -33,7 +37,7 @@ void Application::registerStates()
     mStateStack.registerState<VisualizerState>(States::Visualizer);
 //    mStateStack.registerState<GameState>(States::Loading);
 //    mStateStack.registerState<PauseState>(States::Save);
-//    mStateStack.registerState<SettingsState>(States::Settings);
+    mStateStack.registerState<SettingsState>(States::Settings);
 }
 
 void Application::processInput()
@@ -50,6 +54,7 @@ void Application::processInput()
 
 void Application::update()
 {
+    mStateStack.update();
 }
 
 void Application::draw()

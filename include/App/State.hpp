@@ -10,6 +10,7 @@
 #define state_hpp
 
 #include "StateIdentifiers.hpp"
+#include "ResourceIdentifiers.h"
 #include "CA/CA1d.hpp"
 
 #include <SFML/System/Time.hpp>
@@ -33,10 +34,11 @@ public:
 
     struct Context
     {
-        Context(sf::RenderWindow& window, CA1d* ca);
+        Context(sf::RenderWindow& window, CA1d* ca, FontHolder fonts);
 
         sf::RenderWindow*                   window;
         CA1d*                               ca1d;
+        FontHolder*                         fonts;
     };
 
 
@@ -58,7 +60,7 @@ protected:
     Context                                 getContext() const;
 
 
-private:
+protected:
     StateStack*                             mStack;
     Context                                 mContext;
 };

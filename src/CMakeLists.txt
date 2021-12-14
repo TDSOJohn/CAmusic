@@ -1,5 +1,7 @@
 set (SRC
     App/Application.cpp
+    App/Settings.cpp
+    App/SettingsState.cpp
     App/State.cpp
     App/StateStack.cpp
     App/Visualizer.cpp
@@ -8,6 +10,7 @@ set (SRC
     CA/CA1d.cpp
     CA/CA2d.cpp
     Data/DataAnalyzer.cpp
+    GUI/InputField.cpp
 #    MIDI/MIDIout.cpp
     MIDI/midiToFile.cpp
     utilities.cpp
