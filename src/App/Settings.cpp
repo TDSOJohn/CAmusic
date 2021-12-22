@@ -6,16 +6,13 @@
 #include <iostream>
 
 
-Settings::Settings(State::Context context):
-    mTarget(*context.window)
+Settings::Settings(State::Context* context):
+    mTarget(*context->window)
 {
-    mTextFields.push_back(InputField(*context.fonts));
-
-    inputText.setFont(mFont);
-    inputText.setCharacterSize(30);
-    inputText.setString("ciao");
-    inputText.setPosition(60, 100);
-    inputText.setFillColor(sf::Color::White);
+    mTextFields.push_back(InputField(*context->fonts, "Rule"));
+    mTextFields.back().setDefaultText(context->ca1d->getStates());
+//    mTextFields.back().setDefaultText(3);
+    mTextFields.back().setPosition(200.f, 200.f);
 }
 
 void Settings::update()
@@ -37,7 +34,6 @@ void Settings::handleEvent(sf::Event event)
 
 void Settings::draw()
 {
-    mTarget.draw(inputText);
     for(auto& i : mTextFields)
         mTarget.draw(i);
 }

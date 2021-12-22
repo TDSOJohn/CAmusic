@@ -8,16 +8,17 @@
 
 #include "App/State.hpp"
 #include "App/StateStack.hpp"
+#include "ResourceHolder.hpp"
 
 
-State::Context::Context(sf::RenderWindow& window, CA1d* ca, FontHolder fonts):
+State::Context::Context(sf::RenderWindow& window, CA1d* ca, FontHolder* fonts):
     window(&window),
     ca1d(ca),
-    fonts(&fonts)
+    fonts(fonts)
 {
 }
 
-State::State(StateStack& stack, Context context) :
+State::State(StateStack& stack, Context* context) :
     mStack(&stack),
     mContext(context)
 {
@@ -43,7 +44,7 @@ void State::requestStateClear()
     mStack->clearStates();
 }
 
-State::Context State::getContext() const
+State::Context* State::getContext() const
 {
     return mContext;
 }

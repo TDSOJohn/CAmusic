@@ -13,10 +13,11 @@
 #include <iostream>
 
 
-SettingsState::SettingsState(StateStack& stack, Context context):
+SettingsState::SettingsState(StateStack& stack, Context* context):
     State(stack, context),
     mSettings(context)
 {
+//    std::cout << context.ca1d->getStates() << std::endl;
     std::cout << "SettingsState built!" << std::endl;
 }
 

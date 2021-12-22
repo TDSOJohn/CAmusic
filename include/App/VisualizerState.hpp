@@ -20,7 +20,7 @@
 class VisualizerState : public State
 {
 public:
-    VisualizerState(StateStack& stack, Context context);
+    VisualizerState(StateStack& stack, Context* context);
 
     virtual void        draw();
     virtual bool        update();

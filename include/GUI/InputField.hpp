@@ -8,15 +8,26 @@
 class InputField : public sf::Drawable
 {
 public:
-    InputField(FontHolder fonts);
+    enum Type
+    {
+
+    };
+
+public:
+    InputField(FontHolder& fonts, const std::string& text = "Default Text");
     ~InputField();
 
+    void setPosition(const sf::Vector2f& position);
+    void setPosition(float px, float py);
+
+    void setDefaultText(const std::string& str);
+    void setDefaultText(int n);
+
 private:
-    //  ->PROBLEM<-
-    //  mFont is allocated and loaded with every InputField instance
-    sf::Font            mFont;
-    sf::String          inputString;
+    std::string         inputString;
+    sf::Text            description;
     sf::Text            inputText;
+    sf::RectangleShape  inputRect;
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

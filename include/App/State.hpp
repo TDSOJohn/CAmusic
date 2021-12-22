@@ -34,7 +34,7 @@ public:
 
     struct Context
     {
-        Context(sf::RenderWindow& window, CA1d* ca, FontHolder fonts);
+        Context(sf::RenderWindow& window, CA1d* ca, FontHolder* fonts);
 
         sf::RenderWindow*                   window;
         CA1d*                               ca1d;
@@ -43,13 +43,12 @@ public:
 
 
 public:
-                                            State(StateStack& stack, Context context);
+                                            State(StateStack& stack, Context* context);
     virtual                                 ~State();
 
     virtual void                            draw() = 0;
     virtual bool                            update() = 0;
     virtual bool                            handleEvent(const sf::Event& event) = 0;
-
 
 protected:
     void                                    requestStackPush(States::ID stateID);
@@ -57,12 +56,11 @@ protected:
     void                                    requestStackPop();
     void                                    requestStateClear();
 
-    Context                                 getContext() const;
-
+    Context*                                getContext() const;
 
 protected:
     StateStack*                             mStack;
-    Context                                 mContext;
+    Context*                                mContext;
 };
 
 #endif /* state_hpp */

@@ -20,7 +20,7 @@
 class SettingsState : public State
 {
 public:
-    SettingsState(StateStack& stack, Context context);
+    SettingsState(StateStack& stack, Context* context);
 
     virtual void        draw();
     virtual bool        update();

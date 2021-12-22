@@ -13,9 +13,9 @@
 #include <iostream>
 
 
-VisualizerState::VisualizerState(StateStack& stack, Context context):
+VisualizerState::VisualizerState(StateStack& stack, Context* context):
     State(stack, context),
-    mVisualizer(*context.window)
+    mVisualizer(*context->window)
 {
 }
 
@@ -36,7 +36,8 @@ bool VisualizerState::handleEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
     {
         std::cout << "Settings!" << std::endl;
-        mContext.ca1d = mVisualizer.getCA();
+        mContext->ca1d = mVisualizer.getCA();
+        std::cout << mContext->ca1d->getStates() << std::endl;
         requestStackPush(States::Settings);
     }
 

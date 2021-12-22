@@ -9,7 +9,7 @@ Application::Application():
     mWindow(sf::VideoMode(1440, 720),
         "camusic"),
     mFonts(),
-    mStateStack(State::Context(mWindow, nullptr, mFonts))
+    mStateStack(State::Context(mWindow, nullptr, &mFonts))
 {
     srand(time(NULL));
 
@@ -19,7 +19,13 @@ Application::Application():
     registerStates();
     mStateStack.pushState(States::Visualizer);
 
-    mFonts.load(Fonts::Mono, "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMono.ttf");
+    //  BUG :   Reference from include/ folder works
+    //          reference from Resources/ folder doesn't
+    mFonts.load(Fonts::Mono, "../Resources/Fonts/IBMPlexMono-Regular.ttf");
+}
+
+Application::~Application()
+{
 }
 
 void Application::run()

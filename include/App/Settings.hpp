@@ -18,7 +18,7 @@
 class Settings : private sf::NonCopyable
 {
 public:
-    explicit                            Settings(State::Context context);
+    explicit                            Settings(State::Context* context);
 
     void                                update();
     void                                draw();
@@ -33,9 +33,5 @@ private:
     sf::RenderWindow&                   mTarget;
 
     std::vector<InputField>             mTextFields;
-
-    sf::Font                            mFont;
-    sf::Text                            inputText;
-
 };
 #endif //visualizer_hpp
