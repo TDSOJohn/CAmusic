@@ -7,3 +7,4 @@ instrument/
 sources/BMP/bitmap_image.hpp
 results/
 midifile/
+build/
