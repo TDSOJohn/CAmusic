@@ -81,7 +81,7 @@ void StateStack::registerState(States::ID stateID)
 {
     mFactories[stateID] = [this] ()
     {
-        return State::Ptr(new T(*this, mContext));
+        return State::Ptr(new T(*this, &mContext));
     };
 }
 
