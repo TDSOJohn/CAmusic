@@ -9,9 +9,6 @@
 
 InputField::InputField(FontHolder& fonts, const std::string& text)
 {
-    //  ->BUG<-
-    //  Works when path is from include/ but not from Resources/
-
     description.setFont(fonts.get(Fonts::Mono));
     description.setCharacterSize(18);
     description.setString(text);
@@ -33,10 +30,19 @@ InputField::~InputField()
 {
 }
 
+void InputField::handleEvent(sf::Event event)
+{
+    if(event.type == sf::Event::TextEntered)
+    {
+        std::cout << "Handling event!" << std::endl;
+        inputText.setString(inputText.getString() + static_cast<char>(event.text.unicode));
+    }
+}
+
 void InputField::setPosition(const sf::Vector2f& position)
 {
     description.setPosition(position);
-    inputText.setPosition(position.x, position.y + 60.f);
+    inputText.setPosition(position.x + 10.f, position.y + 60.f);
     inputRect.setPosition(position.x, position.y + 60.f);
 }
 
@@ -47,7 +53,7 @@ void InputField::setPosition(float px, float py)
 
 void InputField::setDefaultText(const std::string& str)
 {
-
+    inputText.setString(str);
 }
 
 void InputField::setDefaultText(int n)
