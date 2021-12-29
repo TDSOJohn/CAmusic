@@ -17,8 +17,6 @@ SettingsState::SettingsState(StateStack& stack, Context* context):
     State(stack, context),
     mSettings(context)
 {
-//    std::cout << context.ca1d->getStates() << std::endl;
-    std::cout << "SettingsState built!" << std::endl;
 }
 
 void SettingsState::draw()
@@ -37,8 +35,8 @@ bool SettingsState::handleEvent(const sf::Event& event)
     // Escape pressed, trigger the pause screen
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         requestStackPop();
-
-    mSettings.handleEvent(event);
+    else
+        mSettings.handleEvent(event);
 
     return true;
 }

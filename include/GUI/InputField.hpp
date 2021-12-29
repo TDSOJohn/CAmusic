@@ -12,11 +12,13 @@ class InputField : public sf::Drawable
 public:
     enum Type
     {
-
+        NumbersOnly,
+        LettersOnly,
+        Chars,
     };
 
 public:
-    InputField(FontHolder& fonts, const std::string& text = "Default Text");
+    InputField(FontHolder& fonts, Type type, const std::string& text = "Default Text");
     ~InputField();
 
     void handleEvent(sf::Event event);
@@ -32,6 +34,8 @@ private:
     sf::Text            description;
     sf::Text            inputText;
     sf::RectangleShape  inputRect;
+
+    Type                mType;
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

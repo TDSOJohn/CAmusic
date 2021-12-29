@@ -7,7 +7,8 @@
 #include <sstream>
 
 
-InputField::InputField(FontHolder& fonts, const std::string& text)
+InputField::InputField(FontHolder& fonts, Type type, const std::string& text):
+    mType(type)
 {
     description.setFont(fonts.get(Fonts::Mono));
     description.setCharacterSize(18);
@@ -34,8 +35,23 @@ void InputField::handleEvent(sf::Event event)
 {
     if(event.type == sf::Event::TextEntered)
     {
-        std::cout << "Handling event!" << std::endl;
-        inputText.setString(inputText.getString() + static_cast<char>(event.text.unicode));
+        char input = static_cast<char>(event.text.unicode);
+        if(mType == Type::NumbersOnly || mType == Type::Chars)
+        {
+            if(input >= 48 && input <= 57)
+                inputText.setString(inputText.getString() + input);
+        }
+        if(mType == Type::LettersOnly || mType == Type::Chars)
+        {
+            if((input >= 65 && input <= 90) || (input >= 97 && input <= 122))
+                inputText.setString(inputText.getString() + input);
+        }
+    }
+    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Backspace)
+    {
+        std::string temp = inputText.getString();
+        temp.pop_back();
+        inputText.setString(temp);
     }
 }
 
