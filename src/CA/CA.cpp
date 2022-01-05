@@ -1,5 +1,4 @@
 #include "CA/CA.hpp"
-
 #include "utilities.hpp"
 
 #include <sstream>

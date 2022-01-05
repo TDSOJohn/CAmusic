@@ -9,18 +9,11 @@
 Visualizer::Visualizer(sf::RenderTarget& outputTarget):
     mTarget(outputTarget),
     mCanvas(800, 400, 2),
-    mStates(3),
-    mRadius(2),
     size_x(800),
-    size_y(400),
-    mStart(CA1d::Start::Middle),
-    mType(CA1d::Type::Totalistic),
-    mScaling(2),
-    mPalette(0),
-    mCa1dSize(2)
+    size_y(400)
 {
-    for(int i = 0; i < mCa1dSize; i++)
-        mCa1dArray[i] = nullptr;
+    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     newCA();
 }
@@ -39,11 +32,11 @@ void Visualizer::handleEvent(sf::Event event)
                 newCA();
                 break;
             case sf::Keyboard::R:
-                mStart = CA1d::Start::Random;
+                mCAHolder.front().start = CA1d::Start::Random;
                 generate();
                 break;
             case sf::Keyboard::M:
-                mStart = CA1d::Start::Middle;
+                mCAHolder.front().start = CA1d::Start::Middle;
                 generate();
                 break;
             case sf::Keyboard::S:
@@ -58,15 +51,12 @@ void Visualizer::handleEvent(sf::Event event)
 
 void Visualizer::newCA()
 {
-    mPalette = rand()%5;
-    for(int i = 0; i < mCa1dSize; i++)
+    for(auto& i: mCAHolder)
     {
-        if(mCa1dArray[i] != NULL)
-        {
-            delete mCa1dArray[i];
-            mCa1dArray[i] = NULL;
-        }
-        mCa1dArray[i] = new CA1d(mType, mRadius, mStates, {});
+        if(i.ca1d != NULL)
+            i.ca1d.reset();
+
+        i.ca1d = std::make_unique<CA1d>(i.type, i.radius, i.states);
     }
     generate();
 }
@@ -75,20 +65,15 @@ void Visualizer::generate()
 {
     mCanvas.clearBuffer();
 
-    for(int i = 0; i < mCa1dSize; i++)
+    for(auto& i: mCAHolder)
     {
-        mCa1dArray[i]->initialize(size_x, mStart);
+        i.ca1d->initialize(size_x, i.start);
         for(int j = 0; j < size_y; j++)
         {
-            mCa1dArray[i]->generate();
-//                if(i == 0)
-                    mCanvas.drawLine(mCa1dArray[i]->getData(), j, mStates, Canvas::BlendMode::Add);
-//                else
-//                    mCanvas.drawLine(mCa1dArray[i]->getData(), j, mStates, Canvas::BlendMode::Subtract);
+            mCanvas.drawLine(i.ca1d->getData(), j, i.states, i.blendMode);
+            i.ca1d->generate();
         }
-        mCa1dArray[i]->initialize(size_x, mStart);
     }
-
     mCanvas.updateTexture();
 }
 
@@ -116,8 +101,7 @@ void Visualizer::draw()
 
 void Visualizer::save()
 {
-/*    std::stringstream ss;
-    ss << "results/" << baseNtoDecimal(mCa1dArray[0]->getRule(), mStates) << "_r" << mCa1dArray[0]->getRadius() << "_k" << mCa1dArray[0]->getStates() << "_" << mPalette << ".png";
-    mTexture.copyToImage().saveToFile(ss.str());
-    */
+    std::stringstream ss;
+    ss << "results/" << baseNtoDecimal(mCAHolder[0].ca1d->getRule(), mCAHolder[0].states) << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_" << mCAHolder[0].palette << ".png";
+    mCanvas.save(ss.str());
 }

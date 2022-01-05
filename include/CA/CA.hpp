@@ -22,10 +22,8 @@ public:
     void                setRule(const long long int rule_in);
     std::vector<int>    getRule() const { return mRule; }
 
-    void                setStates(int states_in) { mStates = states_in; }
     unsigned int        getStates() const { return mStates; }
 
-    void                setRadius(int radius_in) { mRadius = radius_in; }
     unsigned int        getRadius() const { return mRadius; }
 
     std::string         getRuleString() const;

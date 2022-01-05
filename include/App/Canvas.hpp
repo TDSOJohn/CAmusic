@@ -8,6 +8,7 @@
 #include <SFML/Graphics/View.hpp>
 
 #include <iostream>
+#include <string>
 
 
 class Canvas: public sf::Drawable
@@ -27,6 +28,7 @@ public:
     void                                updateTexture();
 
     void                                clearBuffer();
+    void                                save(std::string filename);
 
 private:
     sf::Texture                         mTexture;

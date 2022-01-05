@@ -35,7 +35,7 @@ bool VisualizerState::handleEvent(const sf::Event& event)
     // P pressed, trigger the settings screen
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
     {
-        mContext->ca1d = mVisualizer.getCA();
+//        mContext->ca1d = mVisualizer.getCA();
         requestStackPush(States::Settings);
     }
     else

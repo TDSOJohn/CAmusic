@@ -1,11 +1,9 @@
+#include "utilities.hpp"
 #include "CA/CA1d.hpp"
-
 
 #include <sstream>
 #include <iterator>
 #include <cmath>
-
-#include "utilities.hpp"
 
 
 CA1d::CA1d( Type ca_type,
@@ -24,10 +22,7 @@ CA1d::CA1d( Type ca_type,
 void CA1d::initialize(unsigned int size_in, Start t0)
 {
     mStart = t0;
-    srand(time(NULL));
-
     mDim = size_in;
-
     mData.resize(mDim);
 
     if(mStart == Start::Random)

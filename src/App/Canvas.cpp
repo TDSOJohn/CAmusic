@@ -20,6 +20,7 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, BlendMode ble
 {
     std::vector<Pixel> palette = std::move(state_to_palette(states, mPalette));
 
+    //  -->IMPROVE<-- not the best option, better have some updatePalette() function
     if(y == 0)
         mPalette = rand()%5;
     if(y >= mSizeY)
@@ -36,14 +37,14 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, BlendMode ble
             mBuffer[buffer_offset + i*4] = std::max(std::min(mBuffer[buffer_offset + i*4] + rgb_val.r, 255), 0);
             mBuffer[buffer_offset + i*4+1] = std::max(std::min(mBuffer[buffer_offset + i*4+1] + rgb_val.g, 255), 0);
             mBuffer[buffer_offset + i*4+2] = std::max(std::min(mBuffer[buffer_offset + i*4+2] + rgb_val.b, 255), 0);
-            mBuffer[buffer_offset + i*4+3] = 255;//std::max(std::min(mBuffer[buffer_offset + i*4+3] + rgb_val.a, 255), 0);
+            mBuffer[buffer_offset + i*4+3] = 255;
         }
         else if(blend == BlendMode::Subtract)
         {
             mBuffer[buffer_offset + i*4] = std::max(std::min(mBuffer[buffer_offset + i*4] - rgb_val.r, 255), 0);
             mBuffer[buffer_offset + i*4+1] = std::max(std::min(mBuffer[buffer_offset + i*4+1] - rgb_val.g, 255), 0);
             mBuffer[buffer_offset + i*4+2] = std::max(std::min(mBuffer[buffer_offset + i*4+2] - rgb_val.b, 255), 0);
-            mBuffer[buffer_offset + i*4+3] = 255;//std::max(std::min(mBuffer[buffer_offset + i*4+3] - rgb_val.a, 255), 0);
+            mBuffer[buffer_offset + i*4+3] = 255;
         }
     }
 }
@@ -53,6 +54,11 @@ void Canvas::clearBuffer()
     mPalette = rand()%5;
     for(int i = 0; i < (mSizeX * mSizeY * 4); i++)
         mBuffer[i] = 0;
+}
+
+void Canvas::save(std::string filename)
+{
+    mTexture.copyToImage().saveToFile(filename);
 }
 
 //  -->IMPROVE<-- try to put it somewhere else

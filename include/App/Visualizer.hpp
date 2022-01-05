@@ -12,6 +12,37 @@
 #include "CA/CA1d.hpp"
 
 
+struct CAHolder
+{
+    std::unique_ptr<CA1d>   ca1d;
+    unsigned int            states;
+    unsigned int            radius;
+    unsigned int            palette;
+    CA1d::Start             start;
+    CA1d::Type              type;
+    int                     scaling;
+    Canvas::BlendMode       blendMode;
+
+    CAHolder(   unsigned int states_in,
+                unsigned int radius_in,
+                unsigned int palette_in,
+                CA1d::Start start_in,
+                CA1d::Type type_in,
+                unsigned int scaling_in,
+                Canvas::BlendMode blend_in):
+            states(states_in),
+            radius(radius_in),
+            palette(palette_in),
+            start(start_in),
+            type(type_in),
+            scaling(scaling_in),
+            blendMode(blend_in)
+    {
+        ca1d = std::make_unique<CA1d>(type, radius, states);
+    }
+};
+
+
 class Visualizer : private sf::NonCopyable
 {
 public:
@@ -22,7 +53,7 @@ public:
 
     void                                handleEvent(sf::Event event);
 
-    CA1d*                               getCA() { return mCa1dArray[0]; }
+//    CA1d*                               getCA() { return [0]; }
 
 private:
     void                                newCA();
@@ -43,16 +74,6 @@ private:
     int                                 size_x;
     int                                 size_y;
 
-    int                                 mStates;
-    int                                 mRadius;
-
-    CA1d::Start                         mStart;
-    CA1d::Type                          mType;
-    int                                 mScaling;
-
-    int                                 mPalette;
-
-    CA1d*                               mCa1dArray[2];
-    int                                 mCa1dSize;
+    std::vector<CAHolder>               mCAHolder;
 };
 #endif //visualizer_hpp

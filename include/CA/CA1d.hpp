@@ -1,10 +1,10 @@
 #ifndef ca1d_hpp
 #define ca1d_hpp
 
+#include "CA/CA.hpp"
+
 #include <vector>
 #include <string>
-
-#include "CA.hpp"
 
 
 class CA1d : public CA
