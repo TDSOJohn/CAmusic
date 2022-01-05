@@ -3,24 +3,25 @@
 #include "utilities.hpp"
 
 #include <sstream>
+#include <iostream>
 
 
 Visualizer::Visualizer(sf::RenderTarget& outputTarget):
     mTarget(outputTarget),
-    mTexture(),
+    mCanvas(800, 400, 2),
     mStates(3),
-    mRadius(1),
-    size_x(720),
-    size_y(450),
+    mRadius(2),
+    size_x(800),
+    size_y(400),
     mStart(CA1d::Start::Middle),
-    mType(CA1d::Type::Standard),
+    mType(CA1d::Type::Totalistic),
     mScaling(2),
-    ca1d(NULL),
-    buffer(720 * 450 * 4),
-    mPalette(0)
+    mPalette(0),
+    mCa1dSize(2)
 {
-    mTexture.create(size_x, size_y);
-    mSprite.setScale(mScaling, mScaling);
+    for(int i = 0; i < mCa1dSize; i++)
+        mCa1dArray[i] = nullptr;
+
     newCA();
 }
 
@@ -48,77 +49,75 @@ void Visualizer::handleEvent(sf::Event event)
             case sf::Keyboard::S:
                 save();
                 break;
+                //  -->IMPROVE<-- IS IT OK TO PUT DEFAULT HERE?
+            default:
+                break;
         }
     }
 }
 
 void Visualizer::newCA()
 {
-    mPalette = rand()%4;
-    if(ca1d != NULL)
+    mPalette = rand()%5;
+    for(int i = 0; i < mCa1dSize; i++)
     {
-        delete ca1d;
-        ca1d = NULL;
+        if(mCa1dArray[i] != NULL)
+        {
+            delete mCa1dArray[i];
+            mCa1dArray[i] = NULL;
+        }
+        mCa1dArray[i] = new CA1d(mType, mRadius, mStates, {});
     }
-
-    ca1d = new CA1d(mType, mRadius, mStates, {});
     generate();
-}
-
-void Visualizer::drawLine(std::vector<int> data_in, int y)
-{
-    std::vector<Pixel> palette = std::move(state_to_palette(mStates, mPalette));
-
-    for(int i = 0; i < data_in.size(); i++)
-    {
-        int buffer_x_val = y * size_x * 4;
-        Pixel rgb_val = palette[data_in[i]];
-        buffer[buffer_x_val + i*4] = rgb_val.r;
-        buffer[buffer_x_val + i*4+1] = rgb_val.g;
-        buffer[buffer_x_val + i*4+2] = rgb_val.b;
-        buffer[buffer_x_val + i*4+3] = rgb_val.a;
-    }
 }
 
 void Visualizer::generate()
 {
-    ca1d->initialize(size_x, mStart);
-    for(int i = 0; i < size_y; i++)
+    mCanvas.clearBuffer();
+
+    for(int i = 0; i < mCa1dSize; i++)
     {
-        ca1d->generate();
-        drawLine(ca1d->getData(), i);
+        mCa1dArray[i]->initialize(size_x, mStart);
+        for(int j = 0; j < size_y; j++)
+        {
+            mCa1dArray[i]->generate();
+//                if(i == 0)
+                    mCanvas.drawLine(mCa1dArray[i]->getData(), j, mStates, Canvas::BlendMode::Add);
+//                else
+//                    mCanvas.drawLine(mCa1dArray[i]->getData(), j, mStates, Canvas::BlendMode::Subtract);
+        }
+        mCa1dArray[i]->initialize(size_x, mStart);
     }
-    uint8_t* buffer_tmp = buffer.data();
-    mTexture.update(buffer_tmp);
+
+    mCanvas.updateTexture();
 }
 
-//  NOT WORKING
+//  -->BUG<-- NOT WORKING
 void Visualizer::scrolling()
 {
-    int x = size_x * 4;
+/*    int x = size_x * 4;
     buffer.erase(buffer.begin(), buffer.begin() + x);
     for(int i = 0; i < x; i++)
     {
-        ca1d->generate();
-        drawLine(ca1d->getData(), size_y - 1);
+        ca1d_1->generate();
+        drawLine(ca1d_1->getData(), size_y - 1);
+        ca1d_2->generate();
+        drawLine(ca1d_2->getData(), size_y - 1);
     }
     uint8_t* buffer_tmp = buffer.data();
     mTexture.update(buffer_tmp);
+    */
 }
 
 void Visualizer::draw()
 {
-    mSprite.setTexture(mTexture);
-    mTarget.draw(mSprite);
+    mTarget.draw(mCanvas);
 }
 
 void Visualizer::save()
 {
-    std::stringstream ss;
-    ss << "results/" << baseNtoDecimal(ca1d->getRule(), mStates) << ".png";
+/*    std::stringstream ss;
+    ss << "results/" << baseNtoDecimal(mCa1dArray[0]->getRule(), mStates) << "_r" << mCa1dArray[0]->getRadius() << "_k" << mCa1dArray[0]->getStates() << "_" << mPalette << ".png";
     mTexture.copyToImage().saveToFile(ss.str());
+    */
 }
-
-
-
-//      1, 2, 0, 2, 2, 0, 2, 2, 2, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 2, 1, 0, 2, 0, 0

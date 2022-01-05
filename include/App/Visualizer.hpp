@@ -8,6 +8,7 @@
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include "App/Canvas.hpp"
 #include "CA/CA1d.hpp"
 
 
@@ -21,7 +22,7 @@ public:
 
     void                                handleEvent(sf::Event event);
 
-    CA1d*                               getCA() { return ca1d; }
+    CA1d*                               getCA() { return mCa1dArray[0]; }
 
 private:
     void                                newCA();
@@ -29,18 +30,18 @@ private:
     void                                drawLine(std::vector<int> data_in, int y);
     void                                generate();
     void                                scrolling();
+    void                                clearBuffer();
 
     void                                save();
 
 private:
     sf::RenderTarget&                   mTarget;
 
-    sf::Texture                         mTexture;
-    sf::Sprite                          mSprite;
+    Canvas                              mCanvas;
 
     //Used for screen output
-    int                                 size_x = 720;
-    int                                 size_y = 450;
+    int                                 size_x;
+    int                                 size_y;
 
     int                                 mStates;
     int                                 mRadius;
@@ -49,9 +50,9 @@ private:
     CA1d::Type                          mType;
     int                                 mScaling;
 
-    std::vector<uint8_t>                buffer;
     int                                 mPalette;
 
-    CA1d*                               ca1d;
+    CA1d*                               mCa1dArray[2];
+    int                                 mCa1dSize;
 };
 #endif //visualizer_hpp

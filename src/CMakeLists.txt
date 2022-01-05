@@ -1,5 +1,6 @@
 set (SRC
     App/Application.cpp
+    App/Canvas.cpp
     App/Settings.cpp
     App/SettingsState.cpp
     App/State.cpp

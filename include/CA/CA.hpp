@@ -26,7 +26,7 @@ public:
     unsigned int        getStates() const { return mStates; }
 
     void                setRadius(int radius_in) { mRadius = radius_in; }
-    unsigned int        geRadius() const { return mRadius; }
+    unsigned int        getRadius() const { return mRadius; }
 
     std::string         getRuleString() const;
 

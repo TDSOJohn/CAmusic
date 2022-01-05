@@ -6,7 +6,7 @@
 
 
 Application::Application():
-    mWindow(sf::VideoMode(1440, 720),
+    mWindow(sf::VideoMode(1600, 800),
         "camusic"),
     mFonts(),
     mStateStack(State::Context(mWindow, nullptr, &mFonts))
