@@ -50,22 +50,24 @@ if(${CMAKE_BUILD_TYPE} MATCHES Debug)
     add_executable(camusic src/main.cpp)
 elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
     # Create .app bundle
-    message("Building .app!")
-    add_executable(camusic MACOSX_BUNDLE src/main.cpp)
-    # Create Info.plist file
-    set_target_properties(camusic PROPERTIES
-        BUNDLE True
-        MACOSX_BUNDLE_GUI_IDENTIFIER giovannibasso.camusic
-        MACOSX_BUNDLE_BUNDLE_NAME camusic
-        MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
-        MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/customtemplate.plist.in
-    )
-    # Copy Resources folder
-    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/window.app/Contents/Resources/")
-    # Link CoreServices framework
-    target_link_libraries(camusic "-framework CoreServices")
-    # copy SFML frameworks
+    if(APPLE)
+        message("Building .app!")
+        add_executable(camusic MACOSX_BUNDLE src/main.cpp)
+        # Create Info.plist file
+        set_target_properties(camusic PROPERTIES
+            BUNDLE True
+            MACOSX_BUNDLE_GUI_IDENTIFIER giovannibasso.camusic
+            MACOSX_BUNDLE_BUNDLE_NAME camusic
+            MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+            MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/customtemplate.plist.in
+        )
+        # Copy Resources folder
+        file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/window.app/Contents/Resources/")
+        # Link CoreServices framework
+        target_link_libraries(camusic "-framework CoreServices")
+        # copy SFML frameworks
+    endif()
 endif()
 
 
