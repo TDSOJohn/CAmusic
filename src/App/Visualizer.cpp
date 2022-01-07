@@ -13,7 +13,7 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget):
     size_y(400)
 {
     mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     newCA();
 }
@@ -102,6 +102,8 @@ void Visualizer::draw()
 void Visualizer::save()
 {
     std::stringstream ss;
-    ss << "results/" << baseNtoDecimal(mCAHolder[0].ca1d->getRule(), mCAHolder[0].states) << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_" << mCAHolder[0].palette << ".png";
+    ss  << "results/" << baseNtoDecimal(mCAHolder[0].ca1d->getRule(), mCAHolder[0].states)
+        << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_"
+        << mCAHolder[0].palette << ".png";
     mCanvas.save(ss.str());
 }
