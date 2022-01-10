@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 
 Visualizer::Visualizer(sf::RenderTarget& outputTarget):
@@ -12,14 +13,23 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget):
     size_x(800),
     size_y(400)
 {
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     newCA();
+    generate();
 }
 
 void Visualizer::update()
 {
+    scroll();
+}
+
+void Visualizer::draw()
+{
+    mTarget.draw(mCanvas);
 }
 
 void Visualizer::handleEvent(sf::Event event)
@@ -32,12 +42,16 @@ void Visualizer::handleEvent(sf::Event event)
                 newCA();
                 break;
             case sf::Keyboard::R:
+                randomizePalettes();
                 mCAHolder.front().start = CA1d::Start::Random;
-                generate();
+                for(auto& i: mCAHolder)
+                    i.ca1d->initialize(size_x, i.start);
                 break;
             case sf::Keyboard::M:
+                randomizePalettes();
                 mCAHolder.front().start = CA1d::Start::Middle;
-                generate();
+                for(auto& i: mCAHolder)
+                    i.ca1d->initialize(size_x, i.start);
                 break;
             case sf::Keyboard::S:
                 save();
@@ -58,19 +72,21 @@ void Visualizer::newCA()
 
         i.ca1d = std::make_unique<CA1d>(i.type, i.radius, i.states);
     }
-    generate();
+    for(auto& i: mCAHolder)
+        i.ca1d->initialize(size_x, i.start);
+//    generate();
 }
 
 void Visualizer::generate()
 {
+    randomizePalettes();
     mCanvas.clearBuffer();
 
     for(auto& i: mCAHolder)
     {
-        i.ca1d->initialize(size_x, i.start);
         for(int j = 0; j < size_y; j++)
         {
-            mCanvas.drawLine(i.ca1d->getData(), j, i.states, i.blendMode);
+            mCanvas.drawLine(i.ca1d->getData(), j, i.states, i.blendMode, i.palette);
             i.ca1d->generate();
         }
     }
@@ -78,32 +94,32 @@ void Visualizer::generate()
 }
 
 //  -->BUG<-- NOT WORKING
-void Visualizer::scrolling()
+void Visualizer::scroll()
 {
-/*    int x = size_x * 4;
-    buffer.erase(buffer.begin(), buffer.begin() + x);
-    for(int i = 0; i < x; i++)
+    mCanvas.scroll();
+    for(auto& i: mCAHolder)
     {
-        ca1d_1->generate();
-        drawLine(ca1d_1->getData(), size_y - 1);
-        ca1d_2->generate();
-        drawLine(ca1d_2->getData(), size_y - 1);
+        mCanvas.drawLine(i.ca1d->getData(), (size_y - 1), i.states, i.blendMode, i.palette);
+        i.ca1d->generate();
     }
-    uint8_t* buffer_tmp = buffer.data();
-    mTexture.update(buffer_tmp);
-    */
 }
 
-void Visualizer::draw()
+void Visualizer::randomizePalettes()
 {
-    mTarget.draw(mCanvas);
+    for(auto& i: mCAHolder)
+        i.palette = rand()%5;
 }
 
 void Visualizer::save()
 {
     std::stringstream ss;
-    ss  << "results/" << baseNtoDecimal(mCAHolder[0].ca1d->getRule(), mCAHolder[0].states)
-        << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_"
-        << mCAHolder[0].palette << ".png";
-    mCanvas.save(ss.str());
+    ss  << "results/" << rand() << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_" << mCAHolder[0].palette;
+
+    mCanvas.save(ss.str() + ".png");
+
+    std::ofstream datafile;
+    datafile.open(ss.str() + ".txt");
+    for(auto& i : mCAHolder)
+        datafile << i.ca1d->getRuleString() << "_r" << i.radius << "_k" << i.states << std::endl;
+    datafile.close();
 }

@@ -29,13 +29,21 @@ void CA1d::initialize(unsigned int size_in, Start t0)
     {
         for(auto& i : mData)
             i = rand()%mStates;
-    } else
+    } else if(mStart != Other)
     {
         for(auto& i : mData)
             i = 0;
 
         if(mStart == Start::Middle)
             mData[mDim/2] = (mStates - 1);
+    } else
+    {
+        int counter = 0;
+        for(auto& i : mData)
+        {
+            i = counter%mStates;
+            counter++;
+        }
     }
 }
 

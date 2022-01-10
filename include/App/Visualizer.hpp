@@ -58,10 +58,10 @@ public:
 private:
     void                                newCA();
 
-    void                                drawLine(std::vector<int> data_in, int y);
     void                                generate();
-    void                                scrolling();
-    void                                clearBuffer();
+    void                                scroll();
+
+    void                                randomizePalettes();
 
     void                                save();
 
