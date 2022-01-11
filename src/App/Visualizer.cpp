@@ -74,7 +74,6 @@ void Visualizer::newCA()
     }
     for(auto& i: mCAHolder)
         i.ca1d->initialize(size_x, i.start);
-//    generate();
 }
 
 void Visualizer::generate()
@@ -93,7 +92,6 @@ void Visualizer::generate()
     mCanvas.updateTexture();
 }
 
-//  -->BUG<-- NOT WORKING
 void Visualizer::scroll()
 {
     mCanvas.scroll();

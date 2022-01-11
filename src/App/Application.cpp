@@ -14,7 +14,7 @@ Application::Application():
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(30.f);
+    mWindow.setFramerateLimit(60.f);
 
     registerStates();
     mStateStack.pushState(States::Visualizer);
