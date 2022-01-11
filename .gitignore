@@ -2,6 +2,8 @@
 *.o
 *.a
 
+*.DS_Store
+
 camusic
 
 try.cpp
