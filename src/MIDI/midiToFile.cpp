@@ -1,5 +1,5 @@
-#include "../../include/MIDI/midiToFile.hpp"
-#include "../../utilities.hpp"
+#include "MIDI/midiToFile.hpp"
+#include "utilities.hpp"
 
 
 MidiToFile::MidiToFile():

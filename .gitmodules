@@ -1,9 +1,6 @@
 [submodule "MidiFile"]
-	path = MidiFile
+	path = midifile
 	url = https://github.com/craigsapp/midifile.git
 [submodule "rtmidi"]
 	path = rtmidi
 	url = https://github.com/thestk/rtmidi.git
-[submodule "bitmap"]
-	path = bitmap
-	url = https://github.com/ArashPartow/bitmap.git

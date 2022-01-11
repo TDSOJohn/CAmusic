@@ -1,4 +1,4 @@
-#include "../../include/MIDI/MIDIout.hpp"
+#include "MIDI/MIDIout.hpp"
 
 #include <chrono>
 

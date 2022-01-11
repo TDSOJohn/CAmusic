@@ -1,4 +1,4 @@
-#include "../../include/CA/CA2d.hpp"
+#include "CA/CA2d.hpp"
 
 
 CA2d::CA2d(int rad_in, int stat_in, std::vector<int> const& rule):

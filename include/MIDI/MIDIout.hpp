@@ -13,6 +13,7 @@
 #elif __APPLE__
 //  macOS version
     #include <RtMidi.h>
+#endif
 
 
 class MIDIout

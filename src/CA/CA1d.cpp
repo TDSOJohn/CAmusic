@@ -1,11 +1,9 @@
-#include "../../include/CA/CA1d.hpp"
-
+#include "utilities.hpp"
+#include "CA/CA1d.hpp"
 
 #include <sstream>
 #include <iterator>
 #include <cmath>
-
-#include "../../utilities.hpp"
 
 
 CA1d::CA1d( Type ca_type,
@@ -24,27 +22,28 @@ CA1d::CA1d( Type ca_type,
 void CA1d::initialize(unsigned int size_in, Start t0)
 {
     mStart = t0;
-    srand(time(NULL));
-
     mDim = size_in;
-
     mData.resize(mDim);
 
     if(mStart == Start::Random)
     {
         for(auto& i : mData)
             i = rand()%mStates;
-    } else
+    } else if(mStart != Other)
     {
         for(auto& i : mData)
             i = 0;
 
         if(mStart == Start::Middle)
             mData[mDim/2] = (mStates - 1);
-        if(mStart == Start::Left)
-            mData[0] = (mStates - 1);
-        if(mStart == Start::Right)
-            mData[mDim - 1] = (mStates - 1);
+    } else
+    {
+        int counter = 0;
+        for(auto& i : mData)
+        {
+            i = counter%mStates;
+            counter++;
+        }
     }
 }
 

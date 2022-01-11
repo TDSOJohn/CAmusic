@@ -1,6 +1,5 @@
-#include "../../include/CA/CA.hpp"
-
-#include "../../utilities.hpp"
+#include "CA/CA.hpp"
+#include "utilities.hpp"
 
 #include <sstream>
 #include <random>
@@ -39,12 +38,23 @@ CA::CA( unsigned int stat_in,
 void CA::setRule(std::vector<int> const& rule_in)
 {
     mRule = rule_in;
-    //  check rule size and delete elements if too big
-    while(mRule.size() > mRuleSize)
-        mRule.pop_back();
-    //  check rule size and add zeros if too small
-    while(mRule.size() < mRuleSize)
-        mRule.push_back(0);
+    if(mRule.size() == 0)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(0, (mStates - 1));
+
+        for(int i = 0; i < mRuleSize; i++)
+            mRule.push_back(distrib(gen));
+    } else
+    {
+        //  check rule size and delete elements if too big
+        while(mRule.size() > mRuleSize)
+            mRule.pop_back();
+        //  check rule size and add zeros if too small
+        while(mRule.size() < mRuleSize)
+            mRule.push_back(0);
+    }
 }
 
 void CA::setRule(const long long int rule_in)
@@ -54,10 +64,6 @@ void CA::setRule(const long long int rule_in)
 
 std::string CA::getRuleString() const
 {
-    #if __has_include(<gmp.h>)
-        return baseNtoDecimalGMP(mRule, mStates);
-    #endif
-
     std::stringstream ss;
     for(auto& i : mRule)
         ss << i;

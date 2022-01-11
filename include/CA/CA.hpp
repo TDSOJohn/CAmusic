@@ -1,10 +1,8 @@
 #ifndef ca_hpp
 #define ca_hpp
 
-
 #include <vector>
 #include <string>
-
 
 
 class CA
@@ -23,6 +21,10 @@ public:
     void                setRule(std::vector<int> const& rule_in);
     void                setRule(const long long int rule_in);
     std::vector<int>    getRule() const { return mRule; }
+
+    unsigned int        getStates() const { return mStates; }
+
+    unsigned int        getRadius() const { return mRadius; }
 
     std::string         getRuleString() const;
 

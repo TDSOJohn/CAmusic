@@ -1,10 +1,14 @@
 *.out
 *.o
 *.a
+
+*.DS_Store
+
 camusic
+
 try.cpp
+
 instrument/
-sources/BMP/bitmap_image.hpp
 results/
 midifile/
 build/

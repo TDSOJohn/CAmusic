@@ -1,4 +1,4 @@
-#include "../../include/Data/DataAnalyzer.hpp"
+#include "Data/DataAnalyzer.hpp"
 
 #include <cmath>
 
