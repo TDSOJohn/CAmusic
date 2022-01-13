@@ -8,8 +8,11 @@
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include "ResourceIdentifiers.hpp"
 #include "App/Canvas.hpp"
 #include "CA/CA1d.hpp"
+#include "GUI/Button.hpp"
+#include "GUI/Container.hpp"
 
 
 struct CAHolder
@@ -46,7 +49,7 @@ struct CAHolder
 class Visualizer : private sf::NonCopyable
 {
 public:
-    explicit                            Visualizer(sf::RenderTarget& outputTarget);
+    explicit                            Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts);
 
     void                                update();
     void                                draw();
@@ -67,6 +70,7 @@ private:
 
 private:
     sf::RenderTarget&                   mTarget;
+    TextureHolder                       mTextures;
 
     Canvas                              mCanvas;
 
@@ -75,5 +79,7 @@ private:
     int                                 size_y;
 
     std::vector<CAHolder>               mCAHolder;
+
+    GUI::Container                      mGUIContainer;
 };
 #endif //visualizer_hpp

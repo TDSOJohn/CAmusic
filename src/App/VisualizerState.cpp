@@ -15,7 +15,7 @@
 
 VisualizerState::VisualizerState(StateStack& stack, Context* context):
     State(stack, context),
-    mVisualizer(*context->window)
+    mVisualizer(*context->window, *context->fonts)
 {
 }
 

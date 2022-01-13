@@ -1,5 +1,7 @@
 #include "App/Visualizer.hpp"
 
+#include "ResourceHolder.hpp"
+#include "ResourcePath.hpp"
 #include "utilities.hpp"
 
 #include <sstream>
@@ -7,7 +9,7 @@
 #include <fstream>
 
 
-Visualizer::Visualizer(sf::RenderTarget& outputTarget):
+Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
     mTarget(outputTarget),
     mCanvas(800, 400, 2),
     size_x(800),
@@ -20,6 +22,15 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget):
 
     newCA();
     generate();
+
+    mTextures.load(Textures::Buttons, getResourcePath() + "Textures/Buttons.png");
+
+    auto randomButton = std::make_shared<GUI::Button>(fonts, mTextures);
+    randomButton->setPosition(1600, 0);
+    randomButton->setText("Random\nPalette");
+    randomButton->setCallback(std::bind(&Visualizer::randomizePalettes, this));
+
+    mGUIContainer.pack(randomButton);
 }
 
 void Visualizer::update()
@@ -30,6 +41,7 @@ void Visualizer::update()
 void Visualizer::draw()
 {
     mTarget.draw(mCanvas);
+    mTarget.draw(mGUIContainer);
 }
 
 void Visualizer::handleEvent(sf::Event event)
@@ -42,10 +54,12 @@ void Visualizer::handleEvent(sf::Event event)
                 newCA();
                 break;
             case sf::Keyboard::R:
-                randomizePalettes();
+/*                randomizePalettes();
                 mCAHolder.front().start = CA1d::Start::Random;
                 for(auto& i: mCAHolder)
                     i.ca1d->initialize(size_x, i.start);
+*/
+                
                 break;
             case sf::Keyboard::M:
                 randomizePalettes();
