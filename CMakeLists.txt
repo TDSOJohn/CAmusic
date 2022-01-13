@@ -41,7 +41,7 @@ endif()
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Resources")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/engine/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/Engine/include")
 
 add_subdirectory(src)
 list(APPEND EXTRA_LIBS src)
@@ -73,7 +73,7 @@ endif()
 
 
 target_link_libraries(camusic src)
-target_link_libraries(camusic "${CMAKE_CURRENT_SOURCE_DIR}/externals/engine/build/libengine.a")
+target_link_libraries(camusic "${CMAKE_CURRENT_SOURCE_DIR}/externals/Engine/build/libengine.a")
 # Link executable to required SFML libraries
 target_link_libraries(camusic sfml-graphics sfml-audio sfml-network sfml-window sfml-system)
 target_link_libraries(camusic "${CMAKE_CURRENT_SOURCE_DIR}/midifile/lib/libmidifile.a")
