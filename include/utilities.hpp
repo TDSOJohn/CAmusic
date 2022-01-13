@@ -1,16 +1,10 @@
 #ifndef utilities_hpp
 #define utilities_hpp
 
+#include "Utility.hpp"
+
 #include <vector>
 #include <string>
-
-struct Pixel
-{
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    uint8_t a;
-};
 
 
 /// \brief Simple decimal int to base n vector converter
