@@ -64,7 +64,7 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/customtemplate.plist.in
         )
         # Copy Resources folder
-        file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/window.app/Contents/Resources/")
+        file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/camusic.app/Contents/Resources/")
         # Link CoreServices framework
         target_link_libraries(camusic "-framework CoreServices")
         # copy SFML frameworks
