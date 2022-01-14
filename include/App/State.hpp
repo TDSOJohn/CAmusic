@@ -10,7 +10,7 @@
 #define state_hpp
 
 #include "StateIdentifiers.hpp"
-#include "ResourceIdentifiers.h"
+#include "ResourceIdentifiers.hpp"
 #include "CA/CA1d.hpp"
 
 #include <SFML/System/Time.hpp>

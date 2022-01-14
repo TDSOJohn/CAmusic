@@ -4,3 +4,12 @@
 [submodule "rtmidi"]
 	path = rtmidi
 	url = https://github.com/thestk/rtmidi.git
+[submodule "externals/Engine"]
+	path = externals/Engine
+	url = https://github.com/TDSOJohn/Engine
+[submodule "externals/rtmidi"]
+	path = externals/rtmidi
+	url = https://github.com/thestk/rtmidi
+[submodule "externals/midifile"]
+	path = externals/midifile
+	url = git@github.com:craigsapp/midifile.git

@@ -7,6 +7,7 @@
     #include <math>
 #endif
 
+#include "Utility.hpp"
 #include <cmath>
 
 
@@ -19,13 +20,6 @@ std::vector<Pixel> palettes =
     {100, 100, 255, 255},
 };
 
-unsigned modulo(int value, int m)
-{
-    int mod = value % m;
-    if(mod < 0)
-        mod += m;
-    return mod;
-}
 
 std::vector<int> decimalToBaseN(const long long int n, const int base)
 {
@@ -70,23 +64,15 @@ std::vector<int> ca_to_midi_note(std::vector<int> data_in, int octave)
     return result;
 }
 
-std::vector<int> ca_to_velocity(std::vector<int> ca_in)
+std::vector<int> ca_to_velocity(std::vector<int> ca_in, int max_val)
 {
     std::vector<int> result;
+    int step = 127 / max_val;
 
-    for(int i = 0; i < ca_in.size(); i++)
-        result.push_back(ca_in[i] * 25);
+    for(auto& i: ca_in)
+        result.push_back(i * step);
 
     return result;
-}
-
-Pixel inverse(const Pixel& in)
-{
-    Pixel res;
-    res.r = 255 - in.r;
-    res.g = 255 - in.g;
-    res.b = 255 - in.b;
-    return res;
 }
 
 std::vector<Pixel> state_to_palette(int states, int palette)

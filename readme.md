@@ -3,7 +3,7 @@ caMusic - C++ Cellular Automata to media library
 
 Download with:
 ```bash
-git clone https://github.com/TDSOJohn/caMusic --recurse-submodules
+git clone https://github.com/TDSOJohn/caMusic -b wip --recurse-submodules
 ```
 
 Compile executable visualizer with:
@@ -22,7 +22,8 @@ Dependencies:
 
 <a href="https://github.com/craigsapp/midifile"> MidiFile </a> for MIDI files creation
 
-<a href="https://github.com/SFML/SFML"> SFML </a> for GUI, input/output and image file creation.
+<a href="https://github.com/TDSOJohn/Engine"> Engine </a> as GUI / Engine.
+
 usage:
 ------
 ```bash

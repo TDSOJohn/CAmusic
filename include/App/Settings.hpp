@@ -11,7 +11,6 @@
 
 #include "App/State.hpp"
 #include "CA/CA1d.hpp"
-#include "GUI/InputField.hpp"
 #include "MIDI/midiToFile.hpp"
 
 
@@ -31,7 +30,5 @@ private:
 
 private:
     sf::RenderWindow&                   mTarget;
-
-    std::vector<InputField>             mTextFields;
 };
 #endif //visualizer_hpp

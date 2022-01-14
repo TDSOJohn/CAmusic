@@ -9,7 +9,7 @@
 //  #include "MIDI/MIDIout.hpp"
 //  #include "MIDI/midiToFile.hpp"
 #include "App/StateStack.hpp"
-#include "ResourceIdentifiers.h"
+#include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
 #include "utilities.hpp"
 

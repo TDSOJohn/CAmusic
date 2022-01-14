@@ -1,5 +1,7 @@
 #include "App/Visualizer.hpp"
 
+#include "ResourceHolder.hpp"
+#include "ResourcePath.hpp"
 #include "utilities.hpp"
 
 #include <sstream>
@@ -7,19 +9,29 @@
 #include <fstream>
 
 
-Visualizer::Visualizer(sf::RenderTarget& outputTarget):
+Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
     mTarget(outputTarget),
-    mCanvas(800, 400, 2),
-    size_x(800),
-    size_y(400)
+    mCanvas(400, 200, 4),
+    size_x(400),
+    size_y(200)
 {
     mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
     mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     newCA();
     generate();
+
+    mTextures.load(Textures::Buttons, getResourcePath() + "Textures/Buttons.png");
+
+/*    auto randomButton = std::make_shared<GUI::Button>(fonts, mTextures);
+    randomButton->setPosition(1600, 0);
+    randomButton->setText("Random\nPalette");
+    randomButton->setCallback(std::bind(&Visualizer::randomizePalettes, this));
+
+    mGUIContainer.pack(randomButton);
+    */
 }
 
 void Visualizer::update()
@@ -30,6 +42,7 @@ void Visualizer::update()
 void Visualizer::draw()
 {
     mTarget.draw(mCanvas);
+//    mTarget.draw(mGUIContainer);
 }
 
 void Visualizer::handleEvent(sf::Event event)

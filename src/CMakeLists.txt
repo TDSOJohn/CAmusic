@@ -11,7 +11,6 @@ set (SRC
     CA/CA1d.cpp
     CA/CA2d.cpp
     Data/DataAnalyzer.cpp
-    GUI/InputField.cpp
 #    MIDI/MIDIout.cpp
     MIDI/midiToFile.cpp
     utilities.cpp
