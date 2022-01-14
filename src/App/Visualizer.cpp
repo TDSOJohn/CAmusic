@@ -59,7 +59,7 @@ void Visualizer::handleEvent(sf::Event event)
                 for(auto& i: mCAHolder)
                     i.ca1d->initialize(size_x, i.start);
 */
-                
+
                 break;
             case sf::Keyboard::M:
                 randomizePalettes();
