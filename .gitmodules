@@ -10,3 +10,6 @@
 [submodule "externals/rtmidi"]
 	path = externals/rtmidi
 	url = https://github.com/thestk/rtmidi
+[submodule "externals/midifile"]
+	path = externals/midifile
+	url = git@github.com:craigsapp/midifile.git
