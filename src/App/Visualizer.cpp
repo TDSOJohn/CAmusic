@@ -9,7 +9,7 @@
 #include <fstream>
 
 
-Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
+Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::FontHolder& fonts):
     mTarget(outputTarget),
     mCanvas(400, 200, 4),
     size_x(400),
@@ -23,7 +23,7 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
     newCA();
     generate();
 
-    mTextures.load(Textures::Buttons, getResourcePath() + "Textures/Buttons.png");
+    mTextures.load(eng::Textures::Buttons, eng::getResourcePath() + "Textures/Buttons.png");
 
 /*    auto randomButton = std::make_shared<GUI::Button>(fonts, mTextures);
     randomButton->setPosition(1600, 0);

@@ -18,7 +18,7 @@ Canvas::Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_sca
 
 void Canvas::drawLine(std::vector<int> data_in, int y, int states, BlendMode blend, int palette_id)
 {
-    std::vector<Pixel> palette = std::move(state_to_palette(states, palette_id));
+    std::vector<eng::Pixel> palette = std::move(state_to_palette(states, palette_id));
 
     //  -->IMPROVE<-- not the best option, better have some updatePalette() function
     if(y >= mSizeY)
@@ -26,7 +26,7 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, BlendMode ble
 
     for(int i = 0; i < data_in.size(); i++)
     {
-        Pixel rgb_val = palette[data_in[i]];
+        eng::Pixel rgb_val = palette[data_in[i]];
         //  offset is every row before the y value
         int buffer_offset = y * mSizeX * 4;
 

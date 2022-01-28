@@ -13,7 +13,7 @@
 #include <iostream>
 
 
-SettingsState::SettingsState(StateStack& stack, Context* context):
+SettingsState::SettingsState(eng::StateStack& stack, eng::State::Context context):
     State(stack, context),
     mSettings(context)
 {
@@ -24,7 +24,7 @@ void SettingsState::draw()
     mSettings.draw();
 }
 
-bool SettingsState::update()
+bool SettingsState::update(sf::Time dt)
 {
     mSettings.update();
     return true;

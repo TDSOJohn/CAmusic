@@ -70,9 +70,9 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
@@ -83,9 +83,9 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
@@ -96,9 +96,9 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }

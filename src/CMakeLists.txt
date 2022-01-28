@@ -3,8 +3,6 @@ set (SRC
     App/Canvas.cpp
     App/Settings.cpp
     App/SettingsState.cpp
-    App/State.cpp
-    App/StateStack.cpp
     App/Visualizer.cpp
     App/VisualizerState.cpp
     CA/CA.cpp

@@ -9,7 +9,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include "App/State.hpp"
+#include "State.hpp"
 #include "CA/CA1d.hpp"
 #include "MIDI/midiToFile.hpp"
 
@@ -17,7 +17,7 @@
 class Settings : private sf::NonCopyable
 {
 public:
-    explicit                            Settings(State::Context* context);
+    explicit                            Settings(eng::State::Context context);
 
     void                                update();
     void                                draw();

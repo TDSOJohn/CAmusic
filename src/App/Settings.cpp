@@ -6,8 +6,8 @@
 #include <iostream>
 
 
-Settings::Settings(State::Context* context):
-    mTarget(*context->window)
+Settings::Settings(eng::State::Context context):
+    mTarget(*context.window)
 {
 }
 

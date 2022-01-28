@@ -49,7 +49,7 @@ struct CAHolder
 class Visualizer : private sf::NonCopyable
 {
 public:
-    explicit                            Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts);
+    explicit                            Visualizer(sf::RenderTarget& outputTarget, const eng::FontHolder& fonts);
 
     void                                update();
     void                                draw();
@@ -70,7 +70,7 @@ private:
 
 private:
     sf::RenderTarget&                   mTarget;
-    TextureHolder                       mTextures;
+    eng::TextureHolder                  mTextures;
 
     Canvas                              mCanvas;
 
@@ -80,6 +80,6 @@ private:
 
     std::vector<CAHolder>               mCAHolder;
 
-    GUI::Container                      mGUIContainer;
+    eng::Container                      mGUIContainer;
 };
 #endif //visualizer_hpp
