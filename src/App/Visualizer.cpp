@@ -11,14 +11,13 @@
 
 Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
     mTarget(outputTarget),
-    mCanvas(400, 200, 4),
-    size_x(400),
-    size_y(200)
+    mCanvas(480, 300, 4),
+    size_x(480),
+    size_y(300)
 {
-    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(4, 2, 1, CA1d::Start::Other,   CA1d::Type::Standard,   2, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(2, 2, 2, CA1d::Start::Middle,  CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random,  CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     newCA();
     generate();
@@ -56,7 +55,6 @@ void Visualizer::handleEvent(sf::Event event)
                 break;
             case sf::Keyboard::R:
                 randomizePalettes();
-                mCAHolder.front().start = CA1d::Start::Random;
                 for(auto& i: mCAHolder)
                     i.ca1d->initialize(size_x, i.start);
                 break;
@@ -91,7 +89,7 @@ void Visualizer::newCA()
 
 void Visualizer::generate()
 {
-    randomizePalettes();
+//    randomizePalettes();
     mCanvas.clearBuffer();
 
     for(auto& i: mCAHolder)
