@@ -1,9 +1,9 @@
 [submodule "externals/Engine"]
 	path = externals/Engine
-	url = https://github.com/TDSOJohn/Engine
+	url = git@github.com:TDSOJohn/Engine.git
 [submodule "externals/rtmidi"]
 	path = externals/rtmidi
-	url = https://github.com/thestk/rtmidi
+	url = git@github.com:thestk/rtmidi.git
 [submodule "externals/midifile"]
 	path = externals/midifile
 	url = git@github.com:craigsapp/midifile.git
