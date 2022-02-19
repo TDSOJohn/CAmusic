@@ -15,24 +15,15 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     size_x(400),
     size_y(200)
 {
-//    load("1471156717_r1_k2_4.txt");
-    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
+
+    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
-    newCA();
+    initializeCA();
     generate();
 
     mTextures.load(eng::Textures::Buttons, eng::getResourcePath() + "Textures/Buttons.png");
-
-/*    auto randomButton = std::make_shared<GUI::Button>(fonts, mTextures);
-    randomButton->setPosition(1600, 0);
-    randomButton->setText("Random\nPalette");
-    randomButton->setCallback(std::bind(&Visualizer::randomizePalettes, this));
-
-    mGUIContainer.pack(randomButton);
-    */
 }
 
 void Visualizer::update()
@@ -43,7 +34,6 @@ void Visualizer::update()
 void Visualizer::draw()
 {
     mTarget.draw(mCanvas);
-//    mTarget.draw(mGUIContainer);
 }
 
 void Visualizer::handleEvent(sf::Event event)
@@ -53,13 +43,11 @@ void Visualizer::handleEvent(sf::Event event)
         switch(event.key.code)
         {
             case sf::Keyboard::N:
-                newCA();
+                updateRules();
+                initializeCA();
                 break;
             case sf::Keyboard::R:
-                randomizePalettes();
-                mCAHolder.front().start = CA1d::Start::Random;
-                for(auto& i: mCAHolder)
-                    i.ca1d->initialize(size_x, i.start);
+                updateRules();
                 break;
             case sf::Keyboard::M:
                 randomizePalettes();
@@ -70,6 +58,9 @@ void Visualizer::handleEvent(sf::Event event)
             case sf::Keyboard::S:
                 save();
                 break;
+            case sf::Keyboard::C:
+                randomizePalettes();
+                break;
                 //  -->IMPROVE<-- IS IT OK TO PUT DEFAULT HERE?
             default:
                 break;
@@ -77,17 +68,19 @@ void Visualizer::handleEvent(sf::Event event)
     }
 }
 
-void Visualizer::newCA()
+void Visualizer::initializeCA()
+{
+    for(auto& i: mCAHolder)
+        i.ca1d->initialize(size_x, i.start);
+}
+
+void Visualizer::updateRules()
 {
     for(auto& i: mCAHolder)
     {
         if(i.ca1d != NULL)
-            i.ca1d.reset();
-
-        i.ca1d = std::make_unique<CA1d>(i.type, i.radius, i.states);
+            i.ca1d->setRule({});
     }
-    for(auto& i: mCAHolder)
-        i.ca1d->initialize(size_x, i.start);
 }
 
 void Visualizer::generate()

@@ -8,8 +8,9 @@ Canvas::Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_sca
     mGlobalScaling(global_scaling),
     mPalette(0)
 {
-    //  size_x multiplied by 4 because it stores r, g, b, a values
+    //  Size multiplied by 4 because it stores r, g, b, a values
     mBuffer.resize(mSizeX * mSizeY * 4);
+    mMaskedBuffer.resize(mSizeX * mSizeY * 4);
     clearBuffer();
 
     mTexture.create(mSizeX, mSizeY);
@@ -55,10 +56,19 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, BlendMode ble
     updateTexture();
 }
 
+void Canvas::maskFromImage(std::string path_in, BlendMode blend)
+{
+    if(!mMaskingImage.loadFromFile(path_in))
+        std::cout << "Error loading the image!" << std::endl;
+
+    std::cout << mMaskingImage.getPixel(1,1).a << std::endl;
+}
+
 //  -->IMPROVE<-- try to put it somewhere else
 void Canvas::updateTexture()
 {
-    uint8_t* buffer_tmp = mBuffer.data();
+    applyMask();
+    uint8_t* buffer_tmp = mMaskedBuffer.data();
     mTexture.update(buffer_tmp);
     mSprite.setTexture(mTexture);
 }
@@ -74,10 +84,27 @@ void Canvas::scroll()
     mTexture.update(buffer_tmp);
 }
 
+void Canvas::applyMask()
+{
+    std::copy(mBuffer.begin(), mBuffer.end(), mMaskedBuffer.begin());
+    sf::Vector2u imageSize = mMaskingImage.getSize();
+
+    for(int i = 0; i < imageSize.y; i++)
+    {
+        //  Offsetting to the correct row of pixels in mBuffer
+        int buffer_offset = i * mSizeX * 4;
+        for(int j = 0; j < imageSize.x; j++)
+        {
+            if(mMaskingImage.getPixel(j, i).a == 0)
+                mMaskedBuffer[buffer_offset + j*4] = mMaskedBuffer[buffer_offset + j*4 + 1] = mMaskedBuffer[buffer_offset + j*4 + 2] = 0;
+        }
+    }
+}
+
 void Canvas::clearBuffer()
 {
     for(int i = 0; i < (mSizeX * mSizeY * 4); i++)
-        mBuffer[i] = 0;
+        mBuffer[i] = mMaskedBuffer[i] = 0;
 }
 
 void Canvas::save(std::string filename)

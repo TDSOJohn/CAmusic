@@ -5,6 +5,8 @@
 #include <iterator>
 #include <cmath>
 
+#include <iostream>
+
 
 CA1d::CA1d( Type ca_type,
             unsigned int rad_in,
@@ -103,6 +105,11 @@ void CA1d::generate()
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     mData = temp_data;
+}
+
+void CA1d::setRule(std::vector<int> const& rule_in)
+{
+    CA::setRule(rule_in);
 }
 
 std::vector<int> CA1d::getData() const

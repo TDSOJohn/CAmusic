@@ -1,6 +1,7 @@
 #ifndef visualizer_hpp
 #define visualizer_hpp
 
+
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -59,10 +60,9 @@ public:
 
     void                                handleEvent(sf::Event event);
 
-//    CA1d*                               getCA() { return [0]; }
-
 private:
-    void                                newCA();
+    void                                initializeCA();
+    void                                updateRules();
 
     void                                generate();
     void                                scroll();
