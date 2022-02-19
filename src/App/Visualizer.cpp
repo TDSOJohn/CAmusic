@@ -9,12 +9,13 @@
 #include <fstream>
 
 
-Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::FontHolder& fonts):
+Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
     mTarget(outputTarget),
     mCanvas(400, 200, 4),
     size_x(400),
     size_y(200)
 {
+//    load("1471156717_r1_k2_4.txt");
     mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
     mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
@@ -133,4 +134,21 @@ void Visualizer::save()
     for(auto& i : mCAHolder)
         datafile << i.ca1d->getRuleString() << "_r" << i.radius << "_k" << i.states << std::endl;
     datafile.close();
+}
+
+void Visualizer::load(std::string filename)
+{
+    std::string line;
+
+    std::ifstream datafile(filename);
+    if(datafile.is_open())
+    {
+        while(getline(datafile, line))
+        {
+            std::cout << line << std::endl;
+        }
+        datafile.close();
+    }
+
+    std::cout << line << std::endl;
 }

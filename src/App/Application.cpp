@@ -11,7 +11,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application():
-    mWindow(sf::VideoMode(1600, 800),
+    mWindow(sf::VideoMode(1800, 800),
         "camusic"),
     mFonts(),
     mContext(mWindow, mTextures, mFonts),

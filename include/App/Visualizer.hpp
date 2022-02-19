@@ -25,6 +25,7 @@ struct CAHolder
     CA1d::Type              type;
     int                     scaling;
     Canvas::BlendMode       blendMode;
+    std::vector<int>        rule;
 
     CAHolder(   unsigned int states_in,
                 unsigned int radius_in,
@@ -32,16 +33,18 @@ struct CAHolder
                 CA1d::Start start_in,
                 CA1d::Type type_in,
                 unsigned int scaling_in,
-                Canvas::BlendMode blend_in):
+                Canvas::BlendMode blend_in,
+                std::vector<int> rule_in = {}):
             states(states_in),
             radius(radius_in),
             palette(palette_in),
             start(start_in),
             type(type_in),
             scaling(scaling_in),
-            blendMode(blend_in)
+            blendMode(blend_in),
+            rule(rule_in)
     {
-        ca1d = std::make_unique<CA1d>(type, radius, states);
+        ca1d = std::make_unique<CA1d>(type, radius, states, rule);
     }
 };
 
@@ -49,7 +52,7 @@ struct CAHolder
 class Visualizer : private sf::NonCopyable
 {
 public:
-    explicit                            Visualizer(sf::RenderTarget& outputTarget, const eng::FontHolder& fonts);
+    explicit                            Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts);
 
     void                                update();
     void                                draw();
@@ -67,6 +70,7 @@ private:
     void                                randomizePalettes();
 
     void                                save();
+    void                                load(std::string filename);
 
 private:
     sf::RenderTarget&                   mTarget;
