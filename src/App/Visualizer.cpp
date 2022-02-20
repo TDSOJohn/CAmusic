@@ -13,11 +13,11 @@
 
 Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
     mTarget(outputTarget),
-    mCanvas(400, 200, 4),
-    size_x(400),
-    size_y(200)
+    mCanvas(1600, 800, 1),
+    size_x(1600),
+    size_y(800)
 {
-    load(eng::getResourcePath() + "../build/results/1056110407_r2_k3_0.json");
+    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
 //    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
 //    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
