@@ -45,6 +45,8 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/Engine/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/midifile/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/rtmidi/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/json/single_include")
+
 
 add_subdirectory(src)
 list(APPEND EXTRA_LIBS src)

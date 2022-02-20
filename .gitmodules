@@ -7,3 +7,6 @@
 [submodule "externals/midifile"]
 	path = externals/midifile
 	url = https://github.com/craigsapp/midifile
+[submodule "externals/json"]
+	path = externals/json
+	url = https://github.com/nlohmann/json.git

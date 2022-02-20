@@ -4,6 +4,8 @@
 #include "ResourcePath.hpp"
 #include "utilities.hpp"
 
+#include "nlohmann/json.hpp"
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -15,7 +17,8 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     size_x(400),
     size_y(200)
 {
-    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
+    load(eng::getResourcePath() + "../build/results/2131172174_r2_k3_3.json");
+//    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
     mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
@@ -122,26 +125,31 @@ void Visualizer::save()
 
     mCanvas.save(ss.str() + ".png");
 
-    std::ofstream datafile;
-    datafile.open(ss.str() + ".txt");
-    for(auto& i : mCAHolder)
-        datafile << i.ca1d->getRuleString() << "_r" << i.radius << "_k" << i.states << std::endl;
-    datafile.close();
+    nlohmann::json data_out = nlohmann::json::array();
+
+    std::ofstream datafile(ss.str() + ".json");
+    if(datafile.is_open())
+    {
+        for(auto& i: mCAHolder)
+            data_out.push_back(i.toJSON());
+
+        datafile << std::setw(4) << data_out << std::endl;
+        datafile.close();
+    }
 }
 
 void Visualizer::load(std::string filename)
 {
     std::string line;
+    nlohmann::json data_in;
 
     std::ifstream datafile(filename);
     if(datafile.is_open())
     {
-        while(getline(datafile, line))
-        {
-            std::cout << line << std::endl;
-        }
+        datafile >> data_in;
         datafile.close();
     }
-
-    std::cout << line << std::endl;
+    // even easier with structured bindings (C++17)
+    for (auto& [key, value] : data_in.items())
+        std::cout << key << " : " << value << "\n";
 }

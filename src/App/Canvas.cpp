@@ -10,7 +10,7 @@ Canvas::Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_sca
 {
     //  Size multiplied by 4 because it stores r, g, b, a values
     mBuffer.resize(mSizeX * mSizeY * 4);
-    mMaskedBuffer.resize(mSizeX * mSizeY * 4);
+//    mMaskedBuffer.resize(mSizeX * mSizeY * 4);
     clearBuffer();
 
     mTexture.create(mSizeX, mSizeY);
@@ -67,8 +67,9 @@ void Canvas::maskFromImage(std::string path_in, BlendMode blend)
 //  -->IMPROVE<-- try to put it somewhere else
 void Canvas::updateTexture()
 {
-    applyMask();
-    uint8_t* buffer_tmp = mMaskedBuffer.data();
+//    applyMask();
+//    uint8_t* buffer_tmp = mMaskedBuffer.data();
+    uint8_t* buffer_tmp = mBuffer.data();
     mTexture.update(buffer_tmp);
     mSprite.setTexture(mTexture);
 }
@@ -104,7 +105,8 @@ void Canvas::applyMask()
 void Canvas::clearBuffer()
 {
     for(int i = 0; i < (mSizeX * mSizeY * 4); i++)
-        mBuffer[i] = mMaskedBuffer[i] = 0;
+        mBuffer[i] = 0;
+//        mBuffer[i] = mMaskedBuffer[i] = 0;
 }
 
 void Canvas::save(std::string filename)
