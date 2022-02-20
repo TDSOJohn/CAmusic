@@ -17,11 +17,11 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     size_x(400),
     size_y(200)
 {
-    load(eng::getResourcePath() + "../build/results/2131172174_r2_k3_3.json");
+    load(eng::getResourcePath() + "../build/results/1056110407_r2_k3_0.json");
 //    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+//    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
 
     initializeCA();
     generate();
@@ -53,10 +53,6 @@ void Visualizer::handleEvent(sf::Event event)
                 updateRules();
                 break;
             case sf::Keyboard::M:
-                randomizePalettes();
-                mCAHolder.front().start = CA1d::Start::Middle;
-                for(auto& i: mCAHolder)
-                    i.ca1d->initialize(size_x, i.start);
                 break;
             case sf::Keyboard::S:
                 save();
@@ -88,7 +84,6 @@ void Visualizer::updateRules()
 
 void Visualizer::generate()
 {
-    randomizePalettes();
     mCanvas.clearBuffer();
 
     for(auto& i: mCAHolder)
@@ -131,7 +126,7 @@ void Visualizer::save()
     if(datafile.is_open())
     {
         for(auto& i: mCAHolder)
-            data_out.push_back(i.toJSON());
+            data_out.push_back(i);
 
         datafile << std::setw(4) << data_out << std::endl;
         datafile.close();
@@ -149,7 +144,12 @@ void Visualizer::load(std::string filename)
         datafile >> data_in;
         datafile.close();
     }
-    // even easier with structured bindings (C++17)
-    for (auto& [key, value] : data_in.items())
-        std::cout << key << " : " << value << "\n";
+
+    auto i = data_in[0].get<CAHolder>();
+    auto j = data_in[1].get<CAHolder>();
+    mCAHolder.push_back(std::move(i));
+    mCAHolder.push_back(std::move(j));
+
+    for(auto& i : mCAHolder)
+        i.updateCA();
 }

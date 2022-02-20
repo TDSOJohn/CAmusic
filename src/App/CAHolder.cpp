@@ -22,18 +22,33 @@ CAHolder::CAHolder(
     ca1d = std::make_unique<CA1d>(type, radius, states, rule);
 }
 
-nlohmann::json CAHolder::toJSON()
+void CAHolder::updateCA()
 {
-    nlohmann::json data_out;
-    data_out["states"] = states;
-    data_out["radius"] = radius;
-    data_out["palette"] = palette;
-    data_out["start"] = start;
-    data_out["type"] = type;
-    data_out["scaling"] = scaling;
-    data_out["blendMode"] = blendMode;
-    if(ca1d != nullptr)
-        data_out["rule"] = ca1d->getRule();
+    ca1d = std::make_unique<CA1d>(type, radius, states, rule);
+}
 
-    return data_out;
+
+void to_json(nlohmann::json& j, const CAHolder& c)
+{
+    j["states"] = c.states;
+    j["radius"] = c.radius;
+    j["palette"] = c.palette;
+    j["start"] = c.start;
+    j["type"] = c.type;
+    j["scaling"] = c.scaling;
+    j["blendMode"] = c.blendMode;
+    if(c.ca1d != nullptr)
+        j["rule"] = c.ca1d->getRule();
+}
+
+void from_json(const nlohmann::json& j, CAHolder& c)
+{
+    j.at("states").get_to(c.states);
+    j.at("radius").get_to(c.radius);
+    j.at("palette").get_to(c.palette);
+    j.at("start").get_to(c.start);
+    j.at("type").get_to(c.type);
+    j.at("scaling").get_to(c.scaling);
+    j.at("blendMode").get_to(c.blendMode);
+    j.at("rule").get_to(c.rule);
 }

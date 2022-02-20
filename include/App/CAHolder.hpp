@@ -19,6 +19,8 @@ struct CAHolder
     Canvas::BlendMode       blendMode;
     std::vector<int>        rule;
 
+    CAHolder() {}
+
     CAHolder(   unsigned int states_in,
                 unsigned int radius_in,
                 unsigned int palette_in,
@@ -28,5 +30,8 @@ struct CAHolder
                 Canvas::BlendMode blend_in,
                 std::vector<int> rule_in = {});
 
-    nlohmann::json toJSON();
+    void updateCA();
 };
+
+void to_json(nlohmann::json& j, const CAHolder& c);
+void from_json(const nlohmann::json& j, CAHolder& c);

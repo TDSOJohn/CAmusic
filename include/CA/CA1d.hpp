@@ -45,6 +45,9 @@ public:
     std::vector<int>    getData() const;
     std::string         str() const;
 
+    int getType() {return mType;}
+    int getStart() {return mStart;}
+
     friend std::ostream& operator<<(std::ostream& os, const CA1d& ca_out);
 
 protected:
