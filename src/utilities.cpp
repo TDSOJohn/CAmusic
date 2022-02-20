@@ -11,7 +11,7 @@
 #include <cmath>
 
 
-std::vector<Pixel> palettes =
+std::vector<eng::Pixel> palettes =
 {
     {255, 255, 255, 255},
     {91, 182, 193, 255},
@@ -29,7 +29,7 @@ std::vector<int> decimalToBaseN(const long long int n, const int base)
 
     while(temp_n >= base)
     {
-        mod = modulo(temp_n, base);
+        mod = eng::modulo(temp_n, base);
         result.push_back(mod);
         temp_n -= mod;
         temp_n /= base;
@@ -75,9 +75,9 @@ std::vector<int> ca_to_velocity(std::vector<int> ca_in, int max_val)
     return result;
 }
 
-std::vector<Pixel> state_to_palette(int states, int palette)
+std::vector<eng::Pixel> state_to_palette(int states, int palette)
 {
-    std::vector<Pixel> rgb(states);
+    std::vector<eng::Pixel> rgb(states);
     for(int i = 0; i < states; i++)
     {
         rgb[i].r = ((palettes[palette].r / (states - 1)) * i);

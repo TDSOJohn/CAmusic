@@ -1,27 +1,32 @@
+
 #include "App/Application.hpp"
 #include "App/VisualizerState.hpp"
 #include "App/SettingsState.hpp"
 
+#include "State.hpp"
+
 #include <iostream>
 
 
+const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
+
 Application::Application():
-    mWindow(sf::VideoMode(1920, 1200),
-        "camusic"),
+    mWindow(sf::VideoMode(1800, 800), "camusic"),
     mFonts(),
-    mStateStack(State::Context(mWindow, nullptr, &mFonts))
+    mContext(mWindow, mTextures, mFonts),
+    mStateStack(eng::State::Context(mWindow, mTextures, mFonts))
 {
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
     mWindow.setFramerateLimit(60.f);
 
-    registerStates();
-    mStateStack.pushState(States::Visualizer);
-
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't
-    mFonts.load(Fonts::Mono, "../Resources/Fonts/IBMPlexMono-Regular.ttf");
+    mFonts.load(eng::Fonts::Mono, "../Resources/Fonts/IBMPlexMono-Regular.ttf");
+
+    registerStates();
+    mStateStack.pushState(eng::States::Game);
 }
 
 Application::~Application()
@@ -30,20 +35,34 @@ Application::~Application()
 
 void Application::run()
 {
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
     while(mWindow.isOpen())
     {
-        processInput();
-        update();
+        sf::Time dt = clock.restart();
+        timeSinceLastUpdate += dt;
+
+        while (timeSinceLastUpdate > TimePerFrame)
+        {
+            timeSinceLastUpdate -= TimePerFrame;
+
+            processInput();
+            update(TimePerFrame);
+
+            if(mStateStack.isEmpty())
+                mWindow.close();
+        }
         draw();
     }
 }
 
 void Application::registerStates()
 {
-    mStateStack.registerState<VisualizerState>(States::Visualizer);
+    mStateStack.registerState<VisualizerState>(eng::States::Game);
 //    mStateStack.registerState<GameState>(States::Loading);
 //    mStateStack.registerState<PauseState>(States::Save);
-    mStateStack.registerState<SettingsState>(States::Settings);
+    mStateStack.registerState<SettingsState>(eng::States::Settings);
 }
 
 void Application::processInput()
@@ -58,9 +77,9 @@ void Application::processInput()
     }
 }
 
-void Application::update()
+void Application::update(sf::Time dt)
 {
-    mStateStack.update();
+    mStateStack.update(dt);
 }
 
 void Application::draw()

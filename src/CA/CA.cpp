@@ -16,23 +16,7 @@ CA::CA( unsigned int stat_in,
     mRuleSize(rule_size_in),
     mRule(rule_in)
 {
-    if(mRule.size() == 0)
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(0, (mStates - 1));
-
-        for(int i = 0; i < mRuleSize; i++)
-            mRule.push_back(distrib(gen));
-    } else
-    {
-        //  check rule size and delete elements if too big
-        while(mRule.size() > mRuleSize)
-            mRule.pop_back();
-        //  check rule size and add zeros if too small
-        while(mRule.size() < mRuleSize)
-            mRule.push_back(0);
-    }
+    setRule(rule_in);
 }
 
 void CA::setRule(std::vector<int> const& rule_in)

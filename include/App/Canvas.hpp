@@ -1,7 +1,9 @@
 #ifndef canvas_hpp
 #define canvas_hpp
 
+
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -26,18 +28,23 @@ public:
     Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_scaling);
 
     void                                drawLine(std::vector<int> data_in, int y, int states, BlendMode blend, int palette_id);
+    void                                maskFromImage(std::string path_in, BlendMode blend);
+
     void                                updateTexture();
 
     void                                scroll();
+    void                                applyMask();
     void                                clearBuffer();
 
     void                                save(std::string filename);
 
 private:
+    sf::Image                           mMaskingImage;
     sf::Texture                         mTexture;
     sf::Sprite                          mSprite;
 
     std::vector<uint8_t>                mBuffer;
+    std::vector<uint8_t>                mMaskedBuffer;
     unsigned int                        mGlobalScaling;
     unsigned int                        mPalette;
 

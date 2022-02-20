@@ -9,21 +9,21 @@
 #ifndef VisualizerState_hpp
 #define VisualizerState_hpp
 
-#include "App/State.hpp"
-#include "App/StateStack.hpp"
+#include "State.hpp"
+#include "StateStack.hpp"
 #include "App/Visualizer.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 
-class VisualizerState : public State
+class VisualizerState : public eng::State
 {
 public:
-    VisualizerState(StateStack& stack, Context* context);
+    VisualizerState(eng::StateStack& stack, eng::State::Context context);
 
     virtual void        draw();
-    virtual bool        update();
+    virtual bool        update(sf::Time dt);
     virtual bool        handleEvent(const sf::Event& event);
 
 private:

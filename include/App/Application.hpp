@@ -8,7 +8,7 @@
 
 //  #include "MIDI/MIDIout.hpp"
 //  #include "MIDI/midiToFile.hpp"
-#include "App/StateStack.hpp"
+#include "StateStack.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
 #include "utilities.hpp"
@@ -30,18 +30,20 @@ public:
     void                                run();
 
 private:
+    static const sf::Time               TimePerFrame;
+
     sf::RenderWindow                    mWindow;
-    StateStack                          mStateStack;
-    FontHolder                          mFonts;
+    eng::StateStack                     mStateStack;
+    eng::State::Context                 mContext;
+    eng::TextureHolder                  mTextures;
+    eng::FontHolder                     mFonts;
 
 private:
     void                                registerStates();
 
     void                                processInput();
-    void                                update();
+    void                                update(sf::Time dt);
     void                                draw();
 };
-
-// rule 101010
 
 #endif //application_hpp

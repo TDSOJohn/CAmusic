@@ -4,33 +4,29 @@
 #include "ResourcePath.hpp"
 #include "utilities.hpp"
 
+#include "nlohmann/json.hpp"
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
 
-Visualizer::Visualizer(sf::RenderTarget& outputTarget, const FontHolder& fonts):
+Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
     mTarget(outputTarget),
-    mCanvas(480, 300, 4),
-    size_x(480),
-    size_y(300)
+    mCanvas(1600, 800, 1),
+    size_x(1600),
+    size_y(800)
 {
-    mCAHolder.push_back(CAHolder(4, 2, 1, CA1d::Start::Other,   CA1d::Type::Standard,   2, Canvas::BlendMode::Add));
-//    mCAHolder.push_back(CAHolder(2, 2, 2, CA1d::Start::Middle,  CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random,  CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
+//    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
-    newCA();
+//    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+
+    initializeCA();
     generate();
 
-    mTextures.load(Textures::Buttons, getResourcePath() + "Textures/Buttons.png");
-
-/*    auto randomButton = std::make_shared<GUI::Button>(fonts, mTextures);
-    randomButton->setPosition(1600, 0);
-    randomButton->setText("Random\nPalette");
-    randomButton->setCallback(std::bind(&Visualizer::randomizePalettes, this));
-
-    mGUIContainer.pack(randomButton);
-    */
+    mTextures.load(eng::Textures::Buttons, eng::getResourcePath() + "Textures/Buttons.png");
 }
 
 void Visualizer::update()
@@ -41,7 +37,6 @@ void Visualizer::update()
 void Visualizer::draw()
 {
     mTarget.draw(mCanvas);
-//    mTarget.draw(mGUIContainer);
 }
 
 void Visualizer::handleEvent(sf::Event event)
@@ -51,21 +46,19 @@ void Visualizer::handleEvent(sf::Event event)
         switch(event.key.code)
         {
             case sf::Keyboard::N:
-                newCA();
+                updateRules();
+                initializeCA();
                 break;
             case sf::Keyboard::R:
-                randomizePalettes();
-                for(auto& i: mCAHolder)
-                    i.ca1d->initialize(size_x, i.start);
+                updateRules();
                 break;
             case sf::Keyboard::M:
-                randomizePalettes();
-                mCAHolder.front().start = CA1d::Start::Middle;
-                for(auto& i: mCAHolder)
-                    i.ca1d->initialize(size_x, i.start);
                 break;
             case sf::Keyboard::S:
                 save();
+                break;
+            case sf::Keyboard::C:
+                randomizePalettes();
                 break;
                 //  -->IMPROVE<-- IS IT OK TO PUT DEFAULT HERE?
             default:
@@ -74,22 +67,23 @@ void Visualizer::handleEvent(sf::Event event)
     }
 }
 
-void Visualizer::newCA()
+void Visualizer::initializeCA()
 {
-    for(auto& i: mCAHolder)
-    {
-        if(i.ca1d != NULL)
-            i.ca1d.reset();
-
-        i.ca1d = std::make_unique<CA1d>(i.type, i.radius, i.states);
-    }
     for(auto& i: mCAHolder)
         i.ca1d->initialize(size_x, i.start);
 }
 
+void Visualizer::updateRules()
+{
+    for(auto& i: mCAHolder)
+    {
+        if(i.ca1d != NULL)
+            i.ca1d->setRule({});
+    }
+}
+
 void Visualizer::generate()
 {
-//    randomizePalettes();
     mCanvas.clearBuffer();
 
     for(auto& i: mCAHolder)
@@ -126,9 +120,36 @@ void Visualizer::save()
 
     mCanvas.save(ss.str() + ".png");
 
-    std::ofstream datafile;
-    datafile.open(ss.str() + ".txt");
+    nlohmann::json data_out = nlohmann::json::array();
+
+    std::ofstream datafile(ss.str() + ".json");
+    if(datafile.is_open())
+    {
+        for(auto& i: mCAHolder)
+            data_out.push_back(i);
+
+        datafile << std::setw(4) << data_out << std::endl;
+        datafile.close();
+    }
+}
+
+void Visualizer::load(std::string filename)
+{
+    std::string line;
+    nlohmann::json data_in;
+
+    std::ifstream datafile(filename);
+    if(datafile.is_open())
+    {
+        datafile >> data_in;
+        datafile.close();
+    }
+
+    auto i = data_in[0].get<CAHolder>();
+    auto j = data_in[1].get<CAHolder>();
+    mCAHolder.push_back(std::move(i));
+    mCAHolder.push_back(std::move(j));
+
     for(auto& i : mCAHolder)
-        datafile << i.ca1d->getRuleString() << "_r" << i.radius << "_k" << i.states << std::endl;
-    datafile.close();
+        i.updateCA();
 }

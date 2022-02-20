@@ -5,6 +5,8 @@
 #include <iterator>
 #include <cmath>
 
+#include <iostream>
+
 
 CA1d::CA1d( Type ca_type,
             unsigned int rad_in,
@@ -70,9 +72,9 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
@@ -83,9 +85,9 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
@@ -96,13 +98,18 @@ void CA1d::generate()
         for(int j = (mRadius * (-1)); j < (mRadius + 1); j++)
         {
             if(mType == Type::Standard)
-                temp +=  (mData[modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
+                temp +=  (mData[eng::modulo(i-j, mDim)] * pow(mStates, (j + mRadius)));
             else if(mType == Type::Totalistic)
-                temp +=  mData[modulo(i-j, mDim)];
+                temp +=  mData[eng::modulo(i-j, mDim)];
         }
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     mData = temp_data;
+}
+
+void CA1d::setRule(std::vector<int> const& rule_in)
+{
+    CA::setRule(rule_in);
 }
 
 std::vector<int> CA1d::getData() const

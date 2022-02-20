@@ -9,21 +9,21 @@
 #ifndef SettingsState_hpp
 #define SettingsState_hpp
 
-#include "App/State.hpp"
-#include "App/StateStack.hpp"
+#include "State.hpp"
+#include "StateStack.hpp"
 #include "App/Settings.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 
-class SettingsState : public State
+class SettingsState : public eng::State
 {
 public:
-    SettingsState(StateStack& stack, Context* context);
+    SettingsState(eng::StateStack& stack, eng::State::Context context);
 
     virtual void        draw();
-    virtual bool        update();
+    virtual bool        update(sf::Time dt);
     virtual bool        handleEvent(const sf::Event& event);
 
 private:

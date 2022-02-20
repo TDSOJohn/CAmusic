@@ -1,10 +1,9 @@
 set (SRC
     App/Application.cpp
+    App/CAHolder.cpp
     App/Canvas.cpp
     App/Settings.cpp
     App/SettingsState.cpp
-    App/State.cpp
-    App/StateStack.cpp
     App/Visualizer.cpp
     App/VisualizerState.cpp
     CA/CA.cpp

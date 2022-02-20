@@ -1,6 +1,7 @@
 #ifndef ca1d_hpp
 #define ca1d_hpp
 
+
 #include "CA/CA.hpp"
 
 #include <vector>
@@ -39,8 +40,13 @@ public:
 
     void                generate();
 
+    void                setRule(std::vector<int> const& rule_in);
+
     std::vector<int>    getData() const;
     std::string         str() const;
+
+    int getType() {return mType;}
+    int getStart() {return mStart;}
 
     friend std::ostream& operator<<(std::ostream& os, const CA1d& ca_out);
 

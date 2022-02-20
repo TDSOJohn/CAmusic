@@ -13,9 +13,9 @@
 #include <iostream>
 
 
-VisualizerState::VisualizerState(StateStack& stack, Context* context):
+VisualizerState::VisualizerState(eng::StateStack& stack, eng::State::Context context):
     State(stack, context),
-    mVisualizer(*context->window, *context->fonts)
+    mVisualizer(*context.window, *context.textures, *context.fonts)
 {
 }
 
@@ -24,7 +24,7 @@ void VisualizerState::draw()
     mVisualizer.draw();
 }
 
-bool VisualizerState::update()
+bool VisualizerState::update(sf::Time dt)
 {
     mVisualizer.update();
     return true;
@@ -36,7 +36,7 @@ bool VisualizerState::handleEvent(const sf::Event& event)
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
     {
 //        mContext->ca1d = mVisualizer.getCA();
-        requestStackPush(States::Settings);
+        requestStackPush(eng::States::Settings);
     }
     else
         mVisualizer.handleEvent(event);

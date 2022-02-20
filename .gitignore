@@ -8,6 +8,7 @@ camusic
 
 try.cpp
 
+build/
+externals/
 instrument/
 results/
-build/
