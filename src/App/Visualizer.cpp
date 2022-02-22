@@ -13,30 +13,47 @@
 
 Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
     mTarget(outputTarget),
-    mCanvas(1600, 800, 1),
-    size_x(1600),
-    size_y(800)
+    mCanvas(800, 400, 2),
+    size_x(800),
+    size_y(400),
+    mScrolling(false)
 {
-    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
+//    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
 //    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
-//    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
-//    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 2, Canvas::BlendMode::Add));
+
+    auto button_1 = std::make_shared<eng::Button>(fonts, textures);
+    button_1->setPosition(1600.f, 100.f);
+    button_1->setText("Scrolling");
+    button_1->setToggle(true);
+    button_1->setCallback(std::bind(&Visualizer::changeScrolling, this));
+    mGUIContainer.pack(button_1);
+
+    for(int i = 0; i < mCAHolder.size(); i++)
+    {
+        auto button = std::make_shared<eng::Button>(fonts, textures);
+        button->setPosition(1600.f, 190.f + 90.f * i);
+        button->setText("Change\nPalette " + std::to_string(i));
+        button->setCallback(std::bind(&Visualizer::changePalettes, this, i));
+        mGUIContainer.pack(button);
+    }
 
     initializeCA();
     generate();
-
-    mTextures.load(eng::Textures::Buttons, eng::getResourcePath() + "Textures/Buttons.png");
 }
 
 void Visualizer::update()
 {
-    scroll();
+    if(mScrolling)
+        scroll();
 }
 
 void Visualizer::draw()
 {
     mTarget.draw(mCanvas);
+    mTarget.draw(mGUIContainer);
 }
 
 void Visualizer::handleEvent(sf::Event event)
@@ -58,12 +75,14 @@ void Visualizer::handleEvent(sf::Event event)
                 save();
                 break;
             case sf::Keyboard::C:
-                randomizePalettes();
+                changePalettes(0);
                 break;
-                //  -->IMPROVE<-- IS IT OK TO PUT DEFAULT HERE?
             default:
                 break;
         }
+    } else
+    {
+        mGUIContainer.handleEvent(event);
     }
 }
 
@@ -107,10 +126,9 @@ void Visualizer::scroll()
     }
 }
 
-void Visualizer::randomizePalettes()
+void Visualizer::changePalettes(int i)
 {
-    for(auto& i: mCAHolder)
-        i.palette = rand()%5;
+    mCAHolder[i].palette = eng::modulo(++mCAHolder[i].palette, 5);
 }
 
 void Visualizer::save()

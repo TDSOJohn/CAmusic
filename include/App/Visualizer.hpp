@@ -34,7 +34,8 @@ private:
     void                                generate();
     void                                scroll();
 
-    void                                randomizePalettes();
+    void                                changePalettes(int i);
+    void                                changeScrolling() { mScrolling = !mScrolling; }
 
     void                                save();
     void                                load(std::string filename);
@@ -48,6 +49,8 @@ private:
     //Used for screen output
     int                                 size_x;
     int                                 size_y;
+
+    bool                                mScrolling;
 
     std::vector<CAHolder>               mCAHolder;
 

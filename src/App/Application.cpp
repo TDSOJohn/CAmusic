@@ -2,6 +2,7 @@
 #include "App/Application.hpp"
 #include "App/VisualizerState.hpp"
 #include "App/SettingsState.hpp"
+#include "ResourcePath.hpp"
 
 #include "State.hpp"
 
@@ -11,7 +12,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application():
-    mWindow(sf::VideoMode(1800, 800), "camusic"),
+    mWindow(sf::VideoMode(1960, 800), "camusic"),
     mFonts(),
     mContext(mWindow, mTextures, mFonts),
     mStateStack(eng::State::Context(mWindow, mTextures, mFonts))
@@ -23,8 +24,8 @@ Application::Application():
 
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't
-    mFonts.load(eng::Fonts::Mono, "../Resources/Fonts/IBMPlexMono-Regular.ttf");
-
+    mFonts.load(eng::Fonts::Mono, eng::getResourcePath() + "Fonts/IBMPlexMono-Regular.ttf");
+    mTextures.load(eng::Textures::Button, eng::getResourcePath() + "Textures/Button.png");
     registerStates();
     mStateStack.pushState(eng::States::Game);
 }

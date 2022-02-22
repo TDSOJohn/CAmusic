@@ -8,11 +8,11 @@ git clone https://github.com/TDSOJohn/caMusic --recurse-submodules
 
 Compile executable visualizer with:
 ```bash
-mkdir build
-cd build
-cmake ../
-make
+cmake -S . -B build
+cmake --build build
 ```
+
+This creates a camusic executable inside the ```build/``` directory
 
 
 Dependencies:

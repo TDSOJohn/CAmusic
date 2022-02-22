@@ -33,5 +33,7 @@ struct CAHolder
     void updateCA();
 };
 
+//  Syntax: json data = caholder; (automatic conversion)
 void to_json(nlohmann::json& j, const CAHolder& c);
+//  Syntax: CAHolder caholder = j.get<CAHolder>(); (automatic conversion)
 void from_json(const nlohmann::json& j, CAHolder& c);
