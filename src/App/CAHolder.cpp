@@ -7,6 +7,7 @@ CAHolder::CAHolder(
             unsigned int palette_in,
             CA1d::Start start_in,
             CA1d::Type type_in,
+            unsigned int size_in,
             unsigned int scaling_in,
             Canvas::BlendMode blend_in,
             std::vector<int> rule_in):
@@ -15,6 +16,7 @@ CAHolder::CAHolder(
         palette(palette_in),
         start(start_in),
         type(type_in),
+        size(size_in),
         scaling(scaling_in),
         blendMode(blend_in),
         rule(rule_in)

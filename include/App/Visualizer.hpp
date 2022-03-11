@@ -28,8 +28,8 @@ public:
     void                                handleEvent(sf::Event event);
 
 private:
-    void                                initializeCA();
-    void                                updateRules();
+    void                                initializeCA(int i = -1);
+    void                                changeRule(int i);
 
     void                                generate();
     void                                scroll();
@@ -40,15 +40,19 @@ private:
     void                                save();
     void                                load(std::string filename);
 
+    void                                buildGUI();
+
 private:
     sf::RenderTarget&                   mTarget;
-    eng::TextureHolder                  mTextures;
+    const eng::TextureHolder&           mTextures;
+    const eng::FontHolder&              mFonts;
 
     Canvas                              mCanvas;
 
     //Used for screen output
     int                                 size_x;
     int                                 size_y;
+    int                                 global_scaling;
 
     bool                                mScrolling;
 

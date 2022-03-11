@@ -10,14 +10,16 @@
 struct CAHolder
 {
     std::unique_ptr<CA1d>   ca1d;
+    CA1d::Type              type;
+    CA1d::Start             start;
     unsigned int            states;
     unsigned int            radius;
-    unsigned int            palette;
-    CA1d::Start             start;
-    CA1d::Type              type;
-    int                     scaling;
-    Canvas::BlendMode       blendMode;
     std::vector<int>        rule;
+
+    unsigned int            palette;
+    Canvas::BlendMode       blendMode;
+    unsigned int            scaling;
+    unsigned int            size;
 
     CAHolder() {}
 
@@ -26,6 +28,7 @@ struct CAHolder
                 unsigned int palette_in,
                 CA1d::Start start_in,
                 CA1d::Type type_in,
+                unsigned int size_in,
                 unsigned int scaling_in,
                 Canvas::BlendMode blend_in,
                 std::vector<int> rule_in = {});
