@@ -3,7 +3,7 @@ caMusic - C++ Cellular Automata to media library
 
 Download with:
 ```bash
-git clone https://github.com/TDSOJohn/caMusic --recurse-submodules
+git clone https://github.com/TDSOJohn/CAmusic --recurse-submodules
 ```
 
 Compile executable visualizer with:
