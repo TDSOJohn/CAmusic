@@ -25,7 +25,7 @@ Application::Application():
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't
     mFonts.load(eng::Fonts::Mono, eng::getResourcePath() + "Fonts/IBMPlexMono-Regular.ttf");
-    mTextures.load(eng::Textures::Button, eng::getResourcePath() + "Textures/Button.png");
+    mTextures.load(eng::Textures::Buttons, eng::getResourcePath() + "Textures/Button.png");
     registerStates();
     mStateStack.pushState(eng::States::Game);
 }

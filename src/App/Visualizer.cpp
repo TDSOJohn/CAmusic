@@ -149,7 +149,7 @@ void Visualizer::buildGUI()
     auto button_1 = std::make_shared<eng::Button>(mFonts, mTextures);
     button_1->setPosition(x, 10.f);
     button_1->setText("Scrolling");
-    button_1->setToggle(true);
+    button_1->setTogglable(true);
     button_1->setCallback(std::bind(&Visualizer::changeScrolling, this));
     mGUIContainer.pack(button_1);
 
@@ -180,7 +180,7 @@ void Visualizer::buildGUI()
     auto save_btn = std::make_shared<eng::Button>(mFonts, mTextures);
     save_btn->setPosition(x, y - 150.f);
     save_btn->setText("Save");
-    save_btn->setToggle(true);
+    save_btn->setTogglable(true);
     save_btn->setCallback(std::bind(&Visualizer::save, this));
     mGUIContainer.pack(save_btn);
 }

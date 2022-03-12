@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project(camusic VERSION 1.0)
 
+set(CMAKE_PREFIX_PATH /opt/homebrew)
+
 # set c++17 standard, require it and only allow the --std=c++17 flag
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -12,21 +14,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(CMAKE_BUILD_TYPE Debug)
-message(${CMAKE_BUILD_TYPE})
-
-# Enable debug symbols by default
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug
-    CACHE STRING
-      "Choose the type of build (Debug or Release)"
-      FORCE
-    )
-endif()
 
 # Generate config.h with version number and CMAKE_BUILD_TYPE
 # configure_file(config.h.in config.h)
-
-message(${CMAKE_HOST_SYSTEM_NAME})
 
 # Find SFML shared libraries
 find_package(SFML 2.5
