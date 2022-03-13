@@ -2,16 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 
 project(camusic VERSION 1.0)
 
-set(CMAKE_PREFIX_PATH /opt/homebrew)
-
 # set c++17 standard, require it and only allow the --std=c++17 flag
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-#set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-#set(BUILD_SHARED_LIBS OFF)
-#set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -30,17 +24,17 @@ if(LINUX)
     include_directories(SFML/include)
 # Might not be the best option, but works on mac
 elseif(APPLE)
-    include_directories("/usr/local/include/")
+    include_directories("/usr/local/include")
+    include_directories("/opt/homebrew/include")
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Resources")
+include_directories("${CMAKE_SOURCE_DIR}/include")
+include_directories("${CMAKE_SOURCE_DIR}/Resources")
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/Engine/include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/midifile/include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/rtmidi/include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/externals/json/single_include")
-
+include_directories("${CMAKE_SOURCE_DIR}/externals/Engine/include")
+include_directories("${CMAKE_SOURCE_DIR}/externals/midifile/include")
+include_directories("${CMAKE_SOURCE_DIR}/externals/rtmidi/include")
+include_directories("${CMAKE_SOURCE_DIR}/externals/json/single_include")
 
 add_subdirectory(src)
 list(APPEND EXTRA_LIBS src)
@@ -63,21 +57,23 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/customtemplate.plist.in
         )
         # Copy Resources folder
-        file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/camusic.app/Contents/Resources/")
+        file(COPY "${CMAKE_SOURCE_DIR}/Resources/" DESTINATION "${CMAKE_SOURCE_DIR}/build/camusic.app/Contents/Resources/")
         # Link CoreServices framework
         target_link_libraries(camusic "-framework CoreServices")
         # copy SFML frameworks
     endif()
 endif()
 
-
+# Link src folder files
 target_link_libraries(camusic src)
-target_link_libraries(camusic "${CMAKE_CURRENT_SOURCE_DIR}/externals/Engine/build/libengine.a")
+# Link Engine
+target_link_libraries(camusic "${CMAKE_SOURCE_DIR}/externals/Engine/build/libengine.a")
 # Link executable to required SFML libraries
 target_link_libraries(camusic sfml-graphics sfml-audio sfml-network sfml-window sfml-system)
-target_link_libraries(camusic "${CMAKE_CURRENT_SOURCE_DIR}/externals/midifile/lib/libmidifile.a")
+# Link midifile library
+target_link_libraries(camusic "${CMAKE_SOURCE_DIR}/externals/midifile/lib/libmidifile.a")
 
 # add the binary tree directory to the list of paths to search for include files
 target_include_directories(camusic PUBLIC
-                           "${PROJECT_BINARY_DIR}/include"
+                           "${PROJECT_SOURCE_DIR}/include"
                            )
