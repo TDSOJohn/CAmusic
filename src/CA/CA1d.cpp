@@ -8,17 +8,17 @@
 #include <iostream>
 
 
-CA1d::CA1d( Type ca_type,
+CA1d::CA1d( CA::Type ca_type,
             unsigned int rad_in,
             unsigned int stat_in,
             std::vector<int> const& rule_in):
-    CA( stat_in,
+    CA( ca_type,
+        stat_in,
         rad_in,
         (rad_in * 2 + 1),
         //  Unreadable, but works
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
-        rule_in),
-    mType(ca_type)
+        rule_in)
 {}
 
 void CA1d::initialize(unsigned int size_in, Start t0)

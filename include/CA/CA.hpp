@@ -9,8 +9,16 @@
 class CA
 {
 public:
+    enum Type
+    {
+        Standard,
+        Totalistic
+    };
+
+public:
                         /// Constructor that copies rule_in lvalue or rvalue
-                        CA( unsigned int stat_in,
+                        CA( Type type_in,
+                            unsigned int stat_in,
                             unsigned int rad_in,
                             unsigned int neigh_in,
                             double rule_size_in,
@@ -32,6 +40,8 @@ public:
     virtual std::string str() const = 0;
 
 protected:
+    Type                mType;
+
     std::vector<int>    mRule;
     double              mRuleSize;
 

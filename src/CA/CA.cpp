@@ -5,11 +5,13 @@
 #include <random>
 
 
-CA::CA( unsigned int stat_in,
+CA::CA( Type type_in,
+        unsigned int stat_in,
         unsigned int rad_in,
         unsigned int neigh_in,
         double rule_size_in,
         std::vector<int> const& rule_in):
+    mType(type_in),
     mStates(stat_in),
     mRadius(rad_in),
     mNeighbrs(neigh_in),

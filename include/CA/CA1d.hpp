@@ -11,12 +11,6 @@
 class CA1d : public CA
 {
 public:
-    enum Type
-    {
-        Standard,
-        Totalistic
-    };
-
     enum Start
     {
         Random,
@@ -30,7 +24,7 @@ public:
                         /// cellular automata type (standard or totalistic),
                         /// radius, number of states,
                         /// std::vector<int> containing the rule
-                        CA1d(Type ca_type                    = Type::Standard,
+                        CA1d(CA::Type ca_type                = Type::Standard,
                              unsigned int rad_in             = 1,
                              unsigned int stat_in            = 2,
                              std::vector<int> const& rule_in = {});
@@ -53,7 +47,6 @@ public:
 protected:
     int                 mDim;
     std::vector<int>    mData;
-    Type                mType;
 
     // Might be useless, let's keep it for now and see
     Start               mStart;

@@ -17,9 +17,10 @@ public:
     };
 
 public:
-                        CA2d(int rad_in = 1,
-                             int stat_in = 2,
-                             std::vector<int> const& rule = {});
+                        CA2d(CA::Type type_in,
+                            int rad_in = 1,
+                            int stat_in = 2,
+                            std::vector<int> const& rule = {});
 
     void                initialize(int size_x_in, int size_y_in, Start t0);
     void                initialize(std::vector<std::vector<int> > const& t0);

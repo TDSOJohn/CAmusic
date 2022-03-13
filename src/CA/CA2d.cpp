@@ -1,8 +1,8 @@
 #include "CA/CA2d.hpp"
 
 
-CA2d::CA2d(int rad_in, int stat_in, std::vector<int> const& rule):
-    CA(stat_in, rad_in, 8, 8, rule)
+CA2d::CA2d(CA::Type type_in, int rad_in, int stat_in, std::vector<int> const& rule):
+    CA(type_in, stat_in, rad_in, 8, 8, rule)
 {
 
 }

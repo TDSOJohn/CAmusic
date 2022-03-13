@@ -25,7 +25,7 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
 //    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
     mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 40, 8, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 
