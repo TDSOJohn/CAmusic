@@ -31,7 +31,12 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, int scaling, 
         eng::Pixel rgb_val = palette[data_in[x]];
         drawPixel(x, y, scaling, blend, rgb_val);
     }
-    updateTexture();
+}
+
+void Canvas::drawImage(std::vector<std::vector<int> > data_in, int states, int scaling, BlendMode blend, int palette_id)
+{
+    for(int i = 0; i < data_in.size(); i++)
+        drawLine(data_in[i], i, states, scaling, blend, palette_id);
 }
 
 void Canvas::maskFromImage(std::string path_in, BlendMode blend)
@@ -46,7 +51,6 @@ void Canvas::updateTexture()
 //    applyMask();
 //    uint8_t* buffer_tmp = mMaskedBuffer.data();
     uint8_t* buffer_tmp = mBuffer.data();
-
     mTexture.update(buffer_tmp);
     mSprite.setTexture(mTexture);
 }
@@ -60,6 +64,7 @@ void Canvas::scroll()
 
     uint8_t* buffer_tmp = mBuffer.data();
     mTexture.update(buffer_tmp);
+    updateTexture();
 }
 
 void Canvas::applyMask()

@@ -16,6 +16,8 @@
 #include "GUI/Button.hpp"
 #include "GUI/Container.hpp"
 
+#include "CA/CA2d.hpp"
+
 
 class Visualizer : private sf::NonCopyable
 {
@@ -28,7 +30,9 @@ public:
     void                                handleEvent(sf::Event event);
 
 private:
+    //  If i == -1, initialize all CAs. If i != -1, initialize CA[i]
     void                                initializeCA(int i = -1);
+    //  IMPROVE If i == -1, initialize all CAs. If i != -1, initialize CA[i]
     void                                changeRule(int i);
 
     void                                generate();
@@ -57,6 +61,8 @@ private:
     bool                                mScrolling;
 
     std::vector<CAHolder>               mCAHolder;
+
+    CA2d                                ca2d;
 
     eng::Container                      mGUIContainer;
 };

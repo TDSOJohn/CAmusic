@@ -35,6 +35,8 @@ public:
 
     unsigned int        getRadius() const { return mRadius; }
 
+    void                setNeighborhood(int n_in) { mNeighbrs = n_in; }
+
     std::string         getRuleString() const;
 
     virtual std::string str() const = 0;

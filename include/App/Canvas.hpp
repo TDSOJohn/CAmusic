@@ -30,6 +30,7 @@ public:
     Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_scaling);
 
     void                                drawLine(std::vector<int> data_in, int y, int states, int scaling, BlendMode blend, int palette_id);
+    void                                drawImage(std::vector<std::vector<int> > data_in, int states, int scaling, BlendMode blend, int palette_id);
     void                                maskFromImage(std::string path_in, BlendMode blend);
 
     void                                updateTexture();

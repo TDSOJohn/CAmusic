@@ -19,7 +19,9 @@ CA1d::CA1d( CA::Type ca_type,
         //  Unreadable, but works
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
         rule_in)
-{}
+{
+    std::cout << "total rule size: " << mRuleSize << std::endl;
+}
 
 void CA1d::initialize(unsigned int size_in, Start t0)
 {

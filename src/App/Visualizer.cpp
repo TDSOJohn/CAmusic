@@ -15,17 +15,20 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     mTarget(outputTarget),
     mTextures(textures),
     mFonts(fonts),
-    mCanvas(320, 160, 5),
-    size_x(320),
-    size_y(160),
-    global_scaling(5),
-    mScrolling(false)
+    mCanvas(100, 50, 16),
+    size_x(100),
+    size_y(50),
+    global_scaling(16),
+    mScrolling(false),
+    ca2d(CA::Totalistic, 2, 2)
 {
 //    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
 //    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
 
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
+
+    ca2d.setNeighborhoodType(CA2d::Neighborhood::Moore);
 
     buildGUI();
 
@@ -35,6 +38,7 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
 
 void Visualizer::update()
 {
+    generate(); // !! ADDED ONLY FOR 2D
     if(mScrolling)
         scroll();
 }
@@ -47,11 +51,15 @@ void Visualizer::draw()
 
 void Visualizer::handleEvent(sf::Event event)
 {
+    if(event.type == sf::Event::KeyReleased)
+        generate();
     mGUIContainer.handleEvent(event);
 }
 
 void Visualizer::initializeCA(int i)
 {
+    ca2d.initialize(size_x, size_y, CA2d::Middle);
+/*
     if(i == -1)
     {
         for(auto& i: mCAHolder)
@@ -61,6 +69,7 @@ void Visualizer::initializeCA(int i)
         if(mCAHolder[i].ca1d != NULL)
             mCAHolder[i].ca1d->initialize(mCAHolder[i].size, mCAHolder[i].start);
     }
+*/
 }
 
 void Visualizer::changeRule(int i)
@@ -72,6 +81,9 @@ void Visualizer::changeRule(int i)
 void Visualizer::generate()
 {
     mCanvas.clearBuffer();
+
+    ca2d.generate();
+    mCanvas.drawImage(ca2d.getData(), 2, 1, Canvas::BlendMode::Add, 0);
 
     for(auto& i: mCAHolder)
     {

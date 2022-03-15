@@ -20,7 +20,7 @@ Application::Application():
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(60.f);
+    mWindow.setFramerateLimit(5.f);
 
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't
@@ -44,16 +44,11 @@ void Application::run()
         sf::Time dt = clock.restart();
         timeSinceLastUpdate += dt;
 
-        while (timeSinceLastUpdate > TimePerFrame)
-        {
-            timeSinceLastUpdate -= TimePerFrame;
+        processInput();
+        update(TimePerFrame);
 
-            processInput();
-            update(TimePerFrame);
-
-            if(mStateStack.isEmpty())
-                mWindow.close();
-        }
+        if(mStateStack.isEmpty())
+            mWindow.close();
         draw();
     }
 }
