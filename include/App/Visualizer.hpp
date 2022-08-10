@@ -62,7 +62,8 @@ private:
 
     std::vector<CAHolder>               mCAHolder;
 
-    CA2d                                ca2d;
+    CA1d                                ca1d;
+//    CA2d                                ca2d;
 
     eng::Container                      mGUIContainer;
 };

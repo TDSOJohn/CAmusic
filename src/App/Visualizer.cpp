@@ -15,20 +15,13 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     mTarget(outputTarget),
     mTextures(textures),
     mFonts(fonts),
-    mCanvas(100, 50, 16),
-    size_x(100),
-    size_y(50),
-    global_scaling(16),
-    mScrolling(false),
-    ca2d(CA::Totalistic, 2, 2)
+    mCanvas(50, 25, 32),
+    size_x(50),
+    size_y(25),
+    global_scaling(32),
+    mScrolling(false)
 {
-//    load(eng::getResourcePath() + "../build/results/1432427885_r2_k3_0.json");
-//    mCanvas.maskFromImage(eng::getResourcePath() + "Textures/Plane.png", Canvas::Add);
-
-//    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
-//    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Totalistic, 320, 1, Canvas::BlendMode::Add));
-
-    ca2d.setNeighborhoodType(CA2d::Neighborhood::Moore);
+    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Standard, 50, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 
@@ -38,7 +31,6 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
 
 void Visualizer::update()
 {
-    generate(); // !! ADDED ONLY FOR 2D
     if(mScrolling)
         scroll();
 }
@@ -58,8 +50,6 @@ void Visualizer::handleEvent(sf::Event event)
 
 void Visualizer::initializeCA(int i)
 {
-    ca2d.initialize(size_x, size_y, CA2d::Middle);
-/*
     if(i == -1)
     {
         for(auto& i: mCAHolder)
@@ -69,7 +59,6 @@ void Visualizer::initializeCA(int i)
         if(mCAHolder[i].ca1d != NULL)
             mCAHolder[i].ca1d->initialize(mCAHolder[i].size, mCAHolder[i].start);
     }
-*/
 }
 
 void Visualizer::changeRule(int i)
@@ -81,9 +70,6 @@ void Visualizer::changeRule(int i)
 void Visualizer::generate()
 {
     mCanvas.clearBuffer();
-
-    ca2d.generate();
-    mCanvas.drawImage(ca2d.getData(), 2, 1, Canvas::BlendMode::Add, 0);
 
     for(auto& i: mCAHolder)
     {
@@ -174,7 +160,7 @@ void Visualizer::buildGUI()
         button1->setCallback(std::bind(&Visualizer::changeRule, this, i));
         mGUIContainer.pack(button1);
 
-        //  start change button
+        //  CA Restart button
         auto button3 = std::make_shared<eng::Button>(mFonts, mTextures);
         button3->setPosition(x, 180.f + 170.f * i);
         button3->setText("Restart\nCA " + std::to_string(i));

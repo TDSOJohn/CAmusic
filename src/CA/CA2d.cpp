@@ -5,7 +5,10 @@
 
 
 CA2d::CA2d(CA::Type type_in, Neighborhood ngh_in, int rad_in, int stat_in, std::vector<int> const& rule):
-    CA(type_in, stat_in, rad_in, 0, 6, rule),
+    CA( type_in,
+        stat_in,
+        rad_in,
+        100000, 6, rule),
     mDimX(10),
     mDimY(10)
 {

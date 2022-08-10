@@ -23,8 +23,8 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, int scaling, 
 {
     std::vector<eng::Pixel> palette = std::move(state_to_palette(states, palette_id));
 
-    if(y >= mSizeY)
-        std::cout << "ERROR: y is too big" << std::endl;
+    if((y < 0) || (y >= mSizeY))
+        std::cout << "ERROR: y is out of bounds" << std::endl;
 
     for(int x = 0; x < data_in.size(); x++)
     {

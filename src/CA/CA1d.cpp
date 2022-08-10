@@ -20,7 +20,6 @@ CA1d::CA1d( CA::Type ca_type,
         ((ca_type == Type::Standard) ? (pow(stat_in, rad_in * 2 + 1)) : ((stat_in - 1) * (rad_in * 2 + 1) + 1)),
         rule_in)
 {
-    std::cout << "total rule size: " << mRuleSize << std::endl;
 }
 
 void CA1d::initialize(unsigned int size_in, Start t0)
@@ -49,6 +48,9 @@ void CA1d::initialize(unsigned int size_in, Start t0)
             counter++;
         }
     }
+    for(auto i: mData)
+        std::cout << i;
+    std::cout << std::endl;
 }
 
 void CA1d::initialize(std::vector<int> const& t0)
@@ -107,11 +109,6 @@ void CA1d::generate()
         temp_data[i] = mRule[(mRuleSize - 1) - temp];
     }
     mData = temp_data;
-}
-
-void CA1d::setRule(std::vector<int> const& rule_in)
-{
-    CA::setRule(rule_in);
 }
 
 std::vector<int> CA1d::getData() const

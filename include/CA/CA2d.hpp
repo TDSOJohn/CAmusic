@@ -24,6 +24,7 @@ public:
 
 public:
                         CA2d(CA::Type type_in,
+                            Neighborhood ngh_in = Moore,
                             int rad_in = 1,
                             int stat_in = 2,
                             std::vector<int> const& rule = {});
