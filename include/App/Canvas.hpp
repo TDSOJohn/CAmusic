@@ -31,12 +31,10 @@ public:
 
     void                                drawLine(std::vector<int> data_in, int y, int states, int scaling, BlendMode blend, int palette_id);
     void                                drawImage(std::vector<std::vector<int> > data_in, int states, int scaling, BlendMode blend, int palette_id);
-    void                                maskFromImage(std::string path_in, BlendMode blend);
 
     void                                updateTexture();
 
     void                                scroll();
-    void                                applyMask();
     void                                clearBuffer();
 
     void                                save(std::string filename);
