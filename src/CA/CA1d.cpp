@@ -48,9 +48,6 @@ void CA1d::initialize(unsigned int size_in, Start t0)
             counter++;
         }
     }
-    for(auto i: mData)
-        std::cout << i;
-    std::cout << std::endl;
 }
 
 void CA1d::initialize(std::vector<int> const& t0)

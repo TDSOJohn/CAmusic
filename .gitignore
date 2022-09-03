@@ -8,6 +8,8 @@ camusic
 
 try.cpp
 
+.ccls-cache/
+
 build/
 externals/
 instrument/

@@ -20,7 +20,7 @@ Application::Application():
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(5.f);
+    mWindow.setFramerateLimit(15.f);
 
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't

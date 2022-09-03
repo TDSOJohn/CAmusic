@@ -4,24 +4,29 @@
 #include "ResourcePath.hpp"
 #include "utilities.hpp"
 
-#include "nlohmann/json.hpp"
+#include "json/single_include/nlohmann/json.hpp"
 
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
 
+const int globalScaling = 8;
+
+
 Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
     mTarget(outputTarget),
     mTextures(textures),
     mFonts(fonts),
-    mCanvas(50, 25, 32),
-    size_x(50),
-    size_y(25),
-    global_scaling(32),
+    mCanvas((outputTarget.getSize().x - 360)/globalScaling, outputTarget.getSize().y / globalScaling, 8),
+    size_x((outputTarget.getSize().x - 360)/globalScaling),
+    size_y(outputTarget.getSize().y / globalScaling),
+    global_scaling(globalScaling),
     mScrolling(false)
 {
-    mCAHolder.push_back(CAHolder(2, 1, 0, CA1d::Start::Middle, CA1d::Type::Standard, 50, 1, Canvas::BlendMode::Add));
+    std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
+    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
 
     buildGUI();
 

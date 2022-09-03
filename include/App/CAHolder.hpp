@@ -1,7 +1,7 @@
 #include <vector>
 #include <memory>
 
-#include "nlohmann/json.hpp"
+#include "json/single_include/nlohmann/json.hpp"
 
 #include "App/Canvas.hpp"
 #include "CA/CA1d.hpp"

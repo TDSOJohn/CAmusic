@@ -31,10 +31,10 @@ endif()
 include_directories("${CMAKE_SOURCE_DIR}/include")
 include_directories("${CMAKE_SOURCE_DIR}/Resources")
 
+# include all externals folders (es.: use midifile/include/file.hpp in include directive)
+include_directories("${CMAKE_SOURCE_DIR}/externals")
+# include the Engine include folder (es.: use directly the filename in include directive)
 include_directories("${CMAKE_SOURCE_DIR}/externals/Engine/include")
-include_directories("${CMAKE_SOURCE_DIR}/externals/midifile/include")
-include_directories("${CMAKE_SOURCE_DIR}/externals/rtmidi/include")
-include_directories("${CMAKE_SOURCE_DIR}/externals/json/single_include")
 
 add_subdirectory(src)
 list(APPEND EXTRA_LIBS src)
