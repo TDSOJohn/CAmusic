@@ -8,7 +8,10 @@ camusic
 
 try.cpp
 
+# artifacts used by ccls and clangd to provide a c++ language server
 .ccls-cache/
+.cache/
+compile_commands.json
 
 build/
 externals/

@@ -26,7 +26,8 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
 {
     std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
     mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Middle, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 
@@ -87,7 +88,13 @@ void Visualizer::generate()
     mCanvas.updateTexture();
 }
 
-//  -->BUG<-- SCROLL DOESN'T WORK PROPERLY FOR DIFFERENT CA SCALINGS TOGHETHER
+void Visualizer::resetAndGenerate()
+{
+    initializeCA();
+    generate();
+}
+
+//  -->BUG<-- SCROLL DOESN'T WORK PROPERLY FOR MIXED CA SCALINGS
 void Visualizer::scroll()
 {
     mCanvas.scroll();
@@ -101,6 +108,19 @@ void Visualizer::scroll()
 void Visualizer::changePalettes(int i)
 {
     mCAHolder[i].palette = eng::modulo(++mCAHolder[i].palette, 5);
+}
+
+void Visualizer::changeStart(int i)
+{
+    if( i == -1)
+    {
+        for(auto& i : mCAHolder)
+        {
+            i.start = rotateStart(i.start);
+        }
+    }
+    else
+        mCAHolder[i].start = rotateStart(mCAHolder[i].start);
 }
 
 void Visualizer::save()
@@ -178,12 +198,24 @@ void Visualizer::buildGUI()
         button2->setText("Change\nPalette " + std::to_string(i));
         button2->setCallback(std::bind(&Visualizer::changePalettes, this, i));
         mGUIContainer.pack(button2);
+
+        //  start change button
+        auto button4 = std::make_shared<eng::Button>(mFonts, mTextures);
+        button4->setPosition(x + 150.f, 180.f + 170.f * i);
+        button4->setText("Change\nStart " + std::to_string(i));
+        button4->setCallback(std::bind(&Visualizer::changeStart, this, i));
+        mGUIContainer.pack(button4);
     }
+
+    auto gen_btn = std::make_shared<eng::Button>(mFonts, mTextures);
+    gen_btn->setPosition(x + 150.f, y - 150.f);
+    gen_btn->setText("Generate");
+    gen_btn->setCallback(std::bind(&Visualizer::resetAndGenerate, this));
+    mGUIContainer.pack(gen_btn);
 
     auto save_btn = std::make_shared<eng::Button>(mFonts, mTextures);
     save_btn->setPosition(x, y - 150.f);
     save_btn->setText("Save");
-    save_btn->setTogglable(true);
     save_btn->setCallback(std::bind(&Visualizer::save, this));
     mGUIContainer.pack(save_btn);
 }

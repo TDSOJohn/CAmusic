@@ -90,3 +90,18 @@ std::vector<eng::Pixel> state_to_palette(int states, int palette)
 
     return rgb;
 }
+
+CA1d::Start rotateStart(CA1d::Start s)
+{
+    switch(s)
+    {
+        case CA1d::Random:
+            return CA1d::Middle;
+        case CA1d::Middle:
+            return CA1d::Left;
+        case CA1d::Left:
+            return CA1d::Other;
+        case CA1d::Other:
+            return CA1d::Random;
+    }
+}

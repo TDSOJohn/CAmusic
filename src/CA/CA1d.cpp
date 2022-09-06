@@ -38,7 +38,9 @@ void CA1d::initialize(unsigned int size_in, Start t0)
             i = 0;
 
         if(mStart == Start::Middle)
-            mData[mDim/2] = (mStates - 1);
+            mData[mDim/2] = 1;
+        else if(mStart == Start::Left)
+            mData[0] = 1;
     } else
     {
         int counter = 0;

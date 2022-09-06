@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 
+#include "CA/CA1d.hpp"
+
 
 /// \brief Simple decimal int to base n vector converter
 /// Converts a long long int to a base n [std::vector<int>](https://en.cppreference.com/w/cpp/container/vector)
@@ -40,5 +42,7 @@ std::vector<int> ca_to_velocity(std::vector<int> data_in, int max_val);
 
 std::vector<eng::Pixel> state_to_palette(int states, int palette = 0);
 
+
+CA1d::Start rotateStart(CA1d::Start s);
 
 #endif //utilities_hpp

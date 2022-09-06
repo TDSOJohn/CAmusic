@@ -36,9 +36,11 @@ private:
     void                                changeRule(int i);
 
     void                                generate();
+    void                                resetAndGenerate();
     void                                scroll();
 
-    void                                changePalettes(int i);
+    void                                changePalettes(int i = -1);
+    void                                changeStart(int i = -1);
     void                                changeScrolling() { mScrolling = !mScrolling; }
 
     void                                save();
