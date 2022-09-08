@@ -18,9 +18,9 @@ Canvas::Canvas(unsigned int size_x, unsigned int size_y, unsigned int global_sca
     mSprite.setScale(mGlobalScaling, mGlobalScaling);
 }
 
-void Canvas::drawLine(std::vector<int> data_in, int y, int states, int scaling, BlendMode blend, int palette_id)
+void Canvas::drawLine(std::vector<int> data_in, int y, int states, int scaling, BlendMode blend, eng::Pixel target)
 {
-    std::vector<eng::Pixel> palette = std::move(state_to_palette(states, palette_id));
+    std::vector<eng::Pixel> palette = std::move(state_to_rgb(states, target));
 
     if((y < 0) || (y >= mSizeY))
         std::cout << "ERROR: y is out of bounds" << std::endl;
@@ -32,10 +32,10 @@ void Canvas::drawLine(std::vector<int> data_in, int y, int states, int scaling, 
     }
 }
 
-void Canvas::drawImage(std::vector<std::vector<int> > data_in, int states, int scaling, BlendMode blend, int palette_id)
+void Canvas::drawImage(std::vector<std::vector<int> > data_in, int states, int scaling, BlendMode blend, eng::Pixel rgb)
 {
     for(int i = 0; i < data_in.size(); i++)
-        drawLine(data_in[i], i, states, scaling, blend, palette_id);
+        drawLine(data_in[i], i, states, scaling, blend, rgb);
 }
 
 //  -->IMPROVE<-- try to put it somewhere else

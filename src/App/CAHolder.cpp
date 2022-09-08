@@ -4,7 +4,7 @@
 CAHolder::CAHolder(
             unsigned int states_in,
             unsigned int radius_in,
-            unsigned int palette_in,
+            eng::Pixel rgb_in,
             CA1d::Start start_in,
             CA1d::Type type_in,
             unsigned int size_in,
@@ -13,7 +13,7 @@ CAHolder::CAHolder(
             std::vector<int> rule_in):
         states(states_in),
         radius(radius_in),
-        palette(palette_in),
+        rgb(rgb_in),
         start(start_in),
         type(type_in),
         size(size_in),
@@ -34,7 +34,9 @@ void to_json(nlohmann::json& j, const CAHolder& c)
 {
     j["states"] = c.states;
     j["radius"] = c.radius;
-    j["palette"] = c.palette;
+    j["r"] = c.rgb.r;
+    j["g"] = c.rgb.g;
+    j["b"] = c.rgb.b;
     j["start"] = c.start;
     j["type"] = c.type;
     j["scaling"] = c.scaling;
@@ -47,7 +49,9 @@ void from_json(const nlohmann::json& j, CAHolder& c)
 {
     j.at("states").get_to(c.states);
     j.at("radius").get_to(c.radius);
-    j.at("palette").get_to(c.palette);
+    j.at("r").get_to(c.rgb.r);
+    j.at("g").get_to(c.rgb.g);
+    j.at("b").get_to(c.rgb.b);
     j.at("start").get_to(c.start);
     j.at("type").get_to(c.type);
     j.at("scaling").get_to(c.scaling);

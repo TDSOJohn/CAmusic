@@ -42,6 +42,8 @@ std::vector<int> ca_to_velocity(std::vector<int> data_in, int max_val);
 
 std::vector<eng::Pixel> state_to_palette(int states, int palette = 0);
 
+std::vector<eng::Pixel> state_to_rgb(int states, eng::Pixel target);
+
 
 CA1d::Start rotateStart(CA1d::Start s);
 

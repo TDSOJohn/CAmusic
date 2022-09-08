@@ -16,7 +16,7 @@ struct CAHolder
     unsigned int            radius;
     std::vector<int>        rule;
 
-    unsigned int            palette;
+    eng::Pixel              rgb;
     Canvas::BlendMode       blendMode;
     unsigned int            scaling;
     unsigned int            size;
@@ -25,7 +25,7 @@ struct CAHolder
 
     CAHolder(   unsigned int states_in,
                 unsigned int radius_in,
-                unsigned int palette_in,
+                eng::Pixel rgb_in,
                 CA1d::Start start_in,
                 CA1d::Type type_in,
                 unsigned int size_in,

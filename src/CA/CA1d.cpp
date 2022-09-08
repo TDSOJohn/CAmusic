@@ -110,6 +110,19 @@ void CA1d::generate()
     mData = temp_data;
 }
 
+bool CA1d::isStatic() const
+{
+    int i = mData[0];
+    int counter = 1;
+    while((counter < mData.size()) && (i == mData[counter]))
+        counter++;
+
+    if(counter >= mData.size())
+        return true;
+    else
+        return false;
+}
+
 std::vector<int> CA1d::getData() const
 {
     return mData;

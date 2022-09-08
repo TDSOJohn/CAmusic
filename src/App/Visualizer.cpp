@@ -25,9 +25,9 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     mScrolling(false)
 {
     std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
-    mCAHolder.push_back(CAHolder(3, 1, 0, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(2, 2, 0, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(3, 2, 0, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(3, 1, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(2, 2, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
+    mCAHolder.push_back(CAHolder(3, 2, {255, 255, 255}, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 
@@ -81,7 +81,7 @@ void Visualizer::generate()
     {
         for(int y = 0; y < size_y; y += i.scaling)
         {
-            mCanvas.drawLine(i.ca1d->getData(), y, i.states, i.scaling, i.blendMode, i.palette);
+            mCanvas.drawLine(i.ca1d->getData(), y, i.states, i.scaling, i.blendMode, i.rgb);
             i.ca1d->generate();
         }
     }
@@ -100,14 +100,16 @@ void Visualizer::scroll()
     mCanvas.scroll();
     for(auto& i: mCAHolder)
     {
-        mCanvas.drawLine(i.ca1d->getData(), (size_y - i.scaling), i.states, i.scaling, i.blendMode, i.palette);
+        mCanvas.drawLine(i.ca1d->getData(), (size_y - i.scaling), i.states, i.scaling, i.blendMode, i.rgb);
         i.ca1d->generate();
     }
 }
 
 void Visualizer::changePalettes(int i)
 {
-    mCAHolder[i].palette = eng::modulo(++mCAHolder[i].palette, 5);
+    mCAHolder[i].rgb = {eng::modulo(++mCAHolder[i].rgb.r, 255),
+        eng::modulo(++mCAHolder[i].rgb.g, 255),
+        eng::modulo(++mCAHolder[i].rgb.b, 255)};
 }
 
 void Visualizer::changeStart(int i)
@@ -126,7 +128,7 @@ void Visualizer::changeStart(int i)
 void Visualizer::save()
 {
     std::stringstream ss;
-    ss  << "results/" << rand() << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states << "_" << mCAHolder[0].palette;
+    ss  << "results/" << rand() << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states;
 
     mCanvas.save(ss.str() + ".png");
 

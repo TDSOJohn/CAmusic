@@ -2,6 +2,8 @@ set (SRC
     App/Application.cpp
     App/CAHolder.cpp
     App/Canvas.cpp
+    App/Carousel.cpp
+    App/CarouselState.cpp
     App/Settings.cpp
     App/SettingsState.cpp
     App/Visualizer.cpp

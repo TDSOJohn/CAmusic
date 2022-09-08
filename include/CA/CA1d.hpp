@@ -35,6 +35,8 @@ public:
 
     void                generate();
 
+    bool                isStatic() const;
+
     std::vector<int>    getData() const;
     std::string         str() const;
 

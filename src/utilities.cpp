@@ -91,6 +91,19 @@ std::vector<eng::Pixel> state_to_palette(int states, int palette)
     return rgb;
 }
 
+std::vector<eng::Pixel> state_to_rgb(int states, eng::Pixel target)
+{
+    std::vector<eng::Pixel> rgb(states);
+    for(int i = 0; i < states; i++)
+    {
+        rgb[i].r = ((target.r / (states - 1)) * i);
+        rgb[i].g = ((target.g / (states - 1)) * i);
+        rgb[i].b = ((target.b / (states - 1)) * i);
+    }
+
+    return rgb;
+}
+
 CA1d::Start rotateStart(CA1d::Start s)
 {
     switch(s)
