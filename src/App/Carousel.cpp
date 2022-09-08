@@ -133,14 +133,14 @@ void Carousel::changePalettes(int i)
 {
     if(directionCounter == 0)
     {
-        mCAHolder[i].rgb = {eng::modulo(mCAHolder[i].rgb.r + 2, 256),
-                            eng::modulo(mCAHolder[i].rgb.g - 3, 256),
-                            eng::modulo(mCAHolder[i].rgb.b - 2, 256)};        
+        mCAHolder[i].rgb = {static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.r + 2, 256)),
+                            static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.g - 3, 256)),
+                            static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.b - 2, 256))};        
     }
     if (directionCounter == 1)
-        mCAHolder[i].rgb = {eng::modulo(mCAHolder[i].rgb.r - 3, 256),
-                            eng::modulo(mCAHolder[i].rgb.g + 2, 256),
-                            eng::modulo(mCAHolder[i].rgb.b + 3, 256)};
+        mCAHolder[i].rgb = {static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.r - 3, 256)),
+                            static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.g + 2, 256)),
+                            static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.b + 3, 256))};
 }
 
 void Carousel::changeStart(int i)

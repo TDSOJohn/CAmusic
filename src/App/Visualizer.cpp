@@ -107,9 +107,9 @@ void Visualizer::scroll()
 
 void Visualizer::changePalettes(int i)
 {
-    mCAHolder[i].rgb = {eng::modulo(++mCAHolder[i].rgb.r, 255),
-        eng::modulo(++mCAHolder[i].rgb.g, 255),
-        eng::modulo(++mCAHolder[i].rgb.b, 255)};
+    mCAHolder[i].rgb = {static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.r, 255)),
+                        static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.g, 255)),
+                        static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.b, 255))};
 }
 
 void Visualizer::changeStart(int i)
