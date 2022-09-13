@@ -37,10 +37,10 @@ public:
     void                                scroll();
     void                                clearBuffer();
 
+    // save now creates a 2048x1080 png, perfect for Instagram
     void                                save(std::string filename);
 
 private:
-    sf::Image                           mMaskingImage;
     sf::Texture                         mTexture;
     sf::Sprite                          mSprite;
 

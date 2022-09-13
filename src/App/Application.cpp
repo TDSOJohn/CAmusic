@@ -3,6 +3,7 @@
 #include "App/CarouselState.hpp"
 #include "App/VisualizerState.hpp"
 #include "App/SettingsState.hpp"
+#include "App/MenuState.hpp"
 #include "ResourcePath.hpp"
 
 #include "State.hpp"
@@ -13,7 +14,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application():
-    mWindow(sf::VideoMode(1920, 1080), "camusic"),
+    mWindow(sf::VideoMode(2048, 1800), "camusic"),
     mFonts(),
     mContext(mWindow, mTextures, mFonts),
     mStateStack(eng::State::Context(mWindow, mTextures, mFonts))
@@ -56,9 +57,11 @@ void Application::run()
 
 void Application::registerStates()
 {
-    mStateStack.registerState<CarouselState>(eng::States::Menu);
+    //  I know, I should do something about states enum being in the Engine
+    mStateStack.registerState<MenuState>(eng::States::Menu);
+    mStateStack.registerState<CarouselState>(eng::States::Settings);
     mStateStack.registerState<VisualizerState>(eng::States::Game);
-    mStateStack.registerState<SettingsState>(eng::States::Settings);
+//    mStateStack.registerState<SettingsState>(eng::States::Settings);
 }
 
 void Application::processInput()
