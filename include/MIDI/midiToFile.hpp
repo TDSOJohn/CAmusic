@@ -1,8 +1,10 @@
+#ifndef miditofile_hpp
+#define miditofile_hpp
+
 #include <vector>
 #include <string>
 
-#include "../../midifile/include/MidiFile.h"
-
+#include "midifile/include/MidiFile.h"
 
 
 class MidiToFile
@@ -12,6 +14,8 @@ public:
 
     void                drawData(std::vector<int> data_in, int octave);
     void                drawChord(std::vector<int> data_in, int states);
+
+    void                resetPosition();
 
     void                saveFile(std::string fn_in);
     void                newFile();
@@ -30,3 +34,5 @@ private:
     void                drawLine(std::vector<int> note_in);
     void                drawLine(std::vector<int> note_in, std::vector<int> vel_in);
 };
+
+#endif //miditofile_hpp

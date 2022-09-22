@@ -14,10 +14,12 @@
 #include "CA/CA1d.hpp"
 #include "GUI/Button.hpp"
 #include "GUI/Container.hpp"
+#include "MIDI/midiToFile.hpp"
 
 
 struct CAHolder;
 
+class MidiToFile;
 
 class Carousel : private sf::NonCopyable
 {
@@ -70,5 +72,7 @@ private:
     CA1d                                ca1d;
 
     eng::Container                      mGUIContainer;
+
+    MidiToFile                          mMTF;
 };
 #endif //carousel_hpp

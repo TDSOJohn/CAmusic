@@ -14,7 +14,7 @@ MenuState::MenuState(eng::StateStack& stack, eng::State::Context context):
 {
     auto carouselButton = std::make_shared<eng::Button>(*context.fonts, *context.textures);
     carouselButton->setPosition(300, 450);
-    carouselButton->setText("Play");
+    carouselButton->setText("Carousel");
     carouselButton->setCallback([this] ()
     {
         requestStackPop();
