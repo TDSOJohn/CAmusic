@@ -13,7 +13,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application():
-    mWindow(sf::VideoMode(1920, 1080), "camusic"),
+    mWindow(sf::VideoMode(1920, 1080), "camusic", sf::Style::Fullscreen),
     mFonts(),
     mContext(mWindow, mTextures, mFonts),
     mStateStack(eng::State::Context(mWindow, mTextures, mFonts))
@@ -21,7 +21,8 @@ Application::Application():
     srand(time(NULL));
 
     mWindow.setKeyRepeatEnabled(false);
-    mWindow.setFramerateLimit(60.f);
+    //  mWindow.setFramerateLimit(60.f);
+    mWindow.setVerticalSyncEnabled(true);
 
     //  BUG :   Reference from include/ folder works
     //          reference from Resources/ folder doesn't

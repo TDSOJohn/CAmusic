@@ -27,7 +27,7 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
     std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
     mCAHolder.push_back(CAHolder(3, 1, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(2, 2, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(3, 2, {255, 255, 255}, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
+    mCAHolder.push_back(CAHolder(2, 3, {255, 255, 255}, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 

@@ -62,7 +62,7 @@ private:
 
     int                                 updateCounter;
     int                                 frameCounter;
-    int                                 directionCounter;
+    std::vector<int>                    mDirectionCounter;
     bool                                mScrolling;
 
     std::vector<CAHolder>               mCAHolder;
