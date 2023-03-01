@@ -77,20 +77,6 @@ std::vector<int> ca_to_velocity(std::vector<int> ca_in, int max_val)
     return result;
 }
 
-std::vector<eng::Pixel> state_to_palette(int states, int palette)
-{
-    std::vector<eng::Pixel> rgb(states);
-    for(int i = 0; i < states; i++)
-    {
-        rgb[i].r = ((palettes[palette].r / (states - 1)) * i);
-        rgb[i].g = ((palettes[palette].g / (states - 1)) * i);
-        rgb[i].b = ((palettes[palette].b / (states - 1)) * i);
-        rgb[i].a = 255;
-    }
-
-    return rgb;
-}
-
 std::vector<eng::Pixel> state_to_rgb(int states, eng::Pixel target)
 {
     std::vector<eng::Pixel> rgb(states);

@@ -4,6 +4,7 @@ set (SRC
     App/Canvas.cpp
     App/Carousel.cpp
     App/CarouselState.cpp
+    App/MenuState.cpp
     App/Settings.cpp
     App/SettingsState.cpp
     App/Visualizer.cpp

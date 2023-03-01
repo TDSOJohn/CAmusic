@@ -41,8 +41,6 @@ void Canvas::drawImage(std::vector<std::vector<int> > data_in, int states, int s
 //  -->IMPROVE<-- try to put it somewhere else
 void Canvas::updateTexture()
 {
-//    applyMask();
-//    uint8_t* buffer_tmp = mMaskedBuffer.data();
     uint8_t* buffer_tmp = mBuffer.data();
     mTexture.update(buffer_tmp);
     mSprite.setTexture(mTexture);
@@ -64,12 +62,14 @@ void Canvas::clearBuffer()
 {
     for(int i = 0; i < (mSizeX * mSizeY * 4); i++)
         mBuffer[i] = 0;
-//        mBuffer[i] = mMaskedBuffer[i] = 0;
 }
 
 void Canvas::save(std::string filename)
 {
-    mTexture.copyToImage().saveToFile(filename);
+    sf::RenderTexture render;
+    render.create(2048, 1800);
+    render.draw(mSprite);
+    render.getTexture().copyToImage().saveToFile(filename);
 }
 
 void Canvas::drawPixel(int x, int y, int scaling, BlendMode blend, eng::Pixel pixel_in)

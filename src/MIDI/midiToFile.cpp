@@ -14,6 +14,7 @@ MidiToFile::MidiToFile():
 void MidiToFile::drawData(std::vector<int> data_in, int octave)
 {
     drawLine(ca_to_midi_note(data_in, octave));
+    mMidifile->sortTracks();
 }
 
 void MidiToFile::drawChord(std::vector<int> data_in, int states)
@@ -25,7 +26,6 @@ void MidiToFile::drawChord(std::vector<int> data_in, int states)
         {
             if(data_in[i] != 0)
             {
-//                std::cout << i << "\t" << i + ((127 - size) / 2) << "\t" << data_in[i] * (127 / (states - 1)) << std::endl;
                 noteOut (i + ((127 - size) / 2),
                         (data_in[i] * (127 / (states - 1))),
                         mPosition,
@@ -37,10 +37,14 @@ void MidiToFile::drawChord(std::vector<int> data_in, int states)
     mMidifile->sortTracks();
 }
 
+void MidiToFile::resetPosition()
+{
+    mPosition = 0;
+}
+
 void MidiToFile::saveFile(std::string fn_in)
 {
-    std::string filename = "results/" + fn_in + ".mid";
-//    mMidifile->sortTracks();
+    std::string filename = fn_in + ".mid";
     mMidifile->write(filename);
 }
 

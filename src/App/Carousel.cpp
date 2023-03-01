@@ -4,6 +4,7 @@
 #include "ResourcePath.hpp"
 #include "utilities.hpp"
 #include "App/CAHolder.hpp"
+#include "MIDI/midiToFile.hpp"
 
 #include "json/single_include/nlohmann/json.hpp"
 
@@ -12,7 +13,7 @@
 #include <fstream>
 
 
-const int globalScaling = 2;
+const int globalScaling = 4;
 
 
 Carousel::Carousel(sf::RenderTarget& outputTarget, const eng::TextureHolder& textures, const eng::FontHolder& fonts):
@@ -27,6 +28,8 @@ Carousel::Carousel(sf::RenderTarget& outputTarget, const eng::TextureHolder& tex
     frameCounter(0),
     mScrolling(true)
 {
+    mMTF.newFile();
+
     std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
     mCAHolder.push_back(CAHolder(3, 1, {142, 238, 155}, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
     mCAHolder.push_back(CAHolder(2, 2, {165, 212, 147}, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
@@ -160,6 +163,15 @@ void Carousel::save() {
     ss  << "results/" << rand() << "_r" << mCAHolder[0].radius << "_k" << mCAHolder[0].states;
 
     mCanvas.save(ss.str() + ".png");
+
+    int counter = 0;
+    for(auto& i : mCAHolder)
+    {
+        counter++;
+        mMTF.drawData(i.ca1d->getData(), counter);
+        mMTF.resetPosition();
+    }
+    mMTF.saveFile(ss.str());
 /*
     nlohmann::json data_out = nlohmann::json::array();
 
@@ -172,6 +184,8 @@ void Carousel::save() {
         datafile.close();
     }
     */
+
+
 }
 
 void Carousel::load(std::string filename) {
