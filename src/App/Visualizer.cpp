@@ -26,8 +26,8 @@ Visualizer::Visualizer(sf::RenderTarget& outputTarget, const eng::TextureHolder&
 {
     std::cout << "x: " << outputTarget.getSize().x << " y: " << outputTarget.getSize().y << std::endl;
     mCAHolder.push_back(CAHolder(3, 1, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Standard, size_x, 1, Canvas::BlendMode::Add));
-    mCAHolder.push_back(CAHolder(2, 2, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
-    mCAHolder.push_back(CAHolder(2, 3, {255, 255, 255}, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
+//    mCAHolder.push_back(CAHolder(2, 2, {255, 255, 255}, CA1d::Start::Random, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Subtract));
+//    mCAHolder.push_back(CAHolder(3, 2, {255, 255, 255}, CA1d::Start::Left, CA1d::Type::Totalistic, size_x, 1, Canvas::BlendMode::Add));
 
     buildGUI();
 
@@ -107,9 +107,9 @@ void Visualizer::scroll()
 
 void Visualizer::changePalettes(int i)
 {
-    mCAHolder[i].rgb = {static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.r, 255)),
-                        static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.g, 255)),
-                        static_cast<uint8_t>(eng::modulo(++mCAHolder[i].rgb.b, 255))};
+    mCAHolder[i].rgb = {static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.r + 30, 255)),
+                        static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.g - 30, 255)),
+                        static_cast<uint8_t>(eng::modulo(mCAHolder[i].rgb.b + 15, 255))};
 }
 
 void Visualizer::changeStart(int i)

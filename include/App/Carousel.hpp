@@ -19,8 +19,6 @@
 
 struct CAHolder;
 
-class MidiToFile;
-
 class Carousel : private sf::NonCopyable
 {
 public:
@@ -64,7 +62,7 @@ private:
 
     int                                 updateCounter;
     int                                 frameCounter;
-    std::vector<int>                    mDirectionCounter;
+    int                                 directionCounter;
     bool                                mScrolling;
 
     std::vector<CAHolder>               mCAHolder;

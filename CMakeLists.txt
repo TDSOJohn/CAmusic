@@ -17,6 +17,27 @@ find_package(SFML 2.5
     COMPONENTS
     system window graphics REQUIRED
     )
+if(NOT SFML)
+    message(FATAL_ERROR "SFML not found!")
+endif()
+
+# Find CoreAudio
+find_library(CORE_AUDIO CoreAudio)
+if(NOT CORE_AUDIO)
+    message(FATAL_ERROR "CoreAudio not found!")
+endif()
+
+# Find CoreMIDI
+find_library(CORE_MIDI CoreMIDI)
+if(NOT CORE_MIDI)
+    message(FATAL_ERROR "CoreMIDI not found!")
+endif()
+
+# Find Foundation
+find_library(FOUNDATION Foundation)
+if(NOT FOUNDATION)
+    message(FATAL_ERROR "Foundation not found!")
+endif()
 
 # Platform check: better use CMAKE_HOST_SYSTEM_NAME
 # Linux version
@@ -64,6 +85,8 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
     endif()
 endif()
 
+target_sources(camusic PRIVATE "externals/rtmidi/RtMidi.cpp")
+
 # Link src folder files
 target_link_libraries(camusic src)
 # Link Engine
@@ -72,6 +95,12 @@ target_link_libraries(camusic "${CMAKE_SOURCE_DIR}/externals/Engine/build/libeng
 target_link_libraries(camusic sfml-graphics sfml-audio sfml-network sfml-window sfml-system)
 # Link midifile library
 target_link_libraries(camusic "${CMAKE_SOURCE_DIR}/externals/midifile/lib/libmidifile.a")
+# Link rtmidi library
+target_link_libraries(camusic "${CMAKE_SOURCE_DIR}/externals/rtmidi/librtmidi.la")
+
+target_link_libraries(camusic ${CORE_AUDIO})
+target_link_libraries(camusic ${CORE_MIDI})
+target_link_libraries(camusic ${FOUNDATION})
 
 # add the binary tree directory to the list of paths to search for include files
 target_include_directories(camusic PUBLIC
